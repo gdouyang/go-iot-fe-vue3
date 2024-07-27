@@ -1,35 +1,34 @@
 <template>
   <div>
-    <Dialog ref="addModal" @confirm="handleOk" @close="handleCancel" :width="500">
-      <a-spin :spinning="spinning > 0">
-        <a-form-model
-          ref="addFormRef"
-          :model="addObj"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
+    <Dialog
+      ref="addModal"
+      v-model="showModal"
+      @confirm="handleOk"
+      @close="handleCancel"
+      :width="500"
+    >
+      <ElForm ref="addFormRef" :model="addObj" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <ElFormItem
+          label="角色名称"
+          prop="name"
+          :rules="[{ required: true, message: '请输入名称' }]"
         >
-          <a-form-model-item
-            label="角色名称"
-            prop="name"
-            :rules="[{ required: true, message: '请输入名称' }]"
-          >
-            <a-input placeholder="角色名称" :max-length="20" v-model="addObj.name" />
-          </a-form-model-item>
+          <ElInput placeholder="角色名称" :max-length="20" v-model="addObj.name" />
+        </ElFormItem>
 
-          <a-form-model-item label="描述">
-            <a-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
-          </a-form-model-item>
+        <el-form-item label="描述">
+          <el-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
+        </el-form-item>
 
-          <a-divider>拥有权限</a-divider>
-          <tree :nodes="treeData" :setting="setting" @onCreated="onCreated"></tree>
-        </a-form-model>
-      </a-spin>
+        <el-divider>拥有权限</el-divider>
+        <tree :nodes="treeData" :setting="setting" @onCreated="onCreated"></tree>
+      </ElForm>
     </Dialog>
   </div>
 </template>
 
 <script>
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, forEach, find, map, isNil, get } from 'lodash-es'
 import { getRole, editRole, addRole, getRoleRelMenus, getMenus } from '../api.js'
 const defaultAddObj = {
   name: '',
@@ -64,7 +63,8 @@ export default {
           enable: true
         }
       },
-      treeData: []
+      treeData: [],
+      showModal: false
     }
   },
   created() {},
@@ -73,7 +73,8 @@ export default {
       this.addObj = cloneDeep(defaultAddObj)
       this.isEdit = false
       this.getTreeData()
-      this.$refs.addModal.open({ title: '新增' })
+      this.showModal = true
+      // this.$refs.addModal.open({ title: '新增' })
     },
     edit(record) {
       this.isEdit = true
@@ -82,7 +83,8 @@ export default {
         .then((data1) => {
           if (data1.success) {
             const data = data1.result
-            this.$refs.addModal.open({ title: '修改' })
+            this.showModal = true
+            // this.$refs.addModal.open({ title: '修改' })
             this.addObj = data
             this.getTreeData()
           }
@@ -147,26 +149,26 @@ export default {
           const datas = data.result
           const list = []
           let id = 1
-          _.forEach(datas, (item) => {
+          forEach(datas, (item) => {
             item.pid = 0
             item.id = id
-            const checkItem = _.find(checkeds, (check) => check.code === item.permissionId)
+            const checkItem = find(checkeds, (check) => check.code === item.permissionId)
             list.push({
               id: id,
               pid: 0,
               name: item.permissionName,
               code: item.permissionId,
-              checked: !_.isNil(checkItem)
+              checked: !isNil(checkItem)
             })
-            _.forEach(item.actionEntitySet, (ac) => {
+            forEach(item.actionEntitySet, (ac) => {
               id++
-              const actions = _.get(checkItem, 'action')
+              const actions = get(checkItem, 'action')
               list.push({
                 id: id,
                 pid: item.id,
                 name: ac.describe,
                 code: ac.action,
-                checked: !_.isNil(_.find(actions, (checkAc) => checkAc.id === ac.action))
+                checked: !isNil(find(actions, (checkAc) => checkAc.id === ac.action))
               })
             })
             id++
@@ -183,10 +185,10 @@ export default {
       var treeObj = this.treeObj
       var checkedNodes = treeObj.getCheckedNodes(true)
       const datas = []
-      _.forEach(checkedNodes, (node) => {
+      forEach(checkedNodes, (node) => {
         if (node.pid === 0) {
-          const action = _.map(
-            _.filter(checkedNodes, (n) => n.pid === node.id),
+          const action = map(
+            filter(checkedNodes, (n) => n.pid === node.id),
             (ac) => {
               return { id: ac.code, name: ac.name }
             }

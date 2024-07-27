@@ -6,6 +6,10 @@ import '@/plugins/unocss'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
+import ElementUI from 'element-plus'
+
+import 'element-plus/dist/index.css'
+
 // 初始化多语言
 import { setupI18n } from '@/plugins/vueI18n'
 
@@ -16,7 +20,7 @@ import { setupStore } from '@/store'
 import { setupGlobCom } from '@/components'
 
 // 引入element-plus
-import { setupElementPlus } from '@/plugins/elementPlus'
+// import { setupElementPlus } from '@/plugins/elementPlus'
 
 // 引入全局样式
 import '@/styles/index.less'
@@ -43,7 +47,8 @@ const setupAll = async () => {
 
   setupGlobCom(app)
 
-  setupElementPlus(app)
+  // setupElementPlus(app)
+  app.use(ElementUI)
 
   setupRouter(app)
 

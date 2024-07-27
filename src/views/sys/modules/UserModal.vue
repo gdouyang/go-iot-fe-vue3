@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-modal
+    <el-modal
       :title="title"
       :width="500"
       :visible="visible"
@@ -9,40 +9,40 @@
       @ok="handleOk"
       @cancel="handleCancel"
     >
-      <a-spin :spinning="spinning > 0">
-        <a-form-model
+      <el-spin :spinning="spinning > 0">
+        <el-form-model
           ref="addFormRef"
           :model="addObj"
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
         >
-          <a-form-model-item
+          <el-form-model-item
             label="账号"
             prop="username"
             :rules="[{ required: true, message: '请输入' }]"
           >
-            <a-input v-model="addObj.username" :max-length="32" />
-          </a-form-model-item>
-          <a-form-model-item
+            <el-input v-model="addObj.username" :max-length="32" />
+          </el-form-model-item>
+          <el-form-model-item
             label="名称"
             prop="nickname"
             :rules="[{ required: true, message: '请输入' }]"
           >
-            <a-input v-model="addObj.nickname" :max-length="32" />
-          </a-form-model-item>
+            <el-input v-model="addObj.nickname" :max-length="32" />
+          </el-form-model-item>
 
-          <a-form-model-item
+          <el-form-model-item
             label="状态"
             prop="enableFlag"
             :rules="[{ required: true, message: '请选择' }]"
           >
-            <a-select v-model="addObj.enableFlag">
-              <a-select-option value="true"> 启动 </a-select-option>
-              <a-select-option value="false"> 禁用 </a-select-option>
-            </a-select>
-          </a-form-model-item>
+            <el-select v-model="addObj.enableFlag">
+              <el-select-option value="true"> 启动 </el-select-option>
+              <el-select-option value="false"> 禁用 </el-select-option>
+            </el-select>
+          </el-form-model-item>
 
-          <a-form-model-item
+          <el-form-model-item
             label="密码"
             prop="password"
             :rules="[
@@ -51,10 +51,10 @@
             ]"
             v-if="!isEdit"
           >
-            <a-input v-model="addObj.password" type="password" :max-length="20" />
-          </a-form-model-item>
+            <el-input v-model="addObj.password" type="password" :max-length="20" />
+          </el-form-model-item>
 
-          <a-form-model-item
+          <el-form-model-item
             label="确认密码"
             prop="password2"
             :rules="[
@@ -63,27 +63,27 @@
             ]"
             v-if="!isEdit"
           >
-            <a-input v-model="addObj.password2" type="password" :max-length="20" />
-          </a-form-model-item>
+            <el-input v-model="addObj.password2" type="password" :max-length="20" />
+          </el-form-model-item>
 
-          <a-form-model-item
+          <el-form-model-item
             label="角色"
             prop="roleId"
             :rules="[{ required: true, message: '请选择角色' }]"
           >
-            <a-select v-model="addObj.roleId">
-              <a-select-option v-for="item in roleList" :value="item.id" :key="item.id">
+            <el-select v-model="addObj.roleId">
+              <el-select-option v-for="item in roleList" :value="item.id" :key="item.id">
                 {{ item.name }}
-              </a-select-option>
-            </a-select>
-          </a-form-model-item>
+              </el-select-option>
+            </el-select>
+          </el-form-model-item>
 
-          <a-form-model-item label="描述">
-            <a-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
-          </a-form-model-item>
-        </a-form-model>
-      </a-spin>
-    </a-modal>
+          <el-form-model-item label="描述">
+            <el-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
+          </el-form-model-item>
+        </el-form-model>
+      </el-spin>
+    </el-modal>
   </div>
 </template>
 

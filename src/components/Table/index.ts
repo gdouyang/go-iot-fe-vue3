@@ -1,4 +1,5 @@
 import Table from './src/Table.vue'
+import PageTable from './src/PageTable.vue'
 import { ElTable } from 'element-plus'
 import { TableColumn, TableSetProps } from './src/types'
 
@@ -18,4 +19,4 @@ export interface TableExpose {
   elTableRef: ComponentRef<typeof ElTable>
 }
 
-export { Table }
+export { Table, PageTable }

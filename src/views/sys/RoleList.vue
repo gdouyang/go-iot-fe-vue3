@@ -24,26 +24,17 @@
       >
     </div>
 
-    <PageTable ref="tb" :url="url" :columns="columns">
-      <span slot="action" slot-scope="text, record">
-        <a @click="handleEdit(record)" v-action:role-mgr:save>编辑</a>
-        <span v-action:role-mgr:delete>
-          <el-divider type="vertical" />
-          <el-popconfirm title="确认删除？" @confirm="remove(record)">
-            <a>删除</a>
-          </el-popconfirm>
-        </span>
-      </span>
-    </PageTable>
+    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
 
     <role-modal ref="modal" @ok="handleOk" />
   </ContentWrap>
 </template>
 
-<script>
+<script lang="jsx">
 import { ContentWrap } from '@/components/ContentWrap'
 import { roleTableUrl, removeRole } from './api.js'
 import RoleModal from './modules/RoleModal.vue'
+import RoleActions from './modules/RoleActions.vue'
 
 export default {
   name: 'RoleList',
@@ -57,15 +48,19 @@ export default {
       searchObj: {},
       // 表头
       columns: [
-        { title: 'ID', dataIndex: 'id', width: '150px' },
-        { title: '角色名称', dataIndex: 'name' },
-        { title: '描述', dataIndex: 'desc' },
-        { title: '创建时间', dataIndex: 'createTime' },
+        { label: 'ID', field: 'id', width: '150px' },
+        { label: '角色名称', field: 'name' },
+        { label: '描述', field: 'desc' },
+        { label: '创建时间', field: 'createTime' },
         {
-          title: '操作',
+          label: '操作',
           minWidth: '210px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
+          field: 'action',
+          slots: {
+            default: (data) => {
+              return <RoleActions record={data.row} onEdit={this.handleEdit} onOk={this.handleOk} />
+            }
+          }
         }
       ]
     }
@@ -94,14 +89,6 @@ export default {
     handleOk() {
       // 新增/修改 成功时，重载列表
       this.search()
-    },
-    remove(row) {
-      removeRole(row.id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.handleOk()
-        }
-      })
     }
   }
 }

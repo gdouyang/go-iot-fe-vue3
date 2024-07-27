@@ -32,34 +32,23 @@ axiosInstance.interceptors.response.use(
   },
   (error: AxiosError) => {
     console.log('err： ' + error) // for debug
-    const data = error.response.data
+    const data = error.response?.data
+    const status = error.response?.status
     // 从 localstorage 获取 token
     const userStore = useUserStoreWithOut()
     const token = userStore.token
-    if (error.response.status === 403) {
-      ElMessage.destroy()
-      ElMessage.error({
-        message: '403无权限',
-        description: data.message
-      })
-    } else if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
-      ElMessage.destroy()
-      ElMessage.error({
-        message: '未登录',
-        description: '请先登录'
-      })
+    if (status === 403) {
+      ElMessage.error('403无权限' + data.message)
+    } else if (status === 401 && !(data.result && data.result.isLogin)) {
+      ElMessage.error('未登录，请先登录')
       if (token && !window.$isReload) {
         window.$isReload = true
         userStore.reset()
       }
     } else if (typeof data === 'string') {
-      ElMessage.error({
-        message: data
-      })
+      ElMessage.error(data)
     } else if (data && !data.success) {
-      ElMessage.error({
-        message: data.message
-      })
+      ElMessage.error(data.message)
     }
     return Promise.reject(error)
   }
