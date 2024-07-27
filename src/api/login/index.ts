@@ -2,13 +2,11 @@ import request from '@/axios'
 import type { UserType } from './types'
 
 export const loginApi = (data: UserType): Promise<IResponse<UserType>> => {
-  return request.post({ url: '/login', data })
+  return request.post('/login', { data: data })
 }
 
 export const getInfo = () => {
-  return request.get({
-    url: '/user-info',
-    method: 'get',
+  return request.get('/user-info', {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
@@ -16,12 +14,9 @@ export const getInfo = () => {
 }
 
 export const sysConfig = () => {
-  return request.get({
-    url: '/anon/system/config',
-    method: 'get'
-  })
+  return request.get('/anon/system/config')
 }
 
 export const loginOutApi = (): Promise<IResponse> => {
-  return request.post({ url: '/logout' })
+  return request.post('/logout')
 }

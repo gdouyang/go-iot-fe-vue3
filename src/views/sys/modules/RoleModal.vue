@@ -7,7 +7,7 @@
       @close="handleCancel"
       :width="500"
     >
-      <ElForm ref="addFormRef" :model="addObj" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <ElForm ref="addFormRef" :model="addObj">
         <ElFormItem
           label="角色名称"
           prop="name"
@@ -21,7 +21,13 @@
         </el-form-item>
 
         <el-divider>拥有权限</el-divider>
-        <tree :nodes="treeData" :setting="setting" @onCreated="onCreated"></tree>
+        <el-tree
+          :data="treeData"
+          show-checkbox
+          node-key="id"
+          :default-checked-keys="defaultCheckKeys"
+          ref="treeObj"
+        />
       </ElForm>
     </Dialog>
   </div>
@@ -39,32 +45,12 @@ export default {
   components: {},
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       addObj: cloneDeep(defaultAddObj),
       spinning: 0,
 
-      setting: {
-        data: {
-          simpleData: {
-            enable: true,
-            idKey: 'id',
-            pIdKey: 'pid',
-            rootPId: 0
-          }
-        },
-        check: {
-          enable: true
-        }
-      },
       treeData: [],
-      showModal: false
+      showModal: false,
+      defaultCheckKeys: []
     }
   },
   created() {},
@@ -123,9 +109,6 @@ export default {
     handleCancel() {
       this.$refs.addFormRef.clearValidate()
     },
-    onCreated(ztree) {
-      this.treeObj = ztree
-    },
     getTreeData() {
       if (this.isEdit) {
         this.spinning++
@@ -144,6 +127,7 @@ export default {
     },
     getAllMenu(checkeds) {
       this.spinning++
+      this.defaultCheckKeys = []
       getMenus()
         .then((data) => {
           const datas = data.result
@@ -153,23 +137,29 @@ export default {
             item.pid = 0
             item.id = id
             const checkItem = find(checkeds, (check) => check.code === item.permissionId)
-            list.push({
+            const parent = {
               id: id,
               pid: 0,
-              name: item.permissionName,
+              label: item.permissionName,
               code: item.permissionId,
               checked: !isNil(checkItem)
-            })
+            }
+            list.push(parent)
+            parent.children = []
             forEach(item.actionEntitySet, (ac) => {
               id++
               const actions = get(checkItem, 'action')
-              list.push({
+              const checked = !isNil(find(actions, (checkAc) => checkAc.id === ac.action))
+              parent.children.push({
                 id: id,
                 pid: item.id,
-                name: ac.describe,
+                label: ac.describe,
                 code: ac.action,
-                checked: !isNil(find(actions, (checkAc) => checkAc.id === ac.action))
+                checked: checked
               })
+              if (checked) {
+                this.defaultCheckKeys.push(id)
+              }
             })
             id++
           })
@@ -182,8 +172,8 @@ export default {
         })
     },
     getCheckPermissions() {
-      var treeObj = this.treeObj
-      var checkedNodes = treeObj.getCheckedNodes(true)
+      var treeObj = this.$refs.treeObj
+      var checkedNodes = treeObj.getCheckedNodes(false, true)
       const datas = []
       forEach(checkedNodes, (node) => {
         if (node.pid === 0) {
