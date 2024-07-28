@@ -1,18 +1,38 @@
 <script setup lang="ts">
 import { ElDialog, ElScrollbar } from 'element-plus'
 import { propTypes } from '@/utils/propTypes'
-import { computed, useAttrs, ref, unref, useSlots, watch, nextTick } from 'vue'
+import {
+  computed,
+  useAttrs,
+  ref,
+  unref,
+  useSlots,
+  watch,
+  nextTick,
+  defineEmits,
+  defineExpose
+} from 'vue'
 import { isNumber } from '@/utils/is'
 
 const slots = useSlots()
 
 const props = defineProps({
-  modelValue: propTypes.bool.def(false),
   title: propTypes.string.def('Dialog'),
-  fullscreen: propTypes.bool.def(true),
-  maxHeight: propTypes.oneOfType([String, Number]).def('400px')
+  cancelText: propTypes.string.def('取消'),
+  showOk: propTypes.bool.def(true),
+  okText: propTypes.string.def('确定'),
+  okType: propTypes.string.def('primary'),
+  fullscreen: propTypes.bool.def(false),
+  maxHeight: propTypes.oneOfType([String, Number]).def('500px')
 })
-
+const title_ = ref('')
+const titleVal = computed(() => {
+  if (title_) {
+    return title_.value
+  }
+  return props.title
+})
+const emits = defineEmits(['close', 'confirm'])
 const getBindValue = computed(() => {
   const delArr: string[] = ['fullscreen', 'title', 'maxHeight']
   const attrs = useAttrs()
@@ -26,6 +46,7 @@ const getBindValue = computed(() => {
 })
 
 const isFullscreen = ref(false)
+const modalStatus = ref(false)
 
 const toggleFull = () => {
   isFullscreen.value = !unref(isFullscreen)
@@ -54,10 +75,36 @@ const dialogStyle = computed(() => {
     height: unref(dialogHeight)
   }
 })
+
+const close = () => {
+  modalStatus.value = false
+  emits('close')
+}
+
+const ok = () => {
+  emits('confirm')
+}
+
+const open = (config: any) => {
+  modalStatus.value = true
+  if (config) {
+    title_.value = config.title
+    if (config.onopen) {
+      nextTick(() => {
+        config.onopen()
+      })
+    }
+  }
+}
+defineExpose({
+  open: open,
+  close: close
+})
 </script>
 
 <template>
   <ElDialog
+    v-model="modalStatus"
     v-bind="getBindValue"
     :fullscreen="isFullscreen"
     destroy-on-close
@@ -66,25 +113,26 @@ const dialogStyle = computed(() => {
     top="0"
     :close-on-click-modal="false"
     :show-close="false"
+    @close="close"
   >
     <template #header="{ close }">
-      <div class="flex justify-between items-center h-54px pl-15px pr-15px relative">
+      <div class="flex justify-between items-center h-34px pl-15px pr-15px relative">
         <slot name="title">
-          {{ title }}
+          {{ titleVal }}
         </slot>
         <div
-          class="h-54px flex justify-between items-center absolute top-[50%] right-15px translate-y-[-50%]"
+          class="h-34px flex justify-between items-center absolute top-[50%] right-15px translate-y-[-50%]"
         >
           <Icon
             v-if="fullscreen"
-            class="cursor-pointer is-hover !h-54px mr-10px"
+            class="cursor-pointer is-hover !h-34px mr-10px"
             :icon="isFullscreen ? 'radix-icons:exit-full-screen' : 'radix-icons:enter-full-screen'"
             color="var(--el-color-info)"
             hover-color="var(--el-color-primary)"
             @click="toggleFull"
           />
           <Icon
-            class="cursor-pointer is-hover !h-54px"
+            class="cursor-pointer is-hover !h-34px"
             icon="ep:close"
             hover-color="var(--el-color-primary)"
             color="var(--el-color-info)"
@@ -98,8 +146,11 @@ const dialogStyle = computed(() => {
       <slot></slot>
     </ElScrollbar>
 
-    <template v-if="slots.footer" #footer>
-      <slot name="footer"></slot>
+    <template #footer>
+      <slot name="footer">
+        <el-button @click="close">{{ cancelText }}</el-button>
+        <el-button @click="ok" :type="okType">{{ okText }}</el-button>
+      </slot>
     </template>
   </ElDialog>
 </template>
@@ -117,7 +168,7 @@ const dialogStyle = computed(() => {
     margin-right: 0 !important;
     border-bottom: 1px solid var(--el-border-color);
     padding: 0;
-    height: 54px;
+    height: 34px;
   }
   &__body {
     padding: 15px !important;

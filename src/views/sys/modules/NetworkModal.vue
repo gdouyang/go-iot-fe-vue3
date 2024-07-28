@@ -1,49 +1,23 @@
 <template>
   <div>
-    <Dialog ref="addModal" @confirm="handleOk" @close="handleCancel" :width="500">
-      <a-spin :spinning="spinning > 0">
-        <a-form-model
-          ref="addFormRef"
-          :model="addObj"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-        >
-          <a-form-model-item
-            label="端口"
-            prop="port"
-            :rules="[{ required: true, message: '请输入' }]"
-          >
-            <a-input-number placeholder="端口" :max-length="20" v-model.number="addObj.port" />
-          </a-form-model-item>
-
-          <!-- <a-form-model-item
-            label="产品"
-            v-if="isEdit"
-          >
-            <a-input
-              :max-length="20"
-              :disabled="true"
-              v-model="addObj.productId"
-            />
-          </a-form-model-item>
-          <a-form-model-item
-            label="类型"
-            v-if="isEdit"
-          >
-            <a-input
-              :max-length="20"
-              :disabled="true"
-              v-model="addObj.type"
-            />
-          </a-form-model-item> -->
-        </a-form-model>
-      </a-spin>
+    <Dialog
+      ref="addModal"
+      @confirm="handleOk"
+      @close="handleCancel"
+      :width="500"
+      max-height="100px"
+    >
+      <el-form ref="addFormRef" :model="addObj" label-width="auto">
+        <el-form-item label="端口" prop="port" :rules="[{ required: true, message: '请输入' }]">
+          <el-input-number placeholder="端口" :maxlength="20" v-model.number="addObj.port" />
+        </el-form-item>
+      </el-form>
     </Dialog>
   </div>
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { getNetwork, editNetwork, addNetwork } from '../networkapi.js'
 const defaultAddObj = {
   port: null,
@@ -57,14 +31,6 @@ export default {
   components: {},
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       addObj: _.cloneDeep(defaultAddObj),
       spinning: 0,
       isEdit: false

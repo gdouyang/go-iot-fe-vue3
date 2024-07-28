@@ -1,7 +1,11 @@
 <template>
   <span>
-    <ElButton link @click="handleEdit(record)">编辑</ElButton>
-    <span>
+    <el-button link @click="meters(record)">查看</el-button>
+    <span v-action:network-config:save>
+      <el-divider direction="vertical" />
+      <el-button link @click="handleEdit(record)">编辑</el-button>
+    </span>
+    <span v-if="!record.productId" v-action:network-config:delete>
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
@@ -13,10 +17,10 @@
 </template>
 
 <script lang="jsx">
-import { removeRole } from '../api.js'
+import { removeNetwork, meters } from '../networkapi.js'
 
 export default {
-  name: 'RoleActions',
+  name: 'NetworkActions',
   components: {},
   props: {
     record: {
@@ -32,8 +36,11 @@ export default {
     handleEdit(record) {
       this.$emit('edit', record)
     },
+    meters(row) {
+      meters(row.id)
+    },
     remove(row) {
-      removeRole(row.id).then((data) => {
+      removeNetwork(row.id).then((data) => {
         if (data.success) {
           this.$message.success('操作成功')
           this.$emit('ok')

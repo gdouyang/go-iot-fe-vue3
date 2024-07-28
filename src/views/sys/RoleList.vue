@@ -1,5 +1,5 @@
 <template>
-  <ContentWrap title="角色管理">
+  <ContentWrap>
     <div class="table-page-search-wrapper">
       <el-form layout="inline">
         <el-row :gutter="48">
@@ -31,7 +31,6 @@
 </template>
 
 <script lang="jsx">
-import { ContentWrap } from '@/components/ContentWrap'
 import { roleTableUrl, removeRole } from './api.js'
 import RoleModal from './modules/RoleModal.vue'
 import RoleActions from './modules/RoleActions.vue'
@@ -54,7 +53,7 @@ export default {
         { label: '创建时间', field: 'createTime' },
         {
           label: '操作',
-          minWidth: '210px',
+          minWidth: '110px',
           field: 'action',
           slots: {
             default: (data) => {

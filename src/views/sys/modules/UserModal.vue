@@ -1,95 +1,83 @@
 <template>
   <div>
-    <el-modal
-      :title="title"
+    <Dialog
+      ref="addModal"
+      @confirm="handleOk"
+      @close="handleCancel"
       :width="500"
-      :visible="visible"
-      :confirmLoading="confirmLoading"
-      :maskClosable="false"
-      @ok="handleOk"
-      @cancel="handleCancel"
+      v-loading="loading"
     >
-      <el-spin :spinning="spinning > 0">
-        <el-form-model
-          ref="addFormRef"
-          :model="addObj"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
+      <el-form ref="addFormRef" :model="addObj" label-width="auto">
+        <el-form-item label="账号" prop="username" :rules="[{ required: true, message: '请输入' }]">
+          <el-input v-model="addObj.username" :maxlength="32" show-word-limit />
+        </el-form-item>
+        <el-form-item label="名称" prop="nickname" :rules="[{ required: true, message: '请输入' }]">
+          <el-input v-model="addObj.nickname" :maxlength="32" show-word-limit />
+        </el-form-item>
+
+        <el-form-item
+          label="状态"
+          prop="enableFlag"
+          :rules="[{ required: true, message: '请选择' }]"
         >
-          <el-form-model-item
-            label="账号"
-            prop="username"
-            :rules="[{ required: true, message: '请输入' }]"
-          >
-            <el-input v-model="addObj.username" :max-length="32" />
-          </el-form-model-item>
-          <el-form-model-item
-            label="名称"
-            prop="nickname"
-            :rules="[{ required: true, message: '请输入' }]"
-          >
-            <el-input v-model="addObj.nickname" :max-length="32" />
-          </el-form-model-item>
+          <el-select v-model="addObj.enableFlag">
+            <el-option value="true" label="启动"></el-option>
+            <el-option value="false" label="禁用"></el-option>
+          </el-select>
+        </el-form-item>
 
-          <el-form-model-item
-            label="状态"
-            prop="enableFlag"
-            :rules="[{ required: true, message: '请选择' }]"
-          >
-            <el-select v-model="addObj.enableFlag">
-              <el-select-option value="true"> 启动 </el-select-option>
-              <el-select-option value="false"> 禁用 </el-select-option>
-            </el-select>
-          </el-form-model-item>
+        <el-form-item
+          label="密码"
+          prop="password"
+          :rules="[
+            { required: true, message: '请输入' },
+            { min: 6, message: '密码不小于6位' }
+          ]"
+          v-if="!isEdit"
+        >
+          <el-input v-model="addObj.password" type="password" :maxlength="20" show-password />
+        </el-form-item>
 
-          <el-form-model-item
-            label="密码"
-            prop="password"
-            :rules="[
-              { required: true, message: '请输入' },
-              { min: 6, message: '密码不小于6位' }
-            ]"
-            v-if="!isEdit"
-          >
-            <el-input v-model="addObj.password" type="password" :max-length="20" />
-          </el-form-model-item>
+        <el-form-item
+          label="确认密码"
+          prop="password2"
+          :rules="[
+            { required: true, message: '请输入' },
+            { validator: validatePassCheck, trigger: 'blur' }
+          ]"
+          v-if="!isEdit"
+        >
+          <el-input v-model="addObj.password2" type="password" :maxlength="20" show-password />
+        </el-form-item>
 
-          <el-form-model-item
-            label="确认密码"
-            prop="password2"
-            :rules="[
-              { required: true, message: '请输入' },
-              { validator: validatePassCheck, trigger: 'blur' }
-            ]"
-            v-if="!isEdit"
-          >
-            <el-input v-model="addObj.password2" type="password" :max-length="20" />
-          </el-form-model-item>
+        <el-form-item
+          label="角色"
+          prop="roleId"
+          :rules="[{ required: true, message: '请选择角色' }]"
+        >
+          <el-select v-model="addObj.roleId">
+            <el-option v-for="item in roleList" :label="item.name" :value="item.id" :key="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-          <el-form-model-item
-            label="角色"
-            prop="roleId"
-            :rules="[{ required: true, message: '请选择角色' }]"
-          >
-            <el-select v-model="addObj.roleId">
-              <el-select-option v-for="item in roleList" :value="item.id" :key="item.id">
-                {{ item.name }}
-              </el-select-option>
-            </el-select>
-          </el-form-model-item>
-
-          <el-form-model-item label="描述">
-            <el-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
-          </el-form-model-item>
-        </el-form-model>
-      </el-spin>
-    </el-modal>
+        <el-form-item label="描述">
+          <el-textarea
+            :rows="5"
+            placeholder="..."
+            v-model="addObj.desc"
+            :maxlength="200"
+            show-word-limit
+          />
+        </el-form-item>
+      </el-form>
+    </Dialog>
   </div>
 </template>
 
 <script>
 import { editUser, addUser, getAllRole, getUser } from '../api.js'
-import _ from 'lodash'
+import _ from 'lodash-es'
 const defaultAddObj = {
   username: '',
   nickname: '',
@@ -110,19 +98,9 @@ export default {
   components: {},
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
-      visible: false,
-      confirmLoading: false,
+      loading: false,
       addObj: _.cloneDeep(defaultAddObj),
       title: '',
-      spinning: 0,
 
       isEdit: false,
       roleList: []
@@ -140,33 +118,30 @@ export default {
       }
     },
     add() {
-      this.title = '新增'
       this.addObj = _.cloneDeep(defaultAddObj)
       this.isEdit = false
-      this.visible = true
       this.getAllRole()
+      this.$refs.addModal.open({ title: '新增' })
     },
     edit(record) {
       this.isEdit = true
-      this.spinning++
+      this.loading = true
       getUser(record.id)
         .then((data1) => {
           if (data1.success) {
             const data = data1.result
             data.enableFlag = data.enableFlag + ''
             this.addObj = Object.assign({}, data)
-            this.title = '修改'
-            this.visible = true
             this.getAllRole()
+            this.$refs.addModal.open({ title: '修改' })
           }
         })
         .finally(() => {
-          this.spinning--
+          this.loading = false
         })
     },
     close() {
-      this.$emit('close')
-      this.visible = false
+      this.$refs.addModal.close()
     },
     handleOk() {
       // 触发表单验证
@@ -176,7 +151,7 @@ export default {
           const values = _.cloneDeep(this.addObj)
           console.log('form values', values)
           values.enableFlag = values.enableFlag === 'true'
-          this.confirmLoading = true
+          this.loading = true
           let promise = null
           if (this.isEdit) {
             promise = editUser(values)
@@ -194,13 +169,13 @@ export default {
               }
             })
             .finally(() => {
-              this.confirmLoading = false
+              this.loading = false
             })
         }
       })
     },
     handleCancel() {
-      this.close()
+      this.$refs.addFormRef.clearValidate()
     },
     getAllRole() {
       getAllRole().then((resp) => {

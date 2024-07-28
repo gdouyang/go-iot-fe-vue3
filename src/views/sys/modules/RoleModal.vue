@@ -1,23 +1,23 @@
 <template>
   <div>
-    <Dialog
-      ref="addModal"
-      v-model="showModal"
-      @confirm="handleOk"
-      @close="handleCancel"
-      :width="500"
-    >
-      <ElForm ref="addFormRef" :model="addObj">
-        <ElFormItem
+    <Dialog ref="addModal" @confirm="handleOk" @close="handleCancel" :width="500">
+      <el-form ref="addFormRef" :model="addObj" label-width="auto">
+        <el-form-item
           label="角色名称"
           prop="name"
           :rules="[{ required: true, message: '请输入名称' }]"
         >
-          <ElInput placeholder="角色名称" :max-length="20" v-model="addObj.name" />
-        </ElFormItem>
+          <el-input placeholder="角色名称" :maxlength="20" v-model="addObj.name" show-word-limit />
+        </el-form-item>
 
         <el-form-item label="描述">
-          <el-textarea :rows="5" placeholder="..." v-model="addObj.desc" :max-length="200" />
+          <el-textarea
+            :rows="5"
+            placeholder="..."
+            v-model="addObj.desc"
+            :maxlength="200"
+            show-word-limit
+          />
         </el-form-item>
 
         <el-divider>拥有权限</el-divider>
@@ -28,13 +28,13 @@
           :default-checked-keys="defaultCheckKeys"
           ref="treeObj"
         />
-      </ElForm>
+      </el-form>
     </Dialog>
   </div>
 </template>
 
 <script>
-import { cloneDeep, forEach, find, map, isNil, get } from 'lodash-es'
+import _ from 'lodash-es'
 import { getRole, editRole, addRole, getRoleRelMenus, getMenus } from '../api.js'
 const defaultAddObj = {
   name: '',
@@ -45,22 +45,20 @@ export default {
   components: {},
   data() {
     return {
-      addObj: cloneDeep(defaultAddObj),
+      addObj: _.cloneDeep(defaultAddObj),
       spinning: 0,
 
       treeData: [],
-      showModal: false,
       defaultCheckKeys: []
     }
   },
   created() {},
   methods: {
     add() {
-      this.addObj = cloneDeep(defaultAddObj)
+      this.addObj = _.cloneDeep(defaultAddObj)
       this.isEdit = false
       this.getTreeData()
-      this.showModal = true
-      // this.$refs.addModal.open({ title: '新增' })
+      this.$refs.addModal.open({ title: '新增' })
     },
     edit(record) {
       this.isEdit = true
@@ -69,8 +67,7 @@ export default {
         .then((data1) => {
           if (data1.success) {
             const data = data1.result
-            this.showModal = true
-            // this.$refs.addModal.open({ title: '修改' })
+            this.$refs.addModal.open({ title: '修改' })
             this.addObj = data
             this.getTreeData()
           }
@@ -85,7 +82,7 @@ export default {
     handleOk() {
       this.$refs.addFormRef.validate((valid) => {
         if (valid) {
-          const values = cloneDeep(this.addObj)
+          const values = _.cloneDeep(this.addObj)
           console.log('form values', values)
           values.ruleRefMenus = this.getCheckPermissions()
           let promise = null
@@ -133,23 +130,23 @@ export default {
           const datas = data.result
           const list = []
           let id = 1
-          forEach(datas, (item) => {
+          _.forEach(datas, (item) => {
             item.pid = 0
             item.id = id
-            const checkItem = find(checkeds, (check) => check.code === item.permissionId)
+            const checkItem = _.find(checkeds, (check) => check.code === item.permissionId)
             const parent = {
               id: id,
               pid: 0,
               label: item.permissionName,
               code: item.permissionId,
-              checked: !isNil(checkItem)
+              checked: !_.isNil(checkItem)
             }
             list.push(parent)
             parent.children = []
-            forEach(item.actionEntitySet, (ac) => {
+            _.forEach(item.actionEntitySet, (ac) => {
               id++
-              const actions = get(checkItem, 'action')
-              const checked = !isNil(find(actions, (checkAc) => checkAc.id === ac.action))
+              const actions = _.get(checkItem, 'action')
+              const checked = !_.isNil(_.find(actions, (checkAc) => checkAc.id === ac.action))
               parent.children.push({
                 id: id,
                 pid: item.id,
@@ -175,10 +172,10 @@ export default {
       var treeObj = this.$refs.treeObj
       var checkedNodes = treeObj.getCheckedNodes(false, true)
       const datas = []
-      forEach(checkedNodes, (node) => {
+      _.forEach(checkedNodes, (node) => {
         if (node.pid === 0) {
-          const action = map(
-            filter(checkedNodes, (n) => n.pid === node.id),
+          const action = _.map(
+            _.filter(checkedNodes, (n) => n.pid === node.id),
             (ac) => {
               return { id: ac.code, name: ac.name }
             }

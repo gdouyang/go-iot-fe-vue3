@@ -1,79 +1,62 @@
 <template>
-  <a-card :bordered="false">
+  <ContentWrap>
     <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="5" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="searchObj.name" placeholder="请输入" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="端口">
-              <a-input v-model="searchObj.port" placeholder="请输入" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="状态">
-              <a-select v-model="searchObj.state" :allowClear="true">
-                <a-select-option value="runing">运行中</a-select-option>
-                <a-select-option value="stop">停用</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="网络类型">
-              <a-select v-model="searchObj.type" :allowClear="true">
-                <a-select-option value="MQTT_BROKER">MQTT_BROKER</a-select-option>
-                <a-select-option value="TCP_SERVER">TCP_SERVER</a-select-option>
-                <a-select-option value="HTTP_SERVER">HTTP_SERVER</a-select-option>
-                <a-select-option value="WEBSOCKET_SERVER">WEBSOCKET_SERVER</a-select-option>
-                <a-select-option value="MQTT_CLIENT">MQTT_CLIENT</a-select-option>
-                <a-select-option value="TCP_CLIENT">TCP_CLIENT</a-select-option>
-                <a-select-option value="MODBUS">MODBUS_TCP</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="4" :sm="24">
+      <el-form layout="inline">
+        <el-row :gutter="48">
+          <el-col :md="5" :sm="24">
+            <el-form-item label="名称">
+              <el-input v-model="searchObj.name" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :md="5" :sm="24">
+            <el-form-item label="端口">
+              <el-input v-model="searchObj.port" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :md="5" :sm="24">
+            <el-form-item label="状态">
+              <el-select v-model="searchObj.state" :allowClear="true">
+                <el-option value="runing" label="运行中"></el-option>
+                <el-option value="stop" label="停用"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :md="5" :sm="24">
+            <el-form-item label="网络类型">
+              <el-select v-model="searchObj.type" :allowClear="true">
+                <el-option value="MQTT_BROKER" label="MQTT_BROKER"></el-option>
+                <el-option value="TCP_SERVER" label="TCP_SERVER"></el-option>
+                <el-option value="HTTP_SERVER" label="HTTP_SERVER"></el-option>
+                <el-option value="WEBSOCKET_SERVER" label="WEBSOCKET_SERVER"></el-option>
+                <el-option value="MQTT_CLIENT" label="MQTT_CLIENT"></el-option>
+                <el-option value="TCP_CLIENT" label="TCP_CLIENT"></el-option>
+                <el-option value="MODBUS" label="MODBUS_TCP"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :md="4" :sm="24">
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="search">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearch">重置</a-button>
+              <el-button type="primary" @click="search">查询</el-button>
+              <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
             </span>
-          </a-col>
-        </a-row>
-      </a-form>
+          </el-col>
+        </el-row>
+      </el-form>
     </div>
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="handleAdd" v-action:network-config:add
-        >新建</a-button
+      <el-button type="primary" icon="plus" @click="handleAdd" v-action:network-config:add
+        >新建</el-button
       >
     </div>
-    <PageTable ref="tb" size="default" :url="tableUrl" :columns="columns">
-      <span slot="state" slot-scope="text">
-        <a-tag color="#87d068" v-if="text === 'runing'">{{ text }}</a-tag>
-        <a-tag color="#f50" v-else>{{ text }}</a-tag>
-      </span>
-      <span slot="action" slot-scope="text, record">
-        <a @click="meters(record)">查看</a>
-        <span v-action:network-config:save>
-          <a-divider type="vertical" />
-          <a @click="handleEdit(record)">编辑</a>
-        </span>
-        <span v-if="!record.productId" v-action:network-config:delete>
-          <a-divider type="vertical" />
-          <a-popconfirm title="确认删除？" @confirm="remove(record)">
-            <a>删除</a>
-          </a-popconfirm>
-        </span>
-      </span>
-    </PageTable>
+    <PageTable ref="tb" size="default" :url="tableUrl" :columns="columns"> </PageTable>
     <NetworkModal ref="modal" @ok="handleOk"></NetworkModal>
-  </a-card>
+  </ContentWrap>
 </template>
 
-<script>
+<script lang="jsx">
 import { tableUrl, removeNetwork } from './networkapi.js'
-import NetworkModal from './modules/NetworkModal'
+import NetworkModal from './modules/NetworkModal.vue'
+import NetworkActions from './modules/NetworkActions.vue'
 export default {
   name: 'NetworkList',
   components: {
@@ -86,17 +69,35 @@ export default {
       searchObj: {},
       // 表头
       columns: [
-        { title: 'ID', dataIndex: 'id', width: '150px' },
-        { title: '关联产品', dataIndex: 'productId' },
-        { title: '网络类型', dataIndex: 'type' },
-        { title: '端口', dataIndex: 'port' },
-        { title: '状态', dataIndex: 'state', scopedSlots: { customRender: 'state' } },
-        { title: '创建时间', dataIndex: 'createTime' },
+        { label: 'ID', field: 'id', width: '150px' },
+        { label: '关联产品', field: 'productId' },
+        { label: '网络类型', field: 'type' },
+        { label: '端口', field: 'port' },
         {
-          title: '操作',
-          minWidth: '210px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
+          label: '状态',
+          field: 'state',
+          slots: {
+            default: (data) => {
+              if (data.row.state === 'runing') {
+                return <el-tag type="success">运行中</el-tag>
+              } else {
+                return <el-tag type="info">停止</el-tag>
+              }
+            }
+          }
+        },
+        { label: '创建时间', field: 'createTime' },
+        {
+          label: '操作',
+          minWidth: '110px',
+          field: 'action',
+          slots: {
+            default: (data) => {
+              return (
+                <NetworkActions record={data.row} onEdit={this.handleEdit} onOk={this.handleOk} />
+              )
+            }
+          }
         }
       ]
     }
@@ -126,22 +127,6 @@ export default {
       this.searchObj = {}
       this.search()
     },
-    meters(row) {
-      this.$http.get(`server/meters/${row.id}`).then((data) => {
-        const content = JSON.stringify(data.result, null, 2)
-        this.$confirm({
-          width: '400px',
-          title: '信息',
-          content: (
-            <div>
-              <pre style="padding: 5px; background-color: #efefef;">{content}</pre>
-            </div>
-          ),
-          okText: '确定',
-          cancelText: '关闭'
-        })
-      })
-    },
     handleAdd() {
       this.$refs.modal.add()
     },
@@ -150,14 +135,6 @@ export default {
     },
     handleOk() {
       this.resetSearch()
-    },
-    remove(row) {
-      removeNetwork(row.id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.search()
-        }
-      })
     }
   }
 }

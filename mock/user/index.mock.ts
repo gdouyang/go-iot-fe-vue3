@@ -1,5 +1,3 @@
-import { SUCCESS_CODE } from '@/constants'
-
 const timeout = 1000
 
 const List: {
@@ -42,7 +40,7 @@ export default [
       )
 
       return {
-        code: SUCCESS_CODE,
+        code: '0',
         data: {
           total: mockList.length,
           list: pageList
@@ -62,7 +60,7 @@ export default [
         if (user.username === data.username && user.password === data.password) {
           hasUser = true
           return {
-            code: SUCCESS_CODE,
+            code: '0',
             data: user
           }
         }
@@ -82,7 +80,7 @@ export default [
     timeout,
     response: () => {
       return {
-        code: SUCCESS_CODE,
+        code: '0',
         data: null
       }
     }

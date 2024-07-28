@@ -29,16 +29,17 @@ const total = ref(0)
 const tableDataList = ref<[]>([])
 
 const getTableList = async (params?: any) => {
-  const res = await request
-    .post(props.url, {
-      data: {
-        pageNum: props.pageNum,
-        pageSize: props.pageSize
-      }
-    })
-    .finally(() => {
-      loading.value = false
-    })
+  const p = {
+    pageNum: props.pageNum,
+    pageSize: props.pageSize,
+    condition: null
+  }
+  if (params) {
+    p.condition = params
+  }
+  const res = await request.post(props.url, p).finally(() => {
+    loading.value = false
+  })
   if (res) {
     tableDataList.value = res.result.list
     total.value = res.result.totalPage
@@ -71,9 +72,6 @@ defineExpose({
     v-bind="$attrs"
     @update:pageSize="pageSizeChange"
     @update:currentPage="pageNumChange"
-    showAction
-    showSummary
-    default-expand-all
     :columns="columns"
     :data="tableDataList"
     :loading="loading"

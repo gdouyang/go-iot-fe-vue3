@@ -190,7 +190,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     path: '/sys',
     name: 'sysPage',
     component: Layout,
-    meta: { title: '系统管理', icon: 'setting' },
+    meta: { title: '系统管理', icon: 'carbon:settings' },
     children: [
       {
         path: 'role-list',
@@ -203,13 +203,13 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         name: 'UserList',
         component: () => import('@/views/sys/UserList.vue'),
         meta: { title: '用户列表', keepAlive: true, permission: ['user-mgr'] }
+      },
+      {
+        path: 'network-list',
+        name: 'NetWorkList',
+        component: () => import('@/views/sys/NetworkList.vue'),
+        meta: { title: '网络管理', keepAlive: true, permission: ['network-config'] }
       }
-      // {
-      //   path: '/sys/network-list',
-      //   name: 'NetWorkList',
-      //   component: () => import('@/views/sys/NetworkList.vue'),
-      //   meta: { title: '网络管理', keepAlive: true, permission: [ 'network-config' ] }
-      // },
       // {
       //   path: '/sys/system-config',
       //   name: 'SystemConfig',

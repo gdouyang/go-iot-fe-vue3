@@ -2,7 +2,7 @@ import request from '@/axios'
 import type { UserType } from './types'
 
 export const loginApi = (data: UserType): Promise<IResponse<UserType>> => {
-  return request.post('/login', { data: data })
+  return request.post('/login', data)
 }
 
 export const getInfo = () => {

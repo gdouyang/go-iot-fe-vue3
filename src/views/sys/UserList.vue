@@ -1,68 +1,44 @@
 <template>
-  <a-card :bordered="false">
+  <ContentWrap>
     <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="5" :sm="24">
-            <a-form-item label="账号">
-              <a-input v-model="searchObj.username" placeholder="请输入" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="searchObj.nickname" placeholder="请输入" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
+      <el-form layout="inline">
+        <el-row :gutter="48">
+          <el-col :md="5" :sm="24">
+            <el-form-item label="账号">
+              <el-input v-model="searchObj.username" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :md="5" :sm="24">
+            <el-form-item label="名称">
+              <el-input v-model="searchObj.nickname" placeholder="请输入" />
+            </el-form-item>
+          </el-col>
+          <el-col :md="5" :sm="24">
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="search">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearch">重置</a-button>
+              <el-button type="primary" @click="search">查询</el-button>
+              <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
             </span>
-          </a-col>
-        </a-row>
-      </a-form>
+          </el-col>
+        </el-row>
+      </el-form>
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="handleAdd" v-action:user-mgr:add>新建</a-button>
+      <el-button type="primary" icon="plus" @click="handleAdd" v-action:user-mgr:add
+        >新建</el-button
+      >
     </div>
 
-    <PageTable ref="tb" :url="url" :columns="columns">
-      <span slot="enableFlag" slot-scope="text, record">
-        <a-tag color="#87d068" v-if="record.enableFlag">启用</a-tag>
-        <a-tag color="#f50" v-else>禁用</a-tag>
-      </span>
-      <span slot="action" slot-scope="text, record">
-        <a @click="handleEdit(record)" v-action:user-mgr:save>编辑</a>
-        <span v-action:user-mgr:save>
-          <a-divider type="vertical" />
-          <a-popconfirm
-            title="确认启用？"
-            v-if="record.enableFlag === false"
-            @confirm="enable(record)"
-          >
-            <a>启用</a>
-          </a-popconfirm>
-          <a-popconfirm title="确认禁用？" v-else @confirm="disable(record)">
-            <a>禁用</a>
-          </a-popconfirm>
-        </span>
-        <span v-action:user-mgr:delete>
-          <a-divider type="vertical" />
-          <a-popconfirm title="确认删除？" @confirm="remove(record)">
-            <a>删除</a>
-          </a-popconfirm>
-        </span>
-      </span>
-    </PageTable>
+    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
 
     <user-modal ref="modal" @ok="handleOk" :showTanent="showTanent"></user-modal>
-  </a-card>
+  </ContentWrap>
 </template>
 
-<script>
+<script lang="jsx">
 import { userTableUrl, enableUser, disableUser, removeUser } from './api.js'
-import UserModal from './modules/UserModal'
+import UserModal from './modules/UserModal.vue'
+import UserActions from './modules/UserActions.vue'
 
 export default {
   name: 'UserList',
@@ -77,26 +53,38 @@ export default {
       searchObj: {},
       // 表头
       columns: [
-        { title: 'ID', dataIndex: 'id', width: '150px' },
-        { title: '账号', dataIndex: 'username' },
-        { title: '名称', dataIndex: 'nickname' },
-        { title: '状态', dataIndex: 'enableFlag', scopedSlots: { customRender: 'enableFlag' } },
-        { title: '描述', dataIndex: 'desc' },
-        { title: '创建时间', dataIndex: 'createTime' },
+        { label: 'ID', field: 'id', width: '150px' },
+        { label: '账号', field: 'username' },
+        { label: '名称', field: 'nickname' },
         {
-          title: '操作',
+          label: '状态',
+          field: 'enableFlag',
+          slots: {
+            default: (data) => {
+              if (data.row.enableFlag) {
+                return <el-tag type="success">启用</el-tag>
+              } else {
+                return <el-tag type="info">禁用</el-tag>
+              }
+            }
+          }
+        },
+        { label: '描述', field: 'desc' },
+        { label: '创建时间', field: 'createTime' },
+        {
+          label: '操作',
           minWidth: '210px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
+          field: 'action',
+          slots: {
+            default: (data) => {
+              return <UserActions record={data.row} onEdit={this.handleEdit} onOk={this.handleOk} />
+            }
+          }
         }
       ]
     }
   },
-  computed: {
-    userInfo() {
-      return this.$store.getters.userInfo
-    }
-  },
+  computed: {},
   mounted() {
     this.search()
   },
@@ -124,22 +112,6 @@ export default {
     handleOk() {
       // 新增/修改 成功时，重载列表
       this.search()
-    },
-    enable(row) {
-      enableUser(row.id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.handleOk()
-        }
-      })
-    },
-    disable(row) {
-      disableUser(row.id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.handleOk()
-        }
-      })
     },
     remove(row) {
       const _this = this
