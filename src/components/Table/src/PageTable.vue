@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import _ from 'lodash-es'
 import request from '@/axios'
 import { PropType, defineExpose, ref, defineEmits, nextTick } from 'vue'
 import Table from './Table.vue'
@@ -27,39 +28,59 @@ const loading = ref(true)
 const total = ref(0)
 
 const tableDataList = ref<[]>([])
+const cache = {
+  searchAfterList: [],
+  searchAfter: null,
+  pageNum: null,
+  pageSize: null
+}
 
-const getTableList = async (params?: any) => {
+const getTableList = async (pageNum: number, pageSize: number, params?: any) => {
   const p = {
-    pageNum: props.pageNum,
-    pageSize: props.pageSize,
+    pageNum: pageNum,
+    pageSize: pageSize,
     condition: null
+  }
+  if (p.pageNum === 1 || (cache.pageSize && pageSize !== cache.pageSize)) {
+    p.searchAfter = null
+    cache.searchAfterList = []
+  } else if (cache.searchAfter) {
+    if (pageNum < cache.pageNum) {
+      cache.searchAfterList = _.dropRight(cache.searchAfterList, 2)
+      cache.searchAfter = _.last(cache.searchAfterList)
+    }
+    p.searchAfter = cache.searchAfter
   }
   if (params) {
     p.condition = params
   }
+  cache.pageNum = pageNum
+  cache.pageSize = pageSize
+  loading.value = true
   const res = await request.post(props.url, p).finally(() => {
     loading.value = false
   })
   if (res) {
     tableDataList.value = res.result.list
-    total.value = res.result.totalPage
+    total.value = res.result.totalCount
+    const r = res.result
+    if (r.searchAfter && !_.isEmpty(r.searchAfter)) {
+      cache.searchAfterList.push(r.searchAfter)
+      cache.searchAfter = r.searchAfter
+    }
   }
 }
 
-const search = () => {
-  getTableList()
+const search = (params?: any) => {
+  getTableList(props.pageNum, props.pageSize, params)
 }
 const pageSizeChange = (val: number) => {
   emits('update:pageSize', val)
-  nextTick(() => {
-    getTableList()
-  })
+  getTableList(1, val)
 }
 const pageNumChange = (val: number) => {
   emits('update:pageNum', val)
-  nextTick(() => {
-    getTableList()
-  })
+  getTableList(val, props.pageSize)
 }
 
 defineExpose({
@@ -70,12 +91,19 @@ defineExpose({
 <template>
   <Table
     v-bind="$attrs"
-    @update:pageSize="pageSizeChange"
-    @update:currentPage="pageNumChange"
+    :pageSize="pageSize"
+    :currentPage="pageNum"
     :columns="columns"
     :data="tableDataList"
     :loading="loading"
-    :pagination="{ total: total }"
+    :pagination="{
+      total: total,
+      layout: 'sizes, prev, next, total',
+      prevText: '上一页',
+      nextText: '下一页'
+    }"
+    @update:pageSize="pageSizeChange"
+    @update:currentPage="pageNumChange"
   />
 </template>
 
