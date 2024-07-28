@@ -121,7 +121,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     name: 'ProductList',
     meta: {
       title: t('设备管理'),
-      icon: 'carbon:product'
+      icon: 'carbon:iot-connect'
     },
     children: [
       // {
@@ -139,7 +139,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     name: 'ProductList',
     meta: {
       title: t('规则引擎'),
-      icon: 'carbon:product'
+      icon: 'carbon:model-builder'
     },
     children: [
       // {
@@ -157,7 +157,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     name: 'ProductList',
     meta: {
       title: t('设备告警'),
-      icon: 'carbon:product'
+      icon: 'carbon:event-incident'
     },
     children: [
       // {
@@ -175,7 +175,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     name: 'ProductList',
     meta: {
       title: t('通知配置'),
-      icon: 'carbon:product'
+      icon: 'carbon:notification'
     },
     children: [
       // {
