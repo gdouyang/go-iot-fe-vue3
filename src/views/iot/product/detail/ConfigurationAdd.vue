@@ -3,7 +3,6 @@
     :title="isEdit ? '修改配置' : '添加配置'"
     width="500"
     :model-value="true"
-    :maskClosable="false"
     :close-on-click-modal="false"
     @close="visibleChange(false)"
   >

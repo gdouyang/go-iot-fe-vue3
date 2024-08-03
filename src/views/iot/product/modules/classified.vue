@@ -29,7 +29,7 @@
       />
     </div>
     <div>
-      <a-table
+      <el-table
         :dataSource="categoryAllLIst || []"
         :columns="columns"
         rowKey="id"
@@ -39,7 +39,7 @@
           <span v-if="data.id === record.id">已选择</span>
           <a v-else @click="choice(record)">选择</a>
         </span>
-      </a-table>
+      </el-table>
     </div>
     <div class="drawer-footer">
       <el-button style="margin-right: 8px" @click="visibleChange(false)">关闭</el-button>

@@ -3,12 +3,12 @@
     <el-drawer
       title="编辑功能定义"
       placement="right"
-      :closable="false"
-      visible
+      :model-value="true"
+      :close-on-click-modal="false"
       width="30%"
       class="footer-drawer"
     >
-      <el-form :model="formData" ref="form">
+      <el-form :model="formData" ref="form" label-width="auto">
         <el-form-item
           label="功能标识"
           prop="id"
@@ -59,17 +59,15 @@
           />
         </el-form-item>
         <el-form-item label="输入参数">
-          <a-list bordered :dataSource="inputs" v-if="inputs.length > 0">
-            <template slot="renderItem" slot-scope="item">
-              <a-list-item>
-                参数名称：{{ item.name }}
-                <template slot="actions">
-                  <el-button type="link" @click="editInput(item)"> 编辑 </el-button>
-                  <el-button type="link" @click="removeInput(item)"> 删除 </el-button>
-                </template>
-              </a-list-item>
-            </template>
-          </a-list>
+          <div style="width: 100%;">
+            <div v-for="item in inputs" class="input-div">
+              <div>参数名称：{{ item.name }}</div>
+              <div>
+                <el-button type="link" @click="editInput(item)"> 编辑 </el-button>
+                <el-button type="link" @click="removeInput(item)"> 删除 </el-button>
+              </div>
+            </div>
+          </div>
           <el-button type="link" @click="addInput">
             <a-icon type="plus" />
             添加参数
@@ -191,4 +189,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.input-div {
+  display: flex;
+  border: 1px solid var(--el-border);
+}
+</style>

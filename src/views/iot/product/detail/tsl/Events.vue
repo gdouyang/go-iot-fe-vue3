@@ -1,17 +1,23 @@
 <template>
   <div>
-    <el-card title="事件定义" :style="{ marginBottom: '20px' }">
+    <el-card title="事件定义" shadow="never">
       <el-button type="primary" slot="extra" @click="add">添加</el-button>
-      <a-table rowKey="id" :columns="columns" :dataSource="data">
-        <span slot="level" slot-scope="text">{{ gradeText[text] }}</span>
-        <span slot="action" slot-scope="text, record">
-          <a @click="edit(record)">修改</a>
-          <el-divider direction="vertical" />
-          <el-popconfirm title="确认删除？" @confirm="remove(record)">
-            <a>删除</a>
-          </el-popconfirm>
-        </span>
-      </a-table>
+      <el-table rowKey="id" :data="data">
+        <el-table-column prop="id" label="事件标识" />
+        <el-table-column prop="name" label="事件名称" />
+        <el-table-column prop="description" label="说明" />
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button link @click="edit(scope.row)">修改</el-button>
+            <el-divider direction="vertical" />
+            <el-popconfirm title="确认删除？" @confirm="remove(scope.row)">
+              <template #reference>
+                <el-button link>删除</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
     <EventsAdd v-if="visible" :data="current" @save="saveData" @close="close" />
   </div>
@@ -33,13 +39,6 @@ export default {
   },
   data() {
     return {
-      columns: [
-        { label: '事件标识', field: 'id' },
-        { label: '名称', field: 'name' },
-        // { label: '事件级别', field: 'expands.level', scopedSlots: { customRender: 'level' } },
-        { label: '说明', field: 'description', width: '30%', ellipsis: true },
-        { label: '操作', scopedSlots: { customRender: 'action' } }
-      ],
       gradeText: {
         ordinary: '普通',
         warn: '警告',

@@ -4,6 +4,7 @@
       :bordered="false"
       :bodyStyle="{ padding: '16px 0', height: '100%' }"
       :style="{ height: '100%' }"
+      shadow="never"
     >
       <div class="account-settings-info-main" :class="{ mobile: isMobile }">
         <div class="account-settings-info-left">

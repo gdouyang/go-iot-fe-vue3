@@ -6,13 +6,13 @@
           <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
           <el-button @click="showTSL">物模型</el-button>
         </template>
-        <el-tab-pane label="1" name="属性定义">
+        <el-tab-pane label="属性定义" name="1">
           <Properties :product="product" :data="propertyData" @save="saveProperties" />
         </el-tab-pane>
-        <el-tab-pane label="2" name="功能定义">
+        <el-tab-pane label="功能定义" name="2">
           <Functions :product="product" :data="functionsData" @save="saveFunctions" />
         </el-tab-pane>
-        <el-tab-pane label="3" name="事件定义">
+        <el-tab-pane label="事件定义" name="3">
           <Events :data="eventsData" @save="saveEvents" />
         </el-tab-pane>
       </el-tabs>

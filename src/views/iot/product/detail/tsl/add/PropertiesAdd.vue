@@ -2,12 +2,12 @@
   <el-drawer
     title="编辑属性"
     placement="right"
-    :closable="false"
-    visible
+    :model-value="true"
+    :close-on-click-modal="false"
     width="30%"
     class="footer-drawer"
   >
-    <el-form :model="formData" ref="form">
+    <el-form :model="formData" ref="form" label-width="auto">
       <el-form-item
         label="属性标识"
         prop="id"

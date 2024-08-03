@@ -32,9 +32,9 @@
 </template>
 
 <script lang="jsx">
-import AceEditor from 'vue3-ace-editor'
-import 'brace/mode/json'
-import 'brace/theme/chrome'
+import { VAceEditor as AceEditor } from 'vue3-ace-editor'
+import 'ace-builds/src-noconflict/mode-json'
+import 'ace-builds/src-noconflict/theme-chrome'
 import _ from 'lodash-es'
 
 export default {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card size="small" :bordered="false" style="background-color: #eee">
+    <el-card size="small" shadow="never" style="background-color: #eee">
       <el-row>
         <span style="margin-right: 10px">执行动作{{ position + 1 }}</span>
         <el-popconfirm

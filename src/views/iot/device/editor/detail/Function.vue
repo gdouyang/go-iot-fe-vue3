@@ -1,6 +1,6 @@
 <template>
   <a-spin :spinning="spinning">
-    <el-card :style="{ marginBottom: '20px' }" title="功能调试">
+    <el-card shadow="never" title="功能调试">
       <el-collapse v-model="activeKey" style="width: 500px">
         <el-collapse-panel v-for="f in functionsSelectList" :key="f.id" :header="f.name">
           <div style="text-align: right">

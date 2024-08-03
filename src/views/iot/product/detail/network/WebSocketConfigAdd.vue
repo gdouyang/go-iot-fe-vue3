@@ -27,7 +27,7 @@
           <el-input type="textarea" v-model="addObj.keyBase64" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="协议路由">
-          <el-card>
+          <el-card shadow="never">
             <el-row
               v-for="(i, index) in addObj.configuration.routers"
               :key="index"

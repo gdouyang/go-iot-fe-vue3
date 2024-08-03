@@ -1,17 +1,24 @@
 <template>
   <div>
-    <el-card title="功能定义" :style="{ marginBottom: '20px' }">
+    <el-card title="功能定义" shadow="never">
       <el-button type="primary" slot="extra" @click="add">添加</el-button>
-      <a-table rowKey="id" :columns="columns" :dataSource="data">
-        <span slot="async" slot-scope="text">{{ text ? '是' : '否' }}</span>
-        <span slot="action" slot-scope="text, record">
-          <a @click="edit(record)">修改</a>
-          <el-divider direction="vertical" />
-          <el-popconfirm title="确认删除？" @confirm="remove(record)">
-            <a>删除</a>
-          </el-popconfirm>
-        </span>
-      </a-table>
+      <el-table rowKey="id" :data="data">
+        <el-table-column prop="id" label="功能标识" />
+        <el-table-column prop="name" label="功能名称" />
+        <el-table-column prop="async" label="是否异步" />
+        <el-table-column prop="description" label="说明" />
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button link @click="edit(scope.row)">修改</el-button>
+            <el-divider direction="vertical" />
+            <el-popconfirm title="确认删除？" @confirm="remove(scope.row)">
+              <template #reference>
+                <el-button link>删除</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
     </el-card>
     <FunctionsAdd
       v-if="visible"
@@ -43,13 +50,6 @@ export default {
   },
   data() {
     return {
-      columns: [
-        { label: '功能标识', field: 'id' },
-        { label: '名称', field: 'name' },
-        { label: '是否异步', field: 'async', scopedSlots: { customRender: 'async' } },
-        { label: '说明', field: 'description', width: '30%', ellipsis: true },
-        { label: '操作', scopedSlots: { customRender: 'action' } }
-      ],
       visible: false,
       current: {},
       isEdit: false

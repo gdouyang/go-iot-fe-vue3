@@ -76,12 +76,13 @@
           style="margin-bottom: 10px"
           :bordered="false"
           size="small"
+          shadow="never"
           v-if="scene.triggerType === 'device'"
         >
           <Trigger :data="scene" />
         </el-card>
         <!-- 执行动作 -->
-        <el-card size="small">
+        <el-card size="small" shadow="never">
           <p style="font-size: 16px">执行动作</p>
           <Action
             v-for="(item, index) in actions"

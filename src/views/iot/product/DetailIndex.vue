@@ -36,16 +36,16 @@
       <el-tab-pane name="info" label="基本信息">
         <Info :data="detailData" v-if="detailData.id" @refresh="reloadDevice"></Info>
       </el-tab-pane>
-      <!-- <el-tab-pane name="tsl" label="物模型">
-          <TSL
-            :product="detailData"
-            :propertyData="properties"
-            :functionsData="functions"
-            :eventsData="events"
-            @refresh="reloadDevice"
-            @save="updateData"
-          ></TSL>
-        </el-tab-pane> -->
+      <el-tab-pane name="tsl" label="物模型">
+        <TSL
+          :product="detailData"
+          :propertyData="properties"
+          :functionsData="functions"
+          :eventsData="events"
+          @refresh="reloadDevice"
+          @save="updateData"
+        ></TSL>
+      </el-tab-pane>
       <el-tab-pane name="codec" label="编解码">
         <Codec :id="GetId" :product="detailData" @refresh="reloadDevice" @save="updateData"></Codec>
       </el-tab-pane>
@@ -56,7 +56,7 @@
 <script lang="jsx">
 import { deploy, undeploy, get, modifyTsl } from '@/views/iot/product/api.js'
 import Info from './detail/Info.vue'
-// import TSL from './detail/TslIndex.vue'
+import TSL from './detail/TslIndex.vue'
 import Codec from './detail/Codec.vue'
 
 export default {
@@ -64,7 +64,7 @@ export default {
   mixins: [],
   components: {
     Info,
-    // TSL,
+    TSL,
     Codec
   },
   data() {
