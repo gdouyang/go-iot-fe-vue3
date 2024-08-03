@@ -97,93 +97,73 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     ]
   },
   {
-    path: '/iot',
+    path: '/product',
     component: Layout,
-    redirect: '/home',
-    name: 'ProductList',
-    meta: {
-      title: t('产品管理'),
-      icon: 'carbon:product'
-    },
+    name: 'Product',
+    meta: {},
     children: [
-      // {
-      //   path: '/iot/product-list',
-      //   name: 'ProductList',
-      //   component: () => import('@/views/iot/product/ProductList.vue'),
-      //   meta: { title: '产品管理', keepAlive: true, icon: 'appstore', permission: [ 'product-mgr' ] }
-      // },
+      {
+        path: 'product-list',
+        name: 'ProductList',
+        component: () => import('@/views/iot/product/ProductList.vue'),
+        meta: { title: '产品管理', icon: 'carbon:product', permission: ['product-mgr'] }
+      }
     ]
   },
   {
-    path: '/iot',
+    path: '/device',
     component: Layout,
-    redirect: '/home',
-    name: 'ProductList',
-    meta: {
-      title: t('设备管理'),
-      icon: 'carbon:iot-connect'
-    },
+    name: 'Device',
+    meta: {},
     children: [
-      // {
-      //   path: '/iot/device-list',
-      //   name: 'DeviceList',
-      //   component: () => import('@/views/iot/device/DeviceList.vue'),
-      //   meta: { title: '设备管理', keepAlive: true, icon: 'cluster', permission: [ 'device-mgr' ] }
-      // },
+      {
+        path: 'device-list',
+        name: 'DeviceList',
+        component: () => import('@/views/iot/device/DeviceList.vue'),
+        meta: { title: '设备管理', icon: 'carbon:iot-connect', permission: ['device-mgr'] }
+      }
     ]
   },
   {
-    path: '/iot',
+    path: '/rule',
     component: Layout,
-    redirect: '/home',
-    name: 'ProductList',
-    meta: {
-      title: t('规则引擎'),
-      icon: 'carbon:model-builder'
-    },
+    name: 'Rule',
+    meta: {},
     children: [
-      // {
-      //   path: '/iot/rule-list',
-      //   name: 'RuleList',
-      //   component: () => import('@/views/iot/rule/RuleList.vue'),
-      //   meta: { title: '规则引擎', keepAlive: true, icon: 'branches', permission: [ 'rule-mgr' ] }
-      // }
+      {
+        path: 'rule-list',
+        name: 'RuleList',
+        component: () => import('@/views/iot/rule/RuleList.vue'),
+        meta: { title: '规则引擎', icon: 'carbon:model-builder', permission: ['rule-mgr'] }
+      }
     ]
   },
   {
-    path: '/iot',
+    path: '/alarm',
     component: Layout,
-    redirect: '/home',
-    name: 'ProductList',
-    meta: {
-      title: t('设备告警'),
-      icon: 'carbon:event-incident'
-    },
+    name: 'Alarm',
+    meta: {},
     children: [
-      // {
-      //   path: '/iot/alarm-list',
-      //   name: 'AlarmList',
-      //   component: () => import('@/views/iot/alarm/AlarmList.vue'),
-      //   meta: { title: '设备告警', keepAlive: true, icon: 'alert', permission: [ 'alarm-mgr' ] }
-      // },
+      {
+        path: 'alarm-list',
+        name: 'AlarmList',
+        component: () => import('@/views/iot/alarm/AlarmList.vue'),
+        meta: { title: '设备告警', icon: 'carbon:event-incident', permission: ['alarm-mgr'] }
+      }
     ]
   },
   {
-    path: '/iot',
+    path: '/notice',
     component: Layout,
-    redirect: '/home',
-    name: 'ProductList',
-    meta: {
-      title: t('通知配置'),
-      icon: 'carbon:notification'
-    },
+    name: 'Notice',
+    meta: {},
     children: [
-      // {
-      //   path: '/notice/config-list',
-      //   name: 'ConfigList',
-      //   component: () => import('@/views/notice/config/ConfigList.vue'),
-      //   meta: { title: '通知配置', keepAlive: true, icon: 'notification', permission: [ 'notify-config' ] }
-      // },
+      {
+        path: 'config-list',
+        name: 'ConfigList',
+        component: () => import('@/views/notice/config/ConfigList.vue'),
+        meta: { title: '通知配置', icon: 'carbon:notification', permission: ['notify-config'] }
+      }
     ]
   },
   {
@@ -196,7 +176,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'role-list',
         name: 'RoleList',
         component: () => import('@/views/sys/RoleList.vue'),
-        meta: { title: '角色列表' }
+        meta: { title: '角色列表', permission: ['role-mgr'] }
       },
       {
         path: 'user-list',

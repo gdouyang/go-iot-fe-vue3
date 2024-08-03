@@ -16,7 +16,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import _ from 'lodash-es'
 import { getNetwork, editNetwork, addNetwork } from '../networkapi.js'
 const defaultAddObj = {

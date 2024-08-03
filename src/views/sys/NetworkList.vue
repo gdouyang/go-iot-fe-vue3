@@ -44,9 +44,7 @@
       </el-form>
     </div>
     <div class="table-operator">
-      <el-button type="primary" icon="plus" @click="handleAdd" v-action:network-config:add
-        >新建</el-button
-      >
+      <el-button type="primary" @click="handleAdd" v-action:network-config:add>新建</el-button>
     </div>
     <PageTable ref="tb" size="default" :url="tableUrl" :columns="columns"> </PageTable>
     <NetworkModal ref="modal" @ok="handleOk"></NetworkModal>

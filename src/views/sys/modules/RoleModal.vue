@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import _ from 'lodash-es'
 import { getRole, editRole, addRole, getRoleRelMenus, getMenus } from '../api.js'
 const defaultAddObj = {

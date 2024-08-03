@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-index-wide">
-    <a-card
+    <el-card
       :bordered="false"
       :bodyStyle="{ padding: '16px 0', height: '100%' }"
       :style="{ height: '100%' }"
@@ -21,47 +21,47 @@
             <span>系统配置</span>
           </div>
           <div class="account-settings-info-view">
-            <a-row :gutter="16" type="flex" justify="center">
-              <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
-                <a-form-model layout="vertical" ref="form" :model="mdl">
-                  <a-form-model-item
+            <el-row :gutter="16" type="flex" justify="center">
+              <el-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
+                <el-form layout="vertical" ref="form" :model="mdl">
+                  <el-form-item
                     label="系统名称"
                     prop="title"
                     :rules="[{ required: true, message: '请输入系统名称' }]"
                   >
-                    <a-input v-model="mdl.title" :maxLength="8" />
-                  </a-form-model-item>
+                    <el-input v-model="mdl.title" :maxlength="8" />
+                  </el-form-item>
 
-                  <a-form-model-item label="简介">
-                    <a-input v-model="mdl.desc" :maxLength="30" />
-                  </a-form-model-item>
+                  <el-form-item label="简介">
+                    <el-input v-model="mdl.desc" :maxlength="30" />
+                  </el-form-item>
 
-                  <a-form-model-item label="默认位置">
-                    <a-input v-model="defaultLocation" :disabled="true">
-                      <a-button
+                  <el-form-item label="默认位置">
+                    <el-input v-model="defaultLocation" :disabled="true">
+                      <el-button
                         slot="addonAfter"
                         @click="openLocation"
                         type="link"
                         icon="setting"
                         style="width: auto; height: auto"
-                      ></a-button>
-                    </a-input>
-                  </a-form-model-item>
+                      ></el-button>
+                    </el-input>
+                  </el-form-item>
 
-                  <a-form-model-item label="接入IP">
-                    <a-input v-model="mdl.accessIp" :max-length="128"> </a-input>
-                  </a-form-model-item>
+                  <el-form-item label="接入IP">
+                    <el-input v-model="mdl.accessIp" :max-length="128"> </el-input>
+                  </el-form-item>
 
-                  <a-form-model-item>
-                    <a-button type="primary" @click="saveBasic">更新</a-button>
-                  </a-form-model-item>
-                </a-form-model>
-              </a-col>
-              <a-col :order="1" :md="24" :lg="8" :style="{ minHeight: '180px' }">
+                  <el-form-item>
+                    <el-button type="primary" @click="saveBasic">更新</el-button>
+                  </el-form-item>
+                </el-form>
+              </el-col>
+              <el-col :order="1" :md="24" :lg="8" :style="{ minHeight: '180px' }">
                 <div>
                   <img :src="img" style="width: 100px" />
                 </div>
-                <a-upload
+                <el-upload
                   name="file"
                   :multiple="false"
                   action="api/file/upload"
@@ -69,20 +69,20 @@
                   :showUploadList="false"
                   :withCredentials="true"
                 >
-                  <a-button> <a-icon type="upload" /> 上传文件 </a-button>
-                </a-upload>
-              </a-col>
-            </a-row>
+                  <el-button> <a-icon type="upload" /> 上传文件 </el-button>
+                </el-upload>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </div>
-    </a-card>
+    </el-card>
     <LocationConfig ref="LocationConfig" @success="selectLocation" />
   </div>
 </template>
 
-<script>
-import _ from 'lodash'
+<script lang="jsx">
+import _ from 'lodash-es'
 import store from '@/store'
 import { RouteView } from '@/layouts'
 import { baseMixin } from '@/store/app-mixin'

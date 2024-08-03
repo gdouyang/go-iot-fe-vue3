@@ -75,7 +75,7 @@
   </div>
 </template>
 
-<script>
+<script lang="jsx">
 import { editUser, addUser, getAllRole, getUser } from '../api.js'
 import _ from 'lodash-es'
 const defaultAddObj = {

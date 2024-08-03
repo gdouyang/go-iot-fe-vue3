@@ -21,8 +21,6 @@
     "lint:eslint": "eslint --fix --ext .js,.ts,.vue ./src",
     "lint:format": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,vue,html,md}\"",
     "lint:style": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-    "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
-    "prepare": "husky install",
     "p": "plop"
   },
   "dependencies": {
@@ -42,6 +40,7 @@
     "echarts-wordcloud": "^2.1.0",
     "element-plus": "2.5.5",
     "lodash-es": "^4.17.21",
+    "md-editor-v3": "^4.17.4",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
@@ -55,6 +54,7 @@
     "vue-json-pretty": "^2.3.0",
     "vue-router": "^4.2.5",
     "vue-types": "^5.1.1",
+    "vue3-ace-editor": "^2.2.4",
     "xgplayer": "^3.0.12"
   },
   "devDependencies": {
@@ -86,7 +86,6 @@
     "eslint-plugin-vue": "^9.21.1",
     "esno": "^4.0.0",
     "fs-extra": "^11.2.0",
-    "husky": "^9.0.10",
     "inquirer": "^9.2.14",
     "less": "^4.2.0",
     "lint-staged": "^15.2.2",
