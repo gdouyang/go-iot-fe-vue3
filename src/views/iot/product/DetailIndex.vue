@@ -1,8 +1,8 @@
 <template>
-  <a-spin tip="加载中..." :spinning="loading">
-    <el-button @click="back">返回</el-button>
-    <div :style="{ marginTop: 30 }" slot="title">
-      <el-row>
+  <ContentDetailWrap :header-border="false">
+    <template #header>
+      <el-row class="el-descriptions__title">
+        <el-button @click="back">返回</el-button>
         <span class="detail-title">
           <span>产品：{{ detailData.name }}</span>
         </span>
@@ -13,60 +13,59 @@
         />
         <span v-action:product-mgr:save>
           <el-popconfirm title="确认停用？" @confirm="unDeploy" v-if="detailData.state">
-            <a style="font-size: 12px; margin-left: 10px">停用</a>
+            <template #reference>
+              <el-link type="primary" class="link">停用</el-link>
+            </template>
           </el-popconfirm>
           <el-popconfirm title="确认发布？" @confirm="deploy" v-if="!detailData.state">
-            <a style="font-size: 12px; margin-left: 10px">发布</a>
+            <template #reference>
+              <el-link type="primary" class="link">发布</el-link>
+            </template>
           </el-popconfirm>
           <el-tooltip title="修改物模型后需要重新应用配置" placement="bottom">
             <el-popconfirm title="确认重新应用该配置？" @confirm="deploy" v-if="detailData.state">
-              <a style="font-size: 12px; margin-left: 10px">应用配置</a>
+              <template #reference>
+                <el-link type="primary" class="link">应用配置</el-link>
+              </template>
             </el-popconfirm>
           </el-tooltip>
         </span>
       </el-row>
-    </div>
-    <el-card>
-      <el-tabs model-value="info">
-        <el-tab-pane name="info" label="基本信息">
-          <Info :data="detailData" v-if="detailData.id" @refresh="reloadDevice"></Info>
-        </el-tab-pane>
-        <!-- <el-tab-pane name="tsl" label="物模型">
-            <TSL
-              :product="detailData"
-              :propertyData="properties"
-              :functionsData="functions"
-              :eventsData="events"
-              @refresh="reloadDevice"
-              @save="updateData"
-            ></TSL>
-          </el-tab-pane>
-          <el-tab-pane name="codec" label="编解码">
-            <Codec
-              :id="GetId"
-              :product="detailData"
-              @refresh="reloadDevice"
-              @save="updateData"
-            ></Codec>
-          </el-tab-pane> -->
-      </el-tabs>
-    </el-card>
-  </a-spin>
+    </template>
+    <el-tabs model-value="info">
+      <el-tab-pane name="info" label="基本信息">
+        <Info :data="detailData" v-if="detailData.id" @refresh="reloadDevice"></Info>
+      </el-tab-pane>
+      <!-- <el-tab-pane name="tsl" label="物模型">
+          <TSL
+            :product="detailData"
+            :propertyData="properties"
+            :functionsData="functions"
+            :eventsData="events"
+            @refresh="reloadDevice"
+            @save="updateData"
+          ></TSL>
+        </el-tab-pane> -->
+      <el-tab-pane name="codec" label="编解码">
+        <Codec :id="GetId" :product="detailData" @refresh="reloadDevice" @save="updateData"></Codec>
+      </el-tab-pane>
+    </el-tabs>
+  </ContentDetailWrap>
 </template>
 
 <script lang="jsx">
 import { deploy, undeploy, get, modifyTsl } from '@/views/iot/product/api.js'
 import Info from './detail/Info.vue'
 // import TSL from './detail/TslIndex.vue'
-// import Codec from './detail/Codec.vue'
+import Codec from './detail/Codec.vue'
 
 export default {
   name: 'ProductDetialIndex',
   mixins: [],
   components: {
-    Info
+    Info,
     // TSL,
-    // Codec
+    Codec
   },
   data() {
     return {
@@ -168,5 +167,9 @@ export default {
 .deviceInsTitle {
   display: flex;
   flex-direction: column;
+}
+.link {
+  font-size: 12px;
+  margin-left: 10px;
 }
 </style>

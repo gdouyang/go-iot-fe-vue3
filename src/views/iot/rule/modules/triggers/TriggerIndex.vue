@@ -30,10 +30,10 @@
                 size="small"
               />
               <small style="margin: 0px 5px">次及以上时，处理</small>
-              <a-radio-group v-model="shakeLimit.alarmFirst" size="small" buttonStyle="solid">
-                <a-radio-button :value="true">第一次</a-radio-button>
-                <a-radio-button :value="false">最后一次</a-radio-button>
-              </a-radio-group>
+              <el-radio-group v-model="shakeLimit.alarmFirst" size="small" buttonStyle="solid">
+                <el-radio-button :value="true">第一次</el-radio-button>
+                <el-radio-button :value="false">最后一次</el-radio-button>
+              </el-radio-group>
             </template>
           </div>
         </el-col>

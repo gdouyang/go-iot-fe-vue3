@@ -3,20 +3,20 @@
     <el-form-item :label="label" :rules="rules">
       <el-select v-model="data.type" placeholder="请选择" @change="typeChange">
         <el-select-opt-group label="基本类型">
-          <el-option value="int">int(整数型)</el-option>
-          <el-option value="long">long(长整数型)</el-option>
-          <el-option value="float">float(单精度浮点型)</el-option>
-          <el-option value="double">double(双精度浮点数)</el-option>
-          <el-option value="string">text(字符串)</el-option>
-          <el-option value="bool">bool(布尔型)</el-option>
+          <el-option value="int" label="int(整数型)"></el-option>
+          <el-option value="long" label="long(长整数型)"></el-option>
+          <el-option value="float" label="float(单精度浮点型)"></el-option>
+          <el-option value="double" label="double(双精度浮点数)"></el-option>
+          <el-option value="string" label="text(字符串)"></el-option>
+          <el-option value="bool" label="bool(布尔型)"></el-option>
         </el-select-opt-group>
         <el-select-opt-group label="其他类型" v-if="showOtherGroup">
-          <el-option value="date">date(时间型)</el-option>
-          <el-option value="enum">enum(枚举)</el-option>
+          <el-option value="date" label="date(时间型)"></el-option>
+          <el-option value="enum" label="enum(枚举)"></el-option>
           <!-- <el-option value="array">array(数组)</el-option> -->
-          <el-option value="object">object(结构体)</el-option>
+          <el-option value="object" label="object(结构体)"></el-option>
           <!-- <el-option value="file">file(文件)</el-option> -->
-          <el-option value="password">password(密码)</el-option>
+          <el-option value="password" label="password(密码)"></el-option>
           <!-- <el-option value="geoPoint">geoPoint(地理位置)</el-option> -->
         </el-select-opt-group>
       </el-select>

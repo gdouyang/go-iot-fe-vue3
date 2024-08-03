@@ -21,7 +21,7 @@ export default {
     }
   },
   created() {
-    const sysConfig = this.$store.getters.sysConfig
+    const sysConfig = null //this.$store.getters.sysConfig
     if (sysConfig && sysConfig.accessIp) {
       this.accessIp = sysConfig.accessIp
     } else {

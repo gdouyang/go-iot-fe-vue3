@@ -9,17 +9,23 @@ const prefixCls = getPrefixCls('content-detail-wrap')
 
 defineProps({
   title: propTypes.string.def(''),
-  message: propTypes.string.def('')
+  message: propTypes.string.def(''),
+  headerBorder: propTypes.bool.def(true)
 })
 </script>
 
 <template>
   <div :class="[`${prefixCls}-container`, 'relative']">
-    <ElCard :class="[`${prefixCls}-body`, 'mb-20px']" shadow="never">
-      <div class="mb-20px pb-20px" style="border-bottom: 1px solid var(--el-border-color)">
+    <ElCard :class="[`${prefixCls}-body`, 'mb-15px']" shadow="never">
+      <div class="pb-15px" :class="[headerBorder ? 'header-border' : '']">
         <slot name="header"></slot>
       </div>
       <slot></slot>
     </ElCard>
   </div>
 </template>
+<style lang="less" scoped>
+.header-border {
+  border-bottom: 1px solid var(--el-border-color);
+}
+</style>

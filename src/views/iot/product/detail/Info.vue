@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ContentWrap :style="{ marginBottom: '20px' }">
-      <el-descriptions :style="{ marginBottom: 20 }" border :column="2" size="small">
+    <ContentWrap>
+      <el-descriptions border :column="2">
         <template #title>
           产品信息
           <el-button link :style="{ marginLeft: 20 }" @click="openBasicInfo">编辑</el-button>

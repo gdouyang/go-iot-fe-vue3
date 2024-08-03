@@ -474,6 +474,9 @@ export function getCompletions(type) {
 }
 
 export function addCompletions(editor, datas) {
+  if (!editor.completers) {
+    return
+  }
   // 加入自定义语法提示
   var list = []
   editor.completers.forEach((item) => {

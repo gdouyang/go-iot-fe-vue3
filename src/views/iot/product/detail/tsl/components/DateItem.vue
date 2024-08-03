@@ -1,11 +1,19 @@
 <template>
   <el-form-item label="时间格式">
-    <a-auto-complete
+    <el-select
+      filterable
+      clearable
+      style="width: 100%"
       v-model="data.format"
-      :dataSource="dateSource"
       placeholder="默认格式：String类型的UTC时间戳 (毫秒)"
-      :filterOption="filterOption"
-    />
+    >
+      <el-option
+        v-for="item in dateSource"
+        :key="item.value"
+        :label="item.text"
+        :value="item.value"
+      ></el-option>
+    </el-select>
   </el-form-item>
 </template>
 
@@ -27,20 +35,22 @@ export default {
           text: 'String类型的UTC时间戳 (毫秒)',
           value: 'string'
         },
-        'yyyy-MM-dd',
-        'yyyy-MM-dd HH:mm:ss',
-        'yyyy-MM-dd HH:mm:ss EE',
-        'yyyy-MM-dd HH:mm:ss zzz'
+        {
+          text: 'yyyy-MM-dd',
+          value: 'yyyy-MM-dd'
+        },
+        {
+          text: 'yyyy-MM-dd HH:mm:ss',
+          value: 'yyyy-MM-dd HH:mm:ss'
+        },
+        {
+          text: 'yyyy-MM-dd HH:mm:ss.SSS',
+          value: 'yyyy-MM-dd HH:mm:ss.SSS'
+        }
       ]
     }
   },
   mounted() {},
-  methods: {
-    filterOption(input, option) {
-      return (
-        option.componentOptions.children[0].text.toUpperCase().indexOf(input.toUpperCase()) >= 0
-      )
-    }
-  }
+  methods: {}
 }
 </script>

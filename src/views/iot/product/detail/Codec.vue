@@ -3,33 +3,38 @@
     <div class="editor" :class="{ 'full-screen': fullScreen }">
       <div class="toolbars">
         <div>
-          <a href="javascript:void(0)" @click="save" title="保存编解码脚本 Ctrl-S|Command-S"
-            >保存</a
+          <el-button link type="primary" @click="save" title="保存编解码脚本 Ctrl-S|Command-S"
+            >保存</el-button
           >
-          <a
-            href="javascript:void(0)"
+          <el-button
+            link
+            type="primary"
             @click="formatCode"
             title="对代码排版 Ctrl-Shift-F|Command-Shift-F"
-            >美化代码</a
+            >美化代码</el-button
           >
         </div>
         <div>
-          <a href="javascript:void(0)" @click="showDebug" title="查看console.log调试日志">日志</a>
-          <a href="javascript:void(0)" @click="showDemo" title="查看查看样例代码与方法说明"
-            >查看样例</a
+          <el-button link type="primary" @click="showDebug" title="查看console.log调试日志"
+            >日志</el-button
           >
-          <a href="javascript:void(0)" @click="switchFullScreen">{{
+          <el-button link type="primary" @click="showDemo" title="查看查看样例代码与方法说明"
+            >查看样例</el-button
+          >
+          <el-button link type="primary" @click="switchFullScreen">{{
             fullScreen ? '退出全屏' : '全屏'
-          }}</a>
+          }}</el-button>
         </div>
       </div>
-      <div class="ace-div">
+      <div v-if="network.type" class="ace-div">
         <AceEditor
           ref="AceEditor"
           v-model="script"
           lang="javascript"
           theme="tomorrow_night"
           :options="aceOptions"
+          class="ace-div"
+          @init="init"
         />
       </div>
     </div>
@@ -71,15 +76,16 @@
 
 <script lang="jsx">
 import { getNetwork, updateScript, getEventBusUrl } from '@/views/iot/product/api.js'
-import * as ace from 'brace'
-import './codec/beautify'
-import AceEditor from 'vue3-ace-editor'
-// 语法提示工具
-import 'brace/ext/language_tools' // language extension prerequsite...
-import 'brace/ext/searchbox' // language extension prerequsite...
-import 'brace/mode/javascript'
-import 'brace/theme/tomorrow_night'
-import 'brace/snippets/javascript'
+import ace from 'ace-builds'
+// import * as ace from 'brace'
+// import './codec/beautify'
+import { VAceEditor as AceEditor } from 'vue3-ace-editor'
+
+import 'ace-builds/src-noconflict/ext-language_tools'
+import 'ace-builds/src-noconflict/ext-searchbox'
+import 'ace-builds/src-noconflict/mode-javascript'
+import 'ace-builds/src-noconflict/theme-tomorrow_night'
+import 'ace-builds/src-noconflict/snippets/javascript'
 
 // import _ from 'lodash-es'
 import { addCompletions, getCompletions } from './codec/CodeCompletions.js'
@@ -145,10 +151,6 @@ export default {
         if (data.success) {
           this.network = data.result
           this.codeTip = getCompletions(this.network.type)
-          this.$nextTick(() => {
-            const editor = this.$refs.AceEditor.editor
-            this.init(editor)
-          })
         }
       })
     },

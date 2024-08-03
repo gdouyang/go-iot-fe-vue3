@@ -44,10 +44,10 @@
         prop="expands.readOnly"
         :rules="[ { required: true, message: '请选择' } ]"
       >
-        <a-radio-group v-model="formData.expands.readOnly">
-          <a-radio value="true">是</a-radio>
-          <a-radio value="false">否</a-radio>
-        </a-radio-group>
+        <el-radio-group v-model="formData.expands.readOnly">
+          <el-radio value="true">是</el-radio>
+          <el-radio value="false">否</el-radio>
+        </el-radio-group>
       </el-form-item> -->
       <el-form-item label="描述" prop="description">
         <el-textarea v-model="formData.description" :rows="3" />

@@ -38,11 +38,11 @@
           prop="expands.level"
           :rules="[{ required: true, message: '请选择' }]"
         >
-          <a-radio-group v-model="formData.expands.level">
-            <a-radio value="ordinary">普通</a-radio>
-            <a-radio value="warn">警告</a-radio>
-            <a-radio value="urgent">紧急</a-radio>
-          </a-radio-group>
+          <el-radio-group v-model="formData.expands.level">
+            <el-radio value="ordinary">普通</el-radio>
+            <el-radio value="warn">警告</el-radio>
+            <el-radio value="urgent">紧急</el-radio>
+          </el-radio-group>
         </el-form-item>
         <!-- -->
         <DataTypeItem

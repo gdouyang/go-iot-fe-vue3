@@ -1,18 +1,12 @@
 <template>
   <div>
     <Dialog ref="addModal" title="MQTT配置" @confirm="addConfirm" @close="addClose">
-      <el-form
-        ref="addFormRef"
-        :model="addObj"
-        style="width: 90%"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
+      <el-form ref="addFormRef" :model="addObj" style="width: 90%" label-width="auto">
         <el-form-item label="开启SSL" prop="configuration.useTLS">
-          <a-radio-group v-model="addObj.configuration.useTLS">
-            <a-radio :value="true">是</a-radio>
-            <a-radio :value="false">否</a-radio>
-          </a-radio-group>
+          <el-radio-group v-model="addObj.configuration.useTLS">
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item
           v-if="addObj.configuration.useTLS"
@@ -49,14 +43,6 @@ export default {
   components: {},
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       addObj: newMqttAddObj(),
       isEdit: false
     }

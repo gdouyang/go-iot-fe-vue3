@@ -1,13 +1,11 @@
 <template>
   <div>
-    <el-descriptions bordered :column="2" size="small">
-      <span slot="title">
+    <el-descriptions border :column="2">
+      <template #title>
         MQTT网络配置
-        <el-button icon="edit" :style="{ marginLeft: 20 }" type="link" @click="openAdd"
-          >编辑</el-button
-        >
+        <el-button link :style="{ marginLeft: 20 }" @click="openAdd">编辑</el-button>
         <NetworkRun :network="data" :productId="productId" @success="getData" />
-      </span>
+      </template>
       <el-descriptions-item label="开启SSL" :span="1">{{
         data.configuration.useTLS ? '是' : '否'
       }}</el-descriptions-item>

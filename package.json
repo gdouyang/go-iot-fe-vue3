@@ -31,6 +31,7 @@
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.10",
     "@zxcvbn-ts/core": "^3.0.4",
+    "ace-builds": "^1.35.4",
     "animate.css": "^4.1.1",
     "axios": "^1.6.7",
     "cropperjs": "^1.6.1",

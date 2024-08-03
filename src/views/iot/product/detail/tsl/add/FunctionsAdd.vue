@@ -38,10 +38,10 @@
           prop="async"
           :rules="[{ required: true, message: '请选择' }]"
         >
-          <a-radio-group v-model="formData.async">
-            <a-radio :value="true">是</a-radio>
-            <a-radio :value="false">否</a-radio>
-          </a-radio-group>
+          <el-radio-group v-model="formData.async">
+            <el-radio :value="true">是</el-radio>
+            <el-radio :value="false">否</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item
           label="采集间隔(秒)"

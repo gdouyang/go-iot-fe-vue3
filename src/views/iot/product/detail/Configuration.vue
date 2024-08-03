@@ -1,39 +1,31 @@
 <template>
   <div style="width: 100%; margin-top: 10px">
-    <el-descriptions :style="{ marginBottom: 20 }" size="small">
-      <span slot="title">
+    <el-descriptions>
+      <template #title>
         配置
-        <el-button icon="plus" :style="{ marginLeft: 20 }" type="link" @click="addConfig"
-          >添加</el-button
-        >
-      </span>
+        <el-button class="link" link @click="addConfig">添加</el-button>
+      </template>
     </el-descriptions>
 
-    <div :style="{ marginBottom: '20px' }">
-      <el-descriptions border :column="2" title="" size="small">
-        <el-descriptions-item v-for="(item, index) in configuration" :key="index">
-          <template #label>
-            <el-tooltip :content="item.desc">
-              <span>
-                {{ item.property }}
-              </span>
-            </el-tooltip>
-            <BaseButton :style="{ marginLeft: 20 }" @click="modifyConfig(item)"
-              ><Icon icon="vi-ep:refresh"
-            /></BaseButton>
-            <el-popconfirm
-              title="确认删除配置？"
-              v-if="!item.buildin"
-              @confirm="deleteConfig(item)"
-            >
-              <el-button icon="delete" :style="{ marginLeft: 20 }" type="link"></el-button>
-            </el-popconfirm>
-          </template>
-          <span v-if="item.type == 'password' && item.value">••••••</span>
-          <span v-else>{{ item.value }}</span>
-        </el-descriptions-item>
-      </el-descriptions>
-    </div>
+    <el-descriptions border :column="2">
+      <el-descriptions-item v-for="(item, index) in configuration" :key="index">
+        <template #label>
+          <el-tooltip :content="item.desc">
+            <span>
+              {{ item.property }}
+            </span>
+          </el-tooltip>
+          <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small"
+            ><Icon icon="carbon:edit"
+          /></BaseButton>
+          <el-popconfirm title="确认删除配置？" v-if="!item.buildin" @confirm="deleteConfig(item)">
+            <el-button icon="delete" type="link"></el-button>
+          </el-popconfirm>
+        </template>
+        <span v-if="item.type == 'password' && item.value">••••••</span>
+        <span v-else>{{ item.value }}</span>
+      </el-descriptions-item>
+    </el-descriptions>
 
     <ConfigurationAdd
       v-if="updateVisibleAdd"
@@ -104,4 +96,11 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.link {
+  margin-left: 10px;
+}
+.prop-edit {
+  margin-left: 5px;
+}
+</style>

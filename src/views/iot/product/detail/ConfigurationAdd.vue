@@ -2,17 +2,12 @@
   <el-drawer
     :title="isEdit ? '修改配置' : '添加配置'"
     width="500"
-    visible
-    :afterVisibleChange="visibleChange"
+    :model-value="true"
     :maskClosable="false"
+    :close-on-click-modal="false"
     @close="visibleChange(false)"
   >
-    <el-form
-      :labelCol="{ span: 3 }"
-      :wrapperCol="{ span: 16 }"
-      ref="addFormRef"
-      :model="configuration"
-    >
+    <el-form ref="addFormRef" :model="configuration" label-width="auto">
       <el-row :gutter="16">
         <el-col>
           <el-form-item
@@ -105,6 +100,9 @@ export default {
       configuration: _.cloneDeep(defaultData),
       isEdit: false
     }
+  },
+  mounted() {
+    this.visibleChange(true)
   },
   methods: {
     visibleChange(flag) {
