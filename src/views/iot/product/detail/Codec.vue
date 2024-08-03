@@ -127,7 +127,7 @@ export default {
       isConnect: false
     }
   },
-  created() {
+  mounted() {
     this.open()
   },
   beforeDestroy() {

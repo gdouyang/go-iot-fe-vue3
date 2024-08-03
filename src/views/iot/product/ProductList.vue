@@ -144,13 +144,15 @@ export default {
       this.search()
     },
     handleEdit(id) {
-      this.$router.push({ name: this.$route.name, query: { id: id } })
-      this.isEdit = true
+      this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
+        this.isEdit = true
+      })
     },
     back() {
-      this.$router.push({ name: this.$route.name, query: {} })
-      this.isEdit = false
-      this.search()
+      this.$router.push({ name: this.$route.name, query: {} }).then(() => {
+        this.isEdit = false
+        this.search()
+      })
     },
     beforeUpload(file) {
       uploadProduct(file).then((resp) => {
