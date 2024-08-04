@@ -18,7 +18,7 @@
                 <el-input v-model="searchParams.traceId" maxlength="100" />
               </el-form-item>
             </el-col>
-            <el-col :md="8" :sm="24">
+            <el-col :md="6" :sm="24">
               <el-form-item label="日期">
                 <el-date-picker
                   v-model="searchParams.createTime"
@@ -32,20 +32,16 @@
             </el-col>
             <el-col :md="6" :sm="24">
               <div :style="{ overflow: 'hidden' }">
-                <div :style="{ float: 'right', marginBottom: '24px' }">
-                  <el-button icon="search" type="primary" @click="search"> 查询 </el-button>
-                  <el-button :style="{ marginLeft: '8px' }" @click="resetSearch"> 重置 </el-button>
+                <div :style="{ marginLeft: '10px' }">
+                  <el-button type="primary" @click="search"> 查询 </el-button>
+                  <el-button @click="resetSearch"> 重置 </el-button>
                 </div>
               </div>
             </el-col>
           </el-row>
         </el-form>
       </div>
-      <PageTable ref="tb" :columns="columns" :url="tableUrl">
-        <span slot="action" slot-scope="text">
-          <a size="small" @click="showDetail(text)">查看</a>
-        </span>
-      </PageTable>
+      <PageTable ref="tb" :columns="columns" :url="tableUrl"> </PageTable>
     </ContentWrap>
   </div>
 </template>
@@ -78,10 +74,23 @@ export default {
       ],
       columns: [
         { field: 'type', label: '类型', width: '120px' },
-        { field: 'traceId', label: 'TraceId', width: '200px', ellipsis: true },
+        { field: 'traceId', label: 'TraceId', width: '200px' },
         { field: 'createTime', label: '时间', width: '200px' },
-        { field: 'content', label: '内容', ellipsis: true },
-        { label: '操作', width: '200px', align: 'center', scopedSlots: { customRender: 'action' } }
+        { field: 'content', label: '内容' },
+        {
+          label: '操作',
+          field: 'action',
+          minWidth: '120px',
+          slots: {
+            default: (data) => {
+              return (
+                <el-button link type="primary" onClick={() => this.showDetail(data.row)}>
+                  查看
+                </el-button>
+              )
+            }
+          }
+        }
       ],
       searchParams: {
         type: [],
@@ -127,12 +136,8 @@ export default {
       } catch (error) {
         content = record.content
       }
-      this.$confirm({
-        width: '50VW',
-        title: '详细信息',
-        content: <pre>{content}</pre>,
-        okText: '确定',
-        cancelText: '关闭'
+      this.$confirm(<pre>{content}</pre>, {
+        title: '详细信息'
       })
     }
   }

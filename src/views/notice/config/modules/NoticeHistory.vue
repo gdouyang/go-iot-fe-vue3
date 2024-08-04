@@ -69,34 +69,28 @@ export default {
       this.$refs.addModal.close()
     },
     showError(item) {
-      this.$confirm({
-        width: '40VW',
-        title: '错误信息',
-        content: (
-          <el-textarea
-            value={JSON.stringify(item.errorStack || '{}')}
-            row={10}
-            style={{ height: '200px' }}
-          />
-        ),
-        okText: '确定',
-        cancelText: '关闭'
-      })
+      this.$confirm(
+        <el-textarea
+          value={JSON.stringify(item.errorStack || '{}')}
+          row={10}
+          style={{ height: '200px' }}
+        />,
+        {
+          title: '错误信息'
+        }
+      )
     },
     showDetail(item) {
-      this.$confirm({
-        width: '40VW',
-        title: '详情',
-        content: (
-          <el-textarea
-            value={JSON.stringify(item.context || '{}')}
-            row={4}
-            style={{ height: '200px' }}
-          />
-        ),
-        okText: '确定',
-        cancelText: '关闭'
-      })
+      this.$confirm(
+        <el-textarea
+          value={JSON.stringify(item.context || '{}')}
+          row={4}
+          style={{ height: '200px' }}
+        />,
+        {
+          title: '详情'
+        }
+      )
     }
   }
 }

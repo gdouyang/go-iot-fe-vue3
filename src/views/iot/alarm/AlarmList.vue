@@ -149,26 +149,23 @@ export default {
       } catch (error) {
         content = record.alarmData
       }
-      this.$confirm({
-        width: '40VW',
-        title: '告警数据',
-        content: (
-          <div>
-            <pre style="padding: 5px; background-color: #efefef;">{content}</pre>
-            {record.state === 'solve' && (
-              <div>
-                <br />
-                <br />
-                <span style="font-size: 16px;">处理结果：</span>
-                <br />
-                <p style="padding: 5px; background-color: #efefef;">{record.desc}</p>
-              </div>
-            )}
-          </div>
-        ),
-        okText: '确定',
-        cancelText: '关闭'
-      })
+      this.$confirm(
+        <div>
+          <pre style="padding: 5px; background-color: #efefef;">{content}</pre>
+          {record.state === 'solve' && (
+            <div>
+              <br />
+              <br />
+              <span style="font-size: 16px;">处理结果：</span>
+              <br />
+              <p style="padding: 5px; background-color: #efefef;">{record.desc}</p>
+            </div>
+          )}
+        </div>,
+        {
+          title: '告警数据'
+        }
+      )
     },
     edit(record) {
       this.currentLog.id = record.id

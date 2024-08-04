@@ -225,18 +225,16 @@ export default {
       if (_.isEmpty(this.selectedRowKeys)) {
         msg = '确定要激活所有设备吗？'
       }
-      this.$confirm({
-        title: '确认',
-        content: msg,
-        onOk: () => {
-          batchDeploy(this.selectedRowKeys).then((resp) => {
-            if (resp.success) {
-              this.showProcessResult(resp.result)
-            } else {
-              this.$message.success(resp.message)
-            }
-          })
-        }
+      this.$confirm(msg, {
+        title: '确认'
+      }).then(() => {
+        batchDeploy(this.selectedRowKeys).then((resp) => {
+          if (resp.success) {
+            this.showProcessResult(resp.result)
+          } else {
+            this.$message.success(resp.message)
+          }
+        })
       })
     },
     batchUndeploy() {
@@ -244,18 +242,16 @@ export default {
       if (_.isEmpty(this.selectedRowKeys)) {
         msg = '确定要停用所有设备吗？'
       }
-      this.$confirm({
-        title: '确认',
-        content: msg,
-        onOk: () => {
-          batchUndeploy(this.selectedRowKeys).then((resp) => {
-            if (resp.success) {
-              this.showProcessResult(resp.result)
-            } else {
-              this.$message.success(resp.message)
-            }
-          })
-        }
+      this.$confirm(msg, {
+        title: '确认'
+      }).then(() => {
+        batchUndeploy(this.selectedRowKeys).then((resp) => {
+          if (resp.success) {
+            this.showProcessResult(resp.result)
+          } else {
+            this.$message.success(resp.message)
+          }
+        })
       })
     },
     showProcessResult(token) {

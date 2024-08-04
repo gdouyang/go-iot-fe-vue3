@@ -4,7 +4,7 @@
       <div>
         <el-form label-width="auto">
           <el-row :gutter="{ md: 8, lg: 4, xl: 48 }">
-            <el-col :md="8" :sm="24">
+            <el-col :md="6" :sm="24">
               <el-form-item label="事件">
                 <el-select v-model="eventId" @change="onEventIdChange">
                   <el-option
@@ -17,7 +17,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :md="10" :sm="24">
+            <el-col :md="6" :sm="24">
               <el-form-item label="日期">
                 <el-date-picker
                   v-model="searchParams.createTime"
@@ -31,7 +31,7 @@
             </el-col>
             <el-col :md="6" :sm="24">
               <div :style="{ overflow: 'hidden' }">
-                <div :style="{ float: 'right', marginBottom: '24px' }">
+                <div :style="{ marginLeft: '10px' }">
                   <el-button icon="search" type="primary" @click="search"> 查询 </el-button>
                   <el-button :style="{ marginLeft: '8px' }" @click="resetSearch"> 重置 </el-button>
                 </div>
