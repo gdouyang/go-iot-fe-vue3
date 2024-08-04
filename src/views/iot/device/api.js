@@ -101,6 +101,16 @@ export function getTemplateDownloadUrl(productId) {
 export function getImportResultUrl(token) {
   return `api/device/import-result/${token}`
 }
+
+export function importDevice(productId, file) {
+  return post(
+    `device/${productId}/import`,
+    { file: file },
+    {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
+  )
+}
 // export function getEvent (deviceId, itemId) {
 //   return request.get(`/device/${ deviceId }/event/${ itemId }?format=true&pageSize=1`)
 // }

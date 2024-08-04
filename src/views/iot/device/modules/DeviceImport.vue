@@ -9,7 +9,7 @@
     title="批量导入设备"
     :okBtnLoading="okBtnLoading"
   >
-    <el-form ref="addFormRef" :model="addObj" :labelCol="labelCol" :wrapperCol="wrapperCol">
+    <el-form ref="addFormRef" :model="addObj" label-width="auto">
       <el-form-item
         label="产品"
         prop="productId"
@@ -29,17 +29,17 @@
           name="file"
           accept=".xlsx"
           :multiple="false"
-          :showUploadList="false"
-          :withCredentials="true"
-          @change="uploadChange"
+          :show-file-list="false"
+          :with-credentials="true"
           :before-upload="beforeUpload"
+          @change="uploadChange"
         >
           <el-button> <a-icon type="upload" /> 选择文件 </el-button>
         </el-upload>
         <span>{{ addObj.fileName }}</span>
       </el-form-item>
       <div v-if="addObj.productId">
-        <a :href="templateDownloadUrl">下载模版</a>
+        <el-button link type="primary" :href="templateDownloadUrl">下载模版</el-button>
       </div>
       <div v-if="importLoading">
         <el-badge status="success" text="已完成" v-if="isFinish" />
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="jsx">
-import { getTemplateDownloadUrl, getImportResultUrl } from '../api'
+import { getProductList, getTemplateDownloadUrl, getImportResultUrl, importDevice } from '../api'
 import _ from 'lodash-es'
 const defaultAddObj = {
   productId: undefined,
@@ -62,14 +62,6 @@ export default {
   name: 'DeviceImport',
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       addObj: _.cloneDeep(defaultAddObj),
       productList: [],
       importLoading: false,
@@ -106,11 +98,9 @@ export default {
     addConfirm() {
       this.$refs.addFormRef.validate((valid) => {
         if (valid) {
-          const formData = new FormData()
-          formData.append('file', this.file)
           this.importLoading = true
           this.okBtnLoading = true
-          this.$http.post(`device/${this.addObj.productId}/import`, formData).then((resp) => {
+          importDevice(this.addObj.productId, this.file).then((resp) => {
             if (resp.success) {
               this.showImportResult(resp.result)
             } else {
@@ -153,7 +143,7 @@ export default {
       source.onopen = function (event) {}
     },
     listAllProduct() {
-      return this.$http.get('/product/list').then((resp) => {
+      return getProductList().then((resp) => {
         if (resp.success) {
           this.productList = resp.result
         }

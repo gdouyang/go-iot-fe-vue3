@@ -27,7 +27,7 @@ const props = defineProps({
 })
 const title_ = ref('')
 const titleVal = computed(() => {
-  if (title_) {
+  if (title_.value) {
     return title_.value
   }
   return props.title
