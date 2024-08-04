@@ -63,7 +63,7 @@
             >
               <el-input placeholder="cron表达式" v-model="scene.cron">
                 <template #suffix>
-                  <el-tooltip title="点击查看说明">
+                  <el-tooltip content="点击查看说明">
                     <a-icon type="info-circle" @click="openDrawer = true"></a-icon>
                   </el-tooltip>
                 </template>
@@ -74,7 +74,6 @@
         <!-- 触发条件 -->
         <el-card
           style="margin-bottom: 10px"
-          :bordered="false"
           size="small"
           shadow="never"
           v-if="scene.triggerType === 'device'"
@@ -116,7 +115,7 @@ import { newEmtpyAction } from '@/views/iot/rule/modules/actions/data.js'
 import Trigger from './triggers/TriggerIndex.vue'
 import Action from './actions/index.vue'
 import _ from 'lodash-es'
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 
 export default {
   name: 'SceneAdd',

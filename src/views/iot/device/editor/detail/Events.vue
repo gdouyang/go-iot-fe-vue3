@@ -42,7 +42,7 @@
 
 <script lang="jsx">
 import _ from 'lodash-es'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { getDeviceEventsUrl } from '@/views/iot/device/api.js'
 export default {
   name: 'Events',
@@ -96,7 +96,7 @@ export default {
       const params = []
       if (!_.isEmpty(this.searchParams.createTime)) {
         const formatDate = this.searchParams.createTime.map((e) =>
-          moment(e).format('YYYY-MM-DD HH:mm:ss')
+          dayjs(e).format('YYYY-MM-DD HH:mm:ss')
         )
         params.push({ key: 'createTime', oper: 'BTW', value: formatDate.join(',') })
       }

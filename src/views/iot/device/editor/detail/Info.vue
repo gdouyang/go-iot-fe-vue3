@@ -1,64 +1,32 @@
 <template>
   <div>
     <ContentWrap>
-      <el-descriptions bordered :column="2" size="small">
-        <span slot="title">
+      <el-descriptions border :column="2">
+        <template #title>
           设备信息
-          <el-button
-            icon="edit"
-            :style="{ marginLeft: 20 }"
-            type="link"
-            @click="openBasicInfo"
-            v-action:device-mgr:save
+          <el-button link type="primary" v-action:device-mgr:save @click="openBasicInfo"
             >编辑</el-button
           >
-        </span>
+        </template>
         <el-descriptions-item label="产品名称" :span="1">{{
           device.productName
         }}</el-descriptions-item>
         <el-descriptions-item label="创建时间" :span="1">{{ GetCreateTime }}</el-descriptions-item>
-        <el-descriptions-item label="说明" :span="2">{{
-          device.desc || device.desc
-        }}</el-descriptions-item>
+        <el-descriptions-item label="说明" :span="2">{{ device.desc }}</el-descriptions-item>
       </el-descriptions>
-
-      <!-- <div style="width: 100%;margin-top: 10px;" v-if="configuration.length">
-        <el-descriptions :style="{marginBottom: 20}" :column="3" size="small">
-          <span slot="title">
-            位置
-            <el-button icon="edit" :style="{marginLeft: 20}" type="link" @click="editLocation">编辑</el-button>
-          </span>
-        </el-descriptions>
-        <el-descriptions bordered :column="2" title="">
-          <el-descriptions-item>
-            <span slot="label">
-              经度
-            </span>
-            <span>{{ extendData.longitude }}</span>
-          </el-descriptions-item>
-          <el-descriptions-item>
-            <span slot="label">
-              纬度
-            </span>
-            <span>{{ extendData.latitude }}</span>
-          </el-descriptions-item>
-        </el-descriptions>
-      </div> -->
 
       <Configuration :device="device" @refresh="refresh" />
     </ContentWrap>
 
-    <DeviceAdd ref="DeviceAdd" @success="refresh" v-if="deviceVisible" />
-    <LocationConfig ref="LocationConfig" @success="selectLocation" />
+    <DeviceAdd v-if="deviceVisible" ref="DeviceAdd" @success="refresh" />
   </div>
 </template>
 
 <script lang="jsx">
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { updateLocation } from '@/views/iot/device/api.js'
 import DeviceAdd from '../../modules/DeviceAdd.vue'
 import Configuration from './Configuration.vue'
-import LocationConfig from '@/components/tools/LocationConfig.vue'
 
 export default {
   name: 'DeviceInfo',
@@ -70,8 +38,7 @@ export default {
   },
   components: {
     DeviceAdd,
-    Configuration,
-    LocationConfig
+    Configuration
   },
   data() {
     return {
@@ -86,7 +53,7 @@ export default {
   created() {},
   computed: {
     GetCreateTime() {
-      return moment(this.device.createTime).format('YYYY-MM-DD HH:mm:ss')
+      return dayjs(this.device.createTime).format('YYYY-MM-DD HH:mm:ss')
     },
     deviceId() {
       const { id } = this.device

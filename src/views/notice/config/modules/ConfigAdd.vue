@@ -41,6 +41,7 @@
             v-if="item.type === 'password'"
             v-model="addObj.config[item.name]"
             type="password"
+            show-password
           />
           <el-input v-else :placeholder="item.desc" v-model="addObj.config[item.name]" />
         </el-form-item>

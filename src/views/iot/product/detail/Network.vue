@@ -20,7 +20,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 // import _ from 'lodash-es'
 import { getNetwork } from '@/views/iot/product/api.js'
 import TcpConfig from './network/TcpConfig.vue'

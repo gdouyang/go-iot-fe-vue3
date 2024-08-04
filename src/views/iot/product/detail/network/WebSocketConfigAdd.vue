@@ -57,7 +57,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 import _ from 'lodash-es'
 import { newWebSocketAddObj } from './entity.js'
 import Base from './Base.vue'

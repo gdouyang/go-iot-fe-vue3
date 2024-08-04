@@ -11,15 +11,17 @@
       <el-descriptions-item v-for="(item, index) in configuration" :key="index">
         <template #label>
           <el-tooltip :content="item.desc">
-            <span>
-              {{ item.property }}
-            </span>
+            {{ item.property }}
           </el-tooltip>
           <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small" title="编辑"
             ><Icon icon="carbon:edit"
           /></BaseButton>
           <el-popconfirm title="确认删除配置？" v-if="!item.buildin" @confirm="deleteConfig(item)">
-            <el-button icon="delete" type="link"></el-button>
+            <template #reference>
+              <BaseButton class="prop-edit" circle size="small"
+                ><Icon icon="carbon:trash-can"
+              /></BaseButton>
+            </template>
           </el-popconfirm>
         </template>
         <span v-if="item.type == 'password' && item.value">••••••</span>

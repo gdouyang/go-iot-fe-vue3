@@ -2,17 +2,11 @@
   <el-drawer
     title="修改配置"
     width="500"
-    visible
-    :afterVisibleChange="visibleChange"
-    :maskClosable="false"
+    :model-value="true"
+    :close-on-click-modal="false"
     @close="visibleChange(false)"
   >
-    <el-form
-      :labelCol="{ span: 3 }"
-      :wrapperCol="{ span: 16 }"
-      ref="addFormRef"
-      :model="configuration"
-    >
+    <el-form ref="addFormRef" :model="configuration" label-width="auto">
       <el-row :gutter="16">
         <el-col>
           <el-form-item
@@ -24,9 +18,10 @@
           </el-form-item>
           <el-form-item label="值">
             <el-input
+              v-if="configuration.type === 'password'"
               v-model="configuration.value"
               type="password"
-              v-if="configuration.type === 'password'"
+              show-password
               :maxlength="100"
             ></el-input>
             <el-input v-model="configuration.value" :maxlength="100" v-else></el-input>
@@ -70,6 +65,9 @@ export default {
       configuration: _.cloneDeep(defaultData),
       isEdit: false
     }
+  },
+  mounted() {
+    this.visibleChange(true)
   },
   methods: {
     visibleChange(flag) {

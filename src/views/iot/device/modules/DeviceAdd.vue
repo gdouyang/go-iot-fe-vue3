@@ -1,6 +1,6 @@
 <template>
   <Dialog ref="addModal" @confirm="addConfirm" @close="addClose" :width="500">
-    <el-form ref="addFormRef" :model="addObj" :labelCol="labelCol" :wrapperCol="wrapperCol">
+    <el-form ref="addFormRef" :model="addObj" label-width="auto">
       <el-form-item
         label="设备ID"
         prop="id"
@@ -33,7 +33,7 @@
           :disabled="isEdit"
           placeholder="产品"
         >
-          <el-option v-for="p in productList" :key="p.id" :value="p.id">{{ p.name }}</el-option>
+          <el-option v-for="p in productList" :key="p.id" :value="p.id" :label="p.name"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
@@ -42,9 +42,9 @@
         :rules="[{ required: true, message: '设备类型不能为空', trigger: 'blur' }]"
       >
         <el-select v-model="addObj.deviceType" :disabled="isEdit" @change="deviceTypeChange">
-          <el-option value="device">设备</el-option>
-          <el-option value="gateway">网关</el-option>
-          <el-option value="subdevice">子设备</el-option>
+          <el-option value="device" label="设备"></el-option>
+          <el-option value="gateway" label="网关"></el-option>
+          <el-option value="subdevice" label="子设备"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
@@ -54,9 +54,12 @@
         :rules="[{ required: true, message: '网关不能为空', trigger: 'blur' }]"
       >
         <el-select v-model="addObj.parentId" :disabled="isEdit">
-          <el-option v-for="p in gatewayList" :key="p.id" :value="p.id"
-            >{{ p.name }}({{ p.id }})</el-option
-          >
+          <el-option
+            v-for="p in gatewayList"
+            :key="p.id"
+            :value="p.id"
+            :label="`${p.name}(${p.id})`"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="说明" prop="desc">
@@ -91,14 +94,6 @@ const SUB_DEVICE = 'subdevice'
 export default {
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       addObj: _.cloneDeep(defaultAddObj),
       isEdit: false,
       SUB_DEVICE: SUB_DEVICE,

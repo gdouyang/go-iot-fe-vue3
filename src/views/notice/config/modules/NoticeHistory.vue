@@ -2,7 +2,7 @@
   <Dialog ref="addModal" @confirm="addConfirm" @close="addClose">
     <PageTable ref="tb" :url="url" :columns="columns">
       <span slot="notifyTime" slot-scope="text">
-        {{ text ? $moment(text).format('YYYY-MM-DD HH:mm:ss') : '/' }}
+        {{ text ? $dayjs(text).format('YYYY-MM-DD HH:mm:ss') : '/' }}
       </span>
       <span slot="state" slot-scope="text, record">
         <el-tag :color="colorMap.get(text.value)">{{ text.text }}</el-tag>

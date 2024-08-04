@@ -1,21 +1,25 @@
 <template>
   <div style="width: 100%; margin-top: 10px" v-if="configuration.length">
-    <el-descriptions :style="{ marginBottom: 20 }" :column="3" size="small">
-      <span slot="title">
+    <el-descriptions :column="3" border>
+      <template #title>
         配置
         <el-popconfirm
           title="确认重新应用该配置？"
           @confirm="changeDeploy"
           v-action:device-mgr:save
         >
-          <el-button type="link" style="padding-right: 2px">应用配置</el-button>
+          <template #reference>
+            <el-button link type="primary">应用配置</el-button>
+          </template>
         </el-popconfirm>
-        <el-tooltip title="修改配置后需重新应用后才能生效。">
+        <el-tooltip content="修改配置后需重新应用后才能生效。">
           <a-icon type="question-circle-o" />
         </el-tooltip>
         <span v-if="canResetConfig" v-action:device-mgr:save>
           <el-popconfirm title="确认恢复默认配置？" @confirm="configurationReset">
-            <el-button type="link" style="padding-right: 2px">恢复默认</el-button>
+            <template #reference>
+              <el-button link type="primary">恢复默认</el-button>
+            </template>
           </el-popconfirm>
           <el-tooltip
             :title="`该设备单独编辑过[${deviceConfigKeys}]，点击此将恢复成默认的配置信息，请谨慎操作。`"
@@ -23,22 +27,25 @@
             <a-icon type="question-circle-o" />
           </el-tooltip>
         </span>
-      </span>
+      </template>
     </el-descriptions>
 
-    <el-descriptions bordered :column="2" title="">
+    <el-descriptions border :column="2" title="">
       <el-descriptions-item v-for="(item, inx) in configuration" :key="inx">
-        <span slot="label">
-          <el-tooltip :title="item.desc">
+        <template #label>
+          <el-tooltip :content="item.desc">
             <span>{{ item.property }}</span>
           </el-tooltip>
-          <el-button
-            icon="edit"
-            type="link"
-            @click="editConfigItem(item)"
+          <BaseButton
+            class="prop-edit"
             v-action:device-mgr:save
-          ></el-button>
-        </span>
+            @click="editConfigItem(item)"
+            circle
+            size="small"
+            title="编辑"
+            ><Icon icon="carbon:edit"
+          /></BaseButton>
+        </template>
         <span>{{ getValue(item) }}</span>
       </el-descriptions-item>
     </el-descriptions>
@@ -47,7 +54,7 @@
       v-if="updateVisible"
       :deviceId="device.id"
       :data="configItem"
-      :allConfig="deviceConfig"
+      :all-config="deviceConfig"
       @close="
         () => {
           updateVisible = false
@@ -150,4 +157,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.prop-edit {
+  margin-left: 5px;
+}
+</style>

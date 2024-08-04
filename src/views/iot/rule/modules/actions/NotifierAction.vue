@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-col :span="4">
-      <el-tooltip title="请选择通知类型">
+      <el-tooltip content="请选择通知类型">
         <el-select
           placeholder="选择通知类型"
           v-model="actionData.configuration.notifyType"
@@ -15,7 +15,7 @@
       </el-tooltip>
     </el-col>
     <el-col :span="4">
-      <el-tooltip title="请选择通知配置">
+      <el-tooltip content="请选择通知配置">
         <el-select
           placeholder="选择通知配置"
           v-model="actionData.configuration.notifierId"

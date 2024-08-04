@@ -18,7 +18,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 import MqttConfigAdd from './MqttConfigAdd.vue'
 import { newMqttAddObj } from './entity.js'
 import _ from 'lodash-es'

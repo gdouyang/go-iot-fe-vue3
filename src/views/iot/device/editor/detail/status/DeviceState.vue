@@ -1,18 +1,16 @@
 <template>
-  <ChartCard :bordered="false" title="设备状态" :contentHeight="46" :total="state">
-    <!-- <a href="#" slot="action">
-      <a-icon type="sync" />
-    </a> -->
+  <ChartCard title="设备状态" :contentHeight="46">
+    <span>{{ state }}</span>
     <span v-if="state === 'online'">上线时间：{{ time }}</span>
     <span v-if="state === 'offline'">离线时间：{{ time }}</span>
   </ChartCard>
 </template>
 
 <script lang="jsx">
-import ChartCard from '@/components/Charts/ChartCard'
-import { queryLogs } from '@/views/iot/device/api.js'
+import ChartCard from './ChartCard.vue'
+import { queryLogs } from '../../../api.js'
 // eslint-disable-next-line no-unused-vars
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 export default {
   name: 'DeviceState',
   props: {

@@ -21,7 +21,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 import TcpConfigAdd from './TcpConfigAdd.vue'
 import { newTcpAddObj, parserType } from './entity.js'
 import _ from 'lodash-es'

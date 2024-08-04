@@ -1,17 +1,12 @@
 <template>
-  <ChartCard :bordered="false" :title="item.name" :contentHeight="46">
-    <a href="#" slot="extra">
-      <a-icon type="sync" />
-    </a>
-    <div slot="total" class="prop-data" :title="lastData">{{ lastData }}</div>
-    <MiniArea :height="40" color="#975FE4" :data="data.visitData" />
+  <ChartCard :title="item.name" :data="data.visitData">
+    <div class="prop-data" :title="lastData">{{ lastData }}</div>
   </ChartCard>
 </template>
 
 <script lang="jsx">
 import _ from 'lodash-es'
-import ChartCard from '@/components/Charts/ChartCard.vue'
-import MiniArea from '@/components/Charts/MiniArea.vue'
+import ChartCard from './ChartCard.vue'
 export default {
   name: 'PropertiesCard',
   props: {
@@ -38,8 +33,7 @@ export default {
     }
   },
   components: {
-    ChartCard,
-    MiniArea
+    ChartCard
   },
   data() {
     return {

@@ -99,6 +99,7 @@ function handleShowForm(show = false) {
           </div>
           <ElInput
             type="password"
+            show-password
             :placeholder="t('lock.placeholder')"
             class="enter-x"
             v-model="password"

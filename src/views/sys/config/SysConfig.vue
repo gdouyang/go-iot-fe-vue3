@@ -1,7 +1,6 @@
 <template>
   <div class="page-header-index-wide">
     <el-card
-      :bordered="false"
       :bodyStyle="{ padding: '16px 0', height: '100%' }"
       :style="{ height: '100%' }"
       shadow="never"

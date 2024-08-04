@@ -1,9 +1,6 @@
 <template>
-  <ChartCard :bordered="false" :title="item.name" :contentHeight="46">
-    <a href="#" slot="extra">
-      <a-icon type="sync" />
-    </a>
-    <div slot="total">{{ formatValue }}次</div>
+  <ChartCard :title="item.name">
+    <div>{{ formatValue }}次</div>
     <span>
       <el-badge v-if="item.expands.level === 'ordinary'" status="processing" text="普通" />
       <el-badge v-if="item.expands.level === 'warn'" status="warning" text="警告" />
@@ -14,8 +11,8 @@
 
 <script lang="jsx">
 // import _ from 'lodash-es'
-import ChartCard from '@/components/Charts/ChartCard.vue'
-import { queryEvent } from '@/views/iot/device/api.js'
+import ChartCard from './ChartCard.vue'
+import { queryEvent } from '../../../api.js'
 export default {
   name: 'EventCard',
   props: {

@@ -20,7 +20,7 @@
               <el-button link type="primary" class="link">发布</el-button>
             </template>
           </el-popconfirm>
-          <el-tooltip title="修改物模型后需要重新应用配置" placement="bottom">
+          <el-tooltip content="修改物模型后需要重新应用配置" placement="bottom">
             <el-popconfirm title="确认重新应用该配置？" @confirm="deploy" v-if="detailData.state">
               <template #reference>
                 <el-button link type="primary" class="link">应用配置</el-button>

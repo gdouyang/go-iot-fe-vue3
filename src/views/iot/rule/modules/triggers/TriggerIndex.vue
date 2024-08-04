@@ -1,7 +1,7 @@
 <template>
   <div>
     <p style="font-size: 16px">触发条件</p>
-    <el-card size="small" :bordered="false" shadow="never" style="background-color: #eee">
+    <el-card size="small" shadow="never" style="background-color: #eee">
       <el-row :gutter="16">
         <el-col :span="24">
           <div class="shake-limit">

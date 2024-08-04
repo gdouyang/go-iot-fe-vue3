@@ -8,7 +8,7 @@
       v-bind="formItemLayout"
     >
       <template v-if="domain">
-        <el-tooltip :title="domain.description">
+        <el-tooltip :content="domain.description">
           <el-input-number
             v-if="isNumber(domain.type)"
             v-model="domain.value"

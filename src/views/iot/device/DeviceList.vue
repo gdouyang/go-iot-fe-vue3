@@ -8,9 +8,12 @@
               <el-col :md="5" :sm="24">
                 <el-form-item label="产品">
                   <el-select v-model="searchObj.productId" placeholder="产品" :allowClear="true">
-                    <el-option v-for="p in productList" :key="p.id" :value="p.id">{{
-                      p.name
-                    }}</el-option>
+                    <el-option
+                      v-for="p in productList"
+                      :key="p.id"
+                      :value="p.id"
+                      :label="p.name"
+                    ></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -27,9 +30,9 @@
               <el-col :md="5" :sm="24">
                 <el-form-item label="状态">
                   <el-select v-model="searchObj.state" :allowClear="true">
-                    <el-option value="noActive">未激活</el-option>
-                    <el-option value="offline">离线</el-option>
-                    <el-option value="online">在线</el-option>
+                    <el-option value="noActive" label="未激活"></el-option>
+                    <el-option value="offline" label="离线"></el-option>
+                    <el-option value="online" label="在线"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -43,16 +46,10 @@
           </el-form>
         </div>
         <div class="table-operator">
-          <el-button type="primary" icon="plus" @click="add" v-action:device-mgr:add
-            >新建</el-button
-          >
-          <el-button icon="upload" @click="showImport" v-action:device-mgr:add
-            >批量导入设备</el-button
-          >
-          <el-button icon="link" @click="batchDeploy" v-action:device-mgr:save>批量激活</el-button>
-          <el-button icon="disconnect" @click="batchUndeploy" v-action:device-mgr:save
-            >批量停用</el-button
-          >
+          <el-button type="primary" @click="add" v-action:device-mgr:add>新建</el-button>
+          <el-button @click="showImport" v-action:device-mgr:add>批量导入设备</el-button>
+          <el-button @click="batchDeploy" v-action:device-mgr:save>批量激活</el-button>
+          <el-button @click="batchUndeploy" v-action:device-mgr:save>批量停用</el-button>
         </div>
         <PageTable
           ref="tb"
@@ -61,39 +58,6 @@
           rowKey="id"
           :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         >
-          <span slot="deviceType" slot-scope="text">
-            <span v-if="text == 'device'">设备</span>
-            <span v-else-if="text == 'gateway'">网关</span>
-            <span v-else>子设备</span>
-          </span>
-          <span slot="state" slot-scope="text">
-            <el-tag color="#87d068" v-if="text == 'online'">{{ text }}</el-tag>
-            <el-tag color="#f50" v-else-if="text == 'offline'">{{ text }}</el-tag>
-            <el-tag color="gray" v-else>{{ text }}</el-tag>
-          </span>
-          <span slot="createTime" slot-scope="text, record">
-            {{ $moment(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
-          </span>
-          <span slot="action" slot-scope="text, record">
-            <a size="small" @click="detail(record.id)">查看</a>
-            <span v-action:device-mgr:save>
-              <el-divider direction="vertical" />
-              <a size="small" @click="edit(record)">修改</a>
-            </span>
-            <span v-action:device-mgr:save>
-              <el-divider direction="vertical" />
-              <a size="small" @click="deploy(record.id)" v-if="record.state === 'noActive'">激活</a>
-              <el-popconfirm v-else title="确认停用？" @confirm="unDeploy(record.id)">
-                <a>停用</a>
-              </el-popconfirm>
-            </span>
-            <span v-if="record.state === 'noActive'" v-action:device-mgr:delete>
-              <el-divider direction="vertical" />
-              <el-popconfirm title="确认删除？" @confirm="remove(record)">
-                <a>删除</a>
-              </el-popconfirm>
-            </span>
-          </span>
         </PageTable>
       </div>
     </ContentWrap>
@@ -118,16 +82,8 @@
 
 <script lang="jsx">
 import _ from 'lodash-es'
-import {
-  pageUrl,
-  remove,
-  undeploy,
-  deploy,
-  batchDeploy,
-  batchUndeploy,
-  getProductList,
-  getImportResultUrl
-} from '@/views/iot/device/api.js'
+import { pageUrl, batchDeploy, batchUndeploy, getProductList, getImportResultUrl } from './api.js'
+import TableActions from './TableActions.vue'
 import DeviceAdd from './modules/DeviceAdd.vue'
 import DeviceImport from './modules/DeviceImport.vue'
 import DeviceDetail from './editor/Index.vue'
@@ -147,11 +103,55 @@ export default {
         { label: '设备ID', field: 'id' },
         { label: '名称', field: 'name' },
         { label: '产品', field: 'productId' },
-        { label: '设备类型', field: 'deviceType', scopedSlots: { customRender: 'deviceType' } },
-        { label: '状态', field: 'state', scopedSlots: { customRender: 'state' } },
-        { label: '创建时间', field: 'createTime', scopedSlots: { customRender: 'createTime' } },
+        {
+          label: '设备类型',
+          field: 'deviceType',
+          slots: {
+            default: (data) => {
+              if (data.row.deviceType == 'device') {
+                return <el-tag>设备</el-tag>
+              } else if (data.row.deviceType == 'gateway') {
+                return <el-tag>网关</el-tag>
+              } else {
+                return <el-tag>子设备</el-tag>
+              }
+            }
+          }
+        },
+        {
+          label: '状态',
+          field: 'state',
+          slots: {
+            default: (data) => {
+              if (data.row.state == 'online') {
+                return <el-tag type="success">在线</el-tag>
+              } else if (data.row.state == 'offline') {
+                return <el-tag type="info">在线</el-tag>
+              } else {
+                return <el-tag>未激活</el-tag>
+              }
+            }
+          }
+        },
+        { label: '创建时间', field: 'createTime', minWidth: '110px' },
         { label: '说明', field: 'desc' },
-        { label: '操作', field: 'action', minWidth: 210, scopedSlots: { customRender: 'action' } }
+        {
+          label: '操作',
+          field: 'action',
+          minWidth: '120px',
+          slots: {
+            default: (data) => {
+              return (
+                <TableActions
+                  record={data.row}
+                  onEdit={this.handleEdit}
+                  onDetail={this.detail}
+                  onOk={this.handleOk}
+                />
+              )
+            }
+          }
+        }
       ],
       GetDetailStatus: false,
       selectedRowKeys: [],
@@ -162,20 +162,18 @@ export default {
       productList: []
     }
   },
-  created() {
-    this.$nextTick(() => {
-      const deviceId = this.$route.query.id
-      if (deviceId) {
-        this.detail(deviceId)
-      } else {
-        this.search()
-        getProductList().then((resp) => {
-          if (resp.success) {
-            this.productList = resp.result
-          }
-        })
-      }
-    })
+  mounted() {
+    const deviceId = this.$route.query.id
+    if (deviceId) {
+      this.detail(deviceId)
+    } else {
+      this.search()
+      getProductList().then((resp) => {
+        if (resp.success) {
+          this.productList = resp.result
+        }
+      })
+    }
   },
   methods: {
     search() {
@@ -214,32 +212,8 @@ export default {
       this.GetDetailStatus = false
       this.search()
     },
-    edit(row) {
+    handleEdit(row) {
       this.$refs.DeviceAdd.edit(row)
-    },
-    deploy(id) {
-      deploy(id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.search()
-        }
-      })
-    },
-    unDeploy(id) {
-      undeploy(id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.search()
-        }
-      })
-    },
-    remove(row) {
-      remove(row.id).then((data) => {
-        if (data.success) {
-          this.$message.success('操作成功')
-          this.search()
-        }
-      })
     },
     showImport() {
       this.$refs.DeviceImport.open()

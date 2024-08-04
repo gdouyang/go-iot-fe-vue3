@@ -18,12 +18,12 @@
       <Configuration :productId="data.id" :configuration="configuration" @refresh="refresh()" />
     </ContentWrap>
 
-    <ProductAdd ref="ProductAdd" @success="refresh()" v-if="addVisible" />
+    <ProductAdd v-if="addVisible" ref="ProductAdd" @success="refresh()" />
   </div>
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 // import _ from 'lodash-es'
 import ProductAdd from '../modules/ProductAdd.vue'
 import Configuration from './Configuration.vue'

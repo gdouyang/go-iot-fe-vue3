@@ -35,7 +35,7 @@
           ]"
           v-if="!isEdit"
         >
-          <el-input v-model="addObj.password" type="password" :maxlength="20" show-password />
+          <el-input v-model="addObj.password" type="password" show-password :maxlength="20" />
         </el-form-item>
 
         <el-form-item
@@ -47,7 +47,7 @@
           ]"
           v-if="!isEdit"
         >
-          <el-input v-model="addObj.password2" type="password" :maxlength="20" show-password />
+          <el-input v-model="addObj.password2" type="password" show-password :maxlength="20" />
         </el-form-item>
 
         <el-form-item

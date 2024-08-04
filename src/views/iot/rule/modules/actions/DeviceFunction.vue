@@ -37,9 +37,10 @@
       <el-col :span="6">
         <el-input
           type="password"
+          show-password
           :value="defaultValue"
-          @change="inputsChange"
           :maxlength="100"
+          @change="inputsChange"
         ></el-input>
       </el-col>
     </div>

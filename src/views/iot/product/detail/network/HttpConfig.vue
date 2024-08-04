@@ -18,7 +18,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 import HttpConfigAdd from './HttpConfigAdd.vue'
 import { newHttpAddObj } from './entity.js'
 import _ from 'lodash-es'

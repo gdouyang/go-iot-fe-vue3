@@ -40,9 +40,10 @@
           </el-form-item>
           <el-form-item label="值">
             <el-input
-              type="password"
-              v-model="configuration.value"
               v-if="configuration.type === 'password'"
+              type="password"
+              show-password
+              v-model="configuration.value"
               :maxlength="100"
             ></el-input>
             <el-input v-model="configuration.value" :maxlength="100" v-else></el-input>

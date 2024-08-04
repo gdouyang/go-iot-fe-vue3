@@ -18,7 +18,7 @@
 </template>
 
 <script lang="jsx">
-// import moment from 'moment'
+// import dayjs from 'dayjs'
 import WebSocketConfigAdd from './WebSocketConfigAdd.vue'
 import { newWebSocketAddObj } from './entity.js'
 import _ from 'lodash-es'
