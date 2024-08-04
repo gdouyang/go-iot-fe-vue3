@@ -1,6 +1,8 @@
 <template>
-  <ChartCard title="设备状态" :contentHeight="46">
-    <span>{{ state }}</span>
+  <ChartCard title="设备状态">
+    <template #total>
+      <span>{{ state }}</span>
+    </template>
     <span v-if="state === 'online'">上线时间：{{ time }}</span>
     <span v-if="state === 'offline'">离线时间：{{ time }}</span>
   </ChartCard>

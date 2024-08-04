@@ -2,17 +2,20 @@
   <ContentDetailWrap :header-border="false">
     <template #header>
       <el-row class="el-descriptions__title" style="align-items: center">
-        <BaseButton @click="back" circle size="small"><Icon icon="carbon:arrow-left" /></BaseButton>
+        <BaseButton @click="back" circle size="small" title="返回"
+          ><Icon icon="carbon:arrow-left"
+        /></BaseButton>
         <span class="detail-title">
-          <span>设备：{{ GetDeviceId }}</span>
+          <span>设备：{{ getDeviceId }}</span>
         </span>
-        <el-tag :type="DeviceState === 'online' ? 'success' : 'info'" round size="small">{{
-          DeviceState === 'online' ? '在线' : DeviceState === 'offline' ? '离线' : '未激活'
+        <el-tag :type="deviceState === 'online' ? 'success' : 'info'" round size="small">{{
+          deviceStateText
         }}</el-tag>
         <span v-action:device-mgr:save>
           <el-popconfirm
-            v-if="DeviceState === 'online'"
+            v-if="deviceState === 'online'"
             title="确认让此设备断开连接？"
+            width="200px"
             @confirm="disconnectDevice"
           >
             <template #reference>
@@ -20,18 +23,20 @@
             </template>
           </el-popconfirm>
           <el-popconfirm
+            v-else-if="deviceState === 'noActive'"
             title="确认激活此设备？"
+            width="200px"
             @confirm="changeDeploy"
-            v-else-if="DeviceState === 'noActive'"
           >
             <template #reference>
               <el-button link type="primary" class="link">激活设备</el-button>
             </template>
           </el-popconfirm>
           <el-popconfirm
-            title="确认连接设备？"
-            @confirm="connectDevice"
             v-else-if="isNetClientType"
+            title="确认连接设备？"
+            width="200px"
+            @confirm="connectDevice"
           >
             <template #reference>
               <el-button link type="primary" class="link">连接</el-button>
@@ -54,7 +59,7 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
-    <el-tabs model-value="info">
+    <el-tabs v-model="activeTabKey">
       <el-tab-pane name="info" label="基本信息"> </el-tab-pane>
       <el-tab-pane name="status" label="运行状态"> </el-tab-pane>
       <el-tab-pane name="properties" label="设备属性"> </el-tab-pane>
@@ -62,10 +67,10 @@
       <el-tab-pane name="events" label="设备事件"> </el-tab-pane>
       <el-tab-pane name="log" label="日志"> </el-tab-pane>
     </el-tabs>
-    <template v-if="ActiveTabKey === 'info'">
+    <template v-if="activeTabKey === 'info'">
       <Info v-if="detailData.id" :device="detailData" @refresh="reloadDevice"></Info>
     </template>
-    <template v-if="ActiveTabKey === 'status'">
+    <template v-if="activeTabKey === 'status'">
       <Status
         v-if="detailData.id"
         :device="detailData"
@@ -73,16 +78,16 @@
         :realtimeData="realtimeData"
       ></Status>
     </template>
-    <template v-if="ActiveTabKey === 'function'">
+    <template v-if="activeTabKey === 'function'">
       <Function v-if="detailData.id" :device="detailData"></Function>
     </template>
-    <template v-if="ActiveTabKey === 'log'">
+    <template v-if="activeTabKey === 'log'">
       <Log v-if="detailData.id" :deviceId="detailData.id"></Log>
     </template>
-    <template v-if="ActiveTabKey === 'properties'">
+    <template v-if="activeTabKey === 'properties'">
       <Properties v-if="detailData.id" :device="detailData" />
     </template>
-    <template v-if="ActiveTabKey === 'events'">
+    <template v-if="activeTabKey === 'events'">
       <Events v-if="detailData.id" :device="detailData" />
     </template>
   </ContentDetailWrap>
@@ -111,7 +116,7 @@ export default {
     return {
       loading: true,
       detailData: {},
-      ActiveTabKey: 'info',
+      activeTabKey: 'info',
       tableList: [
         { key: 'info', tab: '实例信息' },
         { key: 'status', tab: '运行状态' },
@@ -140,12 +145,16 @@ export default {
     }
   },
   computed: {
-    GetDeviceId() {
+    getDeviceId() {
       return this.$route.query.id
     },
-    DeviceState() {
+    deviceState() {
       const status = this.detailData.state
       return status
+    },
+    deviceStateText() {
+      const status = this.detailData.state
+      return status === 'online' ? '在线' : status === 'offline' ? '离线' : '未激活'
     },
     isNetClientType() {
       return (
@@ -164,7 +173,7 @@ export default {
         this.$message.error('请检查产品物模型')
         return
       }
-      this.ActiveTabKey = key
+      this.activeTabKey = key
     },
     getDeviceDetail(id) {
       this.loading = true
@@ -179,14 +188,14 @@ export default {
         })
     },
     reloadDevice() {
-      this.getDeviceDetail(this.GetDeviceId).then((result) => {
+      this.getDeviceDetail(this.getDeviceId).then((result) => {
         if (result) {
           this.detailData = result
         }
       })
     },
     disconnectDevice() {
-      const deviceId = this.GetDeviceId
+      const deviceId = this.getDeviceId
       disconnect(deviceId).then((data) => {
         if (data.success) {
           this.$message.success('断开连接成功')
@@ -195,7 +204,7 @@ export default {
       })
     },
     changeDeploy() {
-      const deviceId = this.GetDeviceId
+      const deviceId = this.getDeviceId
       deploy(deviceId).then((data) => {
         if (data.success) {
           this.$message.success('激活成功')
@@ -204,7 +213,7 @@ export default {
       })
     },
     connectDevice() {
-      const deviceId = this.GetDeviceId
+      const deviceId = this.getDeviceId
       connect(deviceId).then((data) => {
         if (data.success) {
           this.$message.success('连接成功')
@@ -213,7 +222,7 @@ export default {
       })
     },
     connectWs() {
-      var ws = (this.ws = new WebSocket(getEventBusUrl(this.GetDeviceId, '*')))
+      var ws = (this.ws = new WebSocket(getEventBusUrl(this.getDeviceId, '*')))
       ws.onopen = function (evt) {
         console.log('Connection open ...')
       }

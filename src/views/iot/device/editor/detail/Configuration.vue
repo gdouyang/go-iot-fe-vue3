@@ -5,8 +5,9 @@
         配置
         <el-popconfirm
           title="确认重新应用该配置？"
-          @confirm="changeDeploy"
+          width="200px"
           v-action:device-mgr:save
+          @confirm="changeDeploy"
         >
           <template #reference>
             <el-button link type="primary">应用配置</el-button>
@@ -16,7 +17,7 @@
           <a-icon type="question-circle-o" />
         </el-tooltip>
         <span v-if="canResetConfig" v-action:device-mgr:save>
-          <el-popconfirm title="确认恢复默认配置？" @confirm="configurationReset">
+          <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
             <template #reference>
               <el-button link type="primary">恢复默认</el-button>
             </template>

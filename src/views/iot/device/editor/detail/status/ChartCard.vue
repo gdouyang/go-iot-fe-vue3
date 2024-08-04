@@ -1,8 +1,15 @@
 <template>
-  <div :title="title">
-    <slot></slot>
-    <Echart v-if="data && data.length > 0" :options="lineOptionsData" :height="350" />
-  </div>
+  <el-card shadow="never">
+    <div
+      ><el-text>{{ title }}</el-text></div
+    >
+    <div class="total">
+      <slot name="total"></slot>
+    </div>
+    <div class="chart-card-content">
+      <slot></slot>
+    </div>
+  </el-card>
 </template>
 
 <script lang="jsx">
@@ -13,31 +20,35 @@ export default {
     title: {
       type: String,
       default: ''
-    },
-    data: {
-      type: Object,
-      default: () => {
-        return []
-      }
     }
   },
   components: {},
   data() {
-    return {
-      data: [],
-      lineOptionsData: {
-        xAxis: {
-          data: []
-        },
-        yAxis: {
-          data: []
-        }
-      }
-    }
+    return {}
   },
-  created() {},
+  mounted() {},
   methods: {}
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.total {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+  color: #000;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-size: 30px;
+  line-height: 38px;
+  height: 38px;
+}
+.chart-card-content {
+  position: relative;
+  height: 46px;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+</style>

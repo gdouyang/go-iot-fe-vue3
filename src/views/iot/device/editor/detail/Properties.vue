@@ -2,15 +2,16 @@
   <div>
     <ContentWrap>
       <div>
-        <el-form :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }">
+        <el-form label-width="auto">
           <el-row :gutter="{ md: 8, lg: 4, xl: 48 }">
             <el-col :md="10" :sm="24">
               <el-form-item label="日期">
-                <a-range-picker
+                <el-date-picker
                   v-model="searchParams.createTime"
-                  :show-time="{ format: 'HH:mm' }"
-                  :format="'YYYY-MM-DD HH:mm'"
-                  :placeholder="['开始时间', '结束时间']"
+                  type="datetimerange"
+                  :format="'YYYY-MM-DD HH:mm:ss'"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
                   @change="(date) => (searchParams.createTime = date)"
                 />
               </el-form-item>
@@ -60,9 +61,9 @@ export default {
     const properties = _.cloneDeep(metadata.properties)
     const columns = []
     _.forEach(properties, (prop) => {
-      columns.push({ field: prop.id, label: prop.name, width: '100px', ellipsis: true })
+      columns.push({ field: prop.id, label: prop.name })
     })
-    columns.push({ field: 'createTime', label: '时间', width: '120px' })
+    columns.push({ field: 'createTime', label: '时间', minWidth: '120px' })
     this.columns = columns
     this.search()
   },

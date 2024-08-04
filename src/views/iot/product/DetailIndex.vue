@@ -2,7 +2,9 @@
   <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
       <el-row class="el-descriptions__title" style="align-items: center">
-        <BaseButton @click="back" circle size="small"><Icon icon="carbon:arrow-left" /></BaseButton>
+        <BaseButton @click="back" circle size="small" title="返回"
+          ><Icon icon="carbon:arrow-left"
+        /></BaseButton>
         <span class="detail-title">
           <span>产品：{{ detailData.name }}</span>
         </span>
@@ -10,18 +12,23 @@
           detailData.state ? '发布' : '停用'
         }}</el-tag>
         <span v-action:product-mgr:save>
-          <el-popconfirm title="确认停用？" @confirm="unDeploy" v-if="detailData.state">
+          <el-popconfirm v-if="detailData.state" title="确认停用？" @confirm="unDeploy">
             <template #reference>
               <el-button link type="primary" class="link">停用</el-button>
             </template>
           </el-popconfirm>
-          <el-popconfirm title="确认发布？" @confirm="deploy" v-if="!detailData.state">
+          <el-popconfirm v-if="!detailData.state" title="确认发布？" @confirm="deploy">
             <template #reference>
               <el-button link type="primary" class="link">发布</el-button>
             </template>
           </el-popconfirm>
           <el-tooltip content="修改物模型后需要重新应用配置" placement="bottom">
-            <el-popconfirm title="确认重新应用该配置？" @confirm="deploy" v-if="detailData.state">
+            <el-popconfirm
+              v-if="detailData.state"
+              title="确认重新应用该配置？"
+              width="200px"
+              @confirm="deploy"
+            >
               <template #reference>
                 <el-button link type="primary" class="link">应用配置</el-button>
               </template>

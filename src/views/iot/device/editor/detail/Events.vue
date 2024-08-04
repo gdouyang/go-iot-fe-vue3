@@ -2,24 +2,29 @@
   <div>
     <ContentWrap>
       <div>
-        <el-form :labelCol="{ span: 6 }" :wrapperCol="{ span: 18 }">
+        <el-form label-width="auto">
           <el-row :gutter="{ md: 8, lg: 4, xl: 48 }">
             <el-col :md="8" :sm="24">
               <el-form-item label="事件">
                 <el-select v-model="eventId" @change="onEventIdChange">
-                  <el-option v-for="(item, index) in events" :key="index" :value="item.id">
-                    {{ item.name }}
+                  <el-option
+                    v-for="(item, index) in events"
+                    :key="index"
+                    :value="item.id"
+                    :label="item.name"
+                  >
                   </el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :md="10" :sm="24">
               <el-form-item label="日期">
-                <a-range-picker
+                <el-date-picker
                   v-model="searchParams.createTime"
-                  :show-time="{ format: 'HH:mm' }"
-                  :format="'YYYY-MM-DD HH:mm'"
-                  :placeholder="['开始时间', '结束时间']"
+                  type="datetimerange"
+                  :format="'YYYY-MM-DD HH:mm:ss'"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
                   @change="(date) => (searchParams.createTime = date)"
                 />
               </el-form-item>

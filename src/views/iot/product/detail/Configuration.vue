@@ -16,7 +16,12 @@
           <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small" title="编辑"
             ><Icon icon="carbon:edit"
           /></BaseButton>
-          <el-popconfirm title="确认删除配置？" v-if="!item.buildin" @confirm="deleteConfig(item)">
+          <el-popconfirm
+            v-if="!item.buildin"
+            title="确认删除配置？"
+            width="200px"
+            @confirm="deleteConfig(item)"
+          >
             <template #reference>
               <BaseButton class="prop-edit" circle size="small"
                 ><Icon icon="carbon:trash-can"

@@ -1,12 +1,16 @@
 <template>
-  <ChartCard :title="item.name" :data="data.visitData">
-    <div class="prop-data" :title="lastData">{{ lastData }}</div>
+  <ChartCard :title="item.name">
+    <template #total>
+      <div class="prop-data" :title="lastData">{{ lastData }}</div>
+    </template>
+    <Chart :data="data.visitData" :height="50" />
   </ChartCard>
 </template>
 
 <script lang="jsx">
 import _ from 'lodash-es'
 import ChartCard from './ChartCard.vue'
+import Chart from './Chart.vue'
 export default {
   name: 'PropertiesCard',
   props: {
@@ -33,7 +37,8 @@ export default {
     }
   },
   components: {
-    ChartCard
+    ChartCard,
+    Chart
   },
   data() {
     return {

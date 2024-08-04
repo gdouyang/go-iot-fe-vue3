@@ -63,7 +63,7 @@
     </ContentWrap>
     <DeviceAdd ref="DeviceAdd" @success="search()" />
     <DeviceImport ref="DeviceImport" @success="search()" />
-    <DeviceDetail ref="DeviceDetail" v-if="GetDetailStatus" @back="back" />
+    <DeviceDetail v-if="GetDetailStatus" ref="DeviceDetail" @back="back" />
     <Dialog
       ref="processModal"
       :showOk="false"
@@ -204,13 +204,15 @@ export default {
       this.$refs.DeviceAdd.add()
     },
     detail(id) {
-      this.$router.push({ name: this.$route.name, query: { id: id } })
-      this.GetDetailStatus = true
+      this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
+        this.GetDetailStatus = true
+      })
     },
     back() {
-      this.$router.push({ name: this.$route.name, query: {} })
-      this.GetDetailStatus = false
-      this.search()
+      this.$router.push({ name: this.$route.name, query: {} }).then(() => {
+        this.GetDetailStatus = false
+        this.search()
+      })
     },
     handleEdit(row) {
       this.$refs.DeviceAdd.edit(row)
