@@ -51,7 +51,7 @@
       </div>
     </ContentWrap>
     <ProductAdd ref="ProductAdd" @success="search()" />
-    <Detail ref="Detail" v-if="isEdit" @back="back" />
+    <Detail v-if="isEdit" ref="Detail" @back="back" />
   </div>
 </template>
 
@@ -109,15 +109,13 @@ export default {
       isEdit: false
     }
   },
-  created() {
-    this.$nextTick(() => {
-      const deviceId = this.$route.query.id
-      if (deviceId) {
-        this.handleEdit(deviceId)
-      } else {
-        this.search()
-      }
-    })
+  mounted() {
+    const deviceId = this.$route.query.id
+    if (deviceId) {
+      this.handleEdit(deviceId)
+    } else {
+      this.search()
+    }
   },
   methods: {
     search() {

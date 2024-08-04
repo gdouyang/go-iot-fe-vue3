@@ -1,7 +1,7 @@
 <template>
-  <ContentDetailWrap :header-border="false">
+  <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
-      <el-row class="el-descriptions__title" style="align-items: center;">
+      <el-row class="el-descriptions__title" style="align-items: center">
         <BaseButton @click="back" circle size="small"><Icon icon="carbon:arrow-left" /></BaseButton>
         <span class="detail-title">
           <span>产品：{{ detailData.name }}</span>
@@ -32,21 +32,27 @@
     </template>
     <el-tabs model-value="info">
       <el-tab-pane name="info" label="基本信息">
-        <Info v-if="detailData.id" :data="detailData" @refresh="reloadDevice"></Info>
+        <Info v-if="detailData.id" :data="detailData" @refresh="reloadProduct"></Info>
       </el-tab-pane>
       <el-tab-pane name="tsl" label="物模型">
         <TSL
-           v-if="detailData.id"
+          v-if="detailData.id"
           :product="detailData"
           :propertyData="properties"
           :functionsData="functions"
           :eventsData="events"
-          @refresh="reloadDevice"
+          @refresh="reloadProduct"
           @save="updateData"
         ></TSL>
       </el-tab-pane>
       <el-tab-pane name="codec" label="编解码">
-        <Codec v-if="detailData.id" :id="GetId" :product="detailData" @refresh="reloadDevice" @save="updateData"></Codec>
+        <Codec
+          v-if="detailData.id"
+          :id="GetId"
+          :product="detailData"
+          @refresh="reloadProduct"
+          @save="updateData"
+        ></Codec>
       </el-tab-pane>
     </el-tabs>
   </ContentDetailWrap>
@@ -76,7 +82,7 @@ export default {
     }
   },
   mounted() {
-    this.reloadDevice()
+    this.reloadProduct()
   },
   computed: {
     GetId() {
@@ -99,7 +105,7 @@ export default {
           this.loading = false
         })
     },
-    reloadDevice() {
+    reloadProduct() {
       this.getDetail(this.GetId).then((result) => {
         if (result) {
           this.detailData = result
@@ -118,7 +124,7 @@ export default {
       undeploy(id).then((data) => {
         if (data.success) {
           this.$message.success('操作成功')
-          this.reloadDevice()
+          this.reloadProduct()
         }
       })
     },
@@ -127,7 +133,7 @@ export default {
       deploy(id).then((data) => {
         if (data.success) {
           this.$message.success('操作成功')
-          this.reloadDevice()
+          this.reloadProduct()
         }
       })
     },
@@ -154,7 +160,7 @@ export default {
           }
         })
         .finally(() => {
-          this.reloadDevice()
+          this.reloadProduct()
         })
     },
     toProductPage() {}
