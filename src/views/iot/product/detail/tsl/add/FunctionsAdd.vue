@@ -59,7 +59,7 @@
           />
         </el-form-item>
         <el-form-item label="输入参数">
-          <div style="width: 100%;">
+          <div style="width: 100%">
             <div v-for="item in inputs" class="input-div">
               <div>参数名称：{{ item.name }}</div>
               <div>

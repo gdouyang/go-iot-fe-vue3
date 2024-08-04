@@ -5,11 +5,15 @@
       :text="isRuning ? '运行中' : '停止'"
       style="margin-left: 10px"
     />
-    <el-popconfirm title="确认启动网络服务？" @confirm="runNetwork('start')" v-if="!isRuning">
-      <a style="font-size: 12px; margin-left: 10px">启动网络服务</a>
+    <el-popconfirm title="确认启动网络服务？" width="200px" @confirm="runNetwork('start')" v-if="!isRuning">
+      <template #reference>
+        <el-button link type="primary" size="small">启动网络服务</el-button>
+      </template>
     </el-popconfirm>
-    <el-popconfirm title="确认停止网络服务？" @confirm="runNetwork('stop')" v-if="isRuning">
-      <a style="font-size: 12px; margin-left: 10px">停止网络服务</a>
+    <el-popconfirm title="确认停止网络服务？" width="200px" @confirm="runNetwork('stop')" v-if="isRuning">
+      <template #reference>
+        <el-button link type="primary" size="small">停止网络服务</el-button>
+      </template>
     </el-popconfirm>
   </span>
 </template>

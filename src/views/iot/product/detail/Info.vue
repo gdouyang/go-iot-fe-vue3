@@ -4,7 +4,7 @@
       <el-descriptions border :column="2">
         <template #title>
           产品信息
-          <el-button link :style="{ marginLeft: 20 }" @click="openBasicInfo">编辑</el-button>
+          <el-button link type="primary" @click="openBasicInfo">编辑</el-button>
         </template>
         <el-descriptions-item label="产品ID" :span="1">{{ data.id }}</el-descriptions-item>
         <el-descriptions-item label="网络类型" :span="1">{{

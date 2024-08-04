@@ -29,7 +29,7 @@
       <div v-if="network.type" class="ace-div">
         <AceEditor
           ref="AceEditor"
-          v-model="script"
+          v-model:value="script"
           lang="javascript"
           theme="tomorrow_night"
           :options="aceOptions"
@@ -40,23 +40,23 @@
     </div>
 
     <el-drawer
+      v-if="openDrawer"
       :title="`脚本说明(${network.type})`"
       placement="right"
-      width="750"
+      :model-value="true"
+      size="750"
       @close="openDrawer = false"
-      :visible="openDrawer"
-      v-if="openDrawer"
     >
       <Doc :type="network.type" />
     </el-drawer>
     <el-drawer
+      v-if="openDebugDrawer"
       :title="`调试日志(${id})`"
       placement="right"
-      width="1000"
-      :maskClosable="false"
+      :model-value="true"
+      :close-on-click-modal="false"
+      size="1000"
       @close="debugClose"
-      :visible="openDebugDrawer"
-      v-if="openDebugDrawer"
     >
       <div class="product-debug" :class="{ isConnect: isConnect }">
         <div :key="index" v-for="(item, index) in debugDataList">
@@ -77,8 +77,6 @@
 <script lang="jsx">
 import { getNetwork, updateScript, getEventBusUrl } from '@/views/iot/product/api.js'
 import ace from 'ace-builds'
-// import * as ace from 'brace'
-// import './codec/beautify'
 import { VAceEditor as AceEditor } from 'vue3-ace-editor'
 
 import 'ace-builds/src-noconflict/ext-language_tools'
@@ -86,6 +84,7 @@ import 'ace-builds/src-noconflict/ext-searchbox'
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-tomorrow_night'
 import 'ace-builds/src-noconflict/snippets/javascript'
+import 'ace-builds/src-noconflict/ext-beautify'
 
 // import _ from 'lodash-es'
 import { addCompletions, getCompletions } from './codec/CodeCompletions.js'
@@ -249,7 +248,7 @@ export default {
   height: 450px;
   width: 1000px;
   .ace-div {
-    height: calc(450px - 21px);
+    height: calc(450px - 23px);
   }
   &.full-screen {
     position: fixed;
@@ -260,7 +259,7 @@ export default {
     width: 100%;
     overflow: auto;
     .ace-div {
-      height: calc(100% - 21px);
+      height: calc(100% - 23px);
     }
   }
 }

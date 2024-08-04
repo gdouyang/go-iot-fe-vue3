@@ -3,7 +3,7 @@
     <el-descriptions border :column="2">
       <template #title>
         Http网络配置
-        <el-button :style="{ marginLeft: 20 }" link @click="openAdd">编辑</el-button>
+        <el-button type="primary" link @click="openAdd">编辑</el-button>
         <NetworkRun :network="data" :productId="productId" @success="getData" />
       </template>
       <el-descriptions-item label="开启SSL" :span="1">{{

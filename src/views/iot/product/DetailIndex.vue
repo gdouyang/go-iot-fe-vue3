@@ -1,31 +1,29 @@
 <template>
   <ContentDetailWrap :header-border="false">
     <template #header>
-      <el-row class="el-descriptions__title">
-        <el-button @click="back">返回</el-button>
+      <el-row class="el-descriptions__title" style="align-items: center;">
+        <BaseButton @click="back" circle size="small"><Icon icon="carbon:arrow-left" /></BaseButton>
         <span class="detail-title">
           <span>产品：{{ detailData.name }}</span>
         </span>
-        <el-badge
-          :color="detailData.state ? 'green' : 'red'"
-          :text="detailData.state ? '发布' : '停用'"
-          style="margin-left: 10px"
-        />
+        <el-tag :type="detailData.state ? 'success' : 'info'" round size="small">{{
+          detailData.state ? '发布' : '停用'
+        }}</el-tag>
         <span v-action:product-mgr:save>
           <el-popconfirm title="确认停用？" @confirm="unDeploy" v-if="detailData.state">
             <template #reference>
-              <el-link type="primary" class="link">停用</el-link>
+              <el-button link type="primary" class="link">停用</el-button>
             </template>
           </el-popconfirm>
           <el-popconfirm title="确认发布？" @confirm="deploy" v-if="!detailData.state">
             <template #reference>
-              <el-link type="primary" class="link">发布</el-link>
+              <el-button link type="primary" class="link">发布</el-button>
             </template>
           </el-popconfirm>
           <el-tooltip title="修改物模型后需要重新应用配置" placement="bottom">
             <el-popconfirm title="确认重新应用该配置？" @confirm="deploy" v-if="detailData.state">
               <template #reference>
-                <el-link type="primary" class="link">应用配置</el-link>
+                <el-button link type="primary" class="link">应用配置</el-button>
               </template>
             </el-popconfirm>
           </el-tooltip>
@@ -34,10 +32,11 @@
     </template>
     <el-tabs model-value="info">
       <el-tab-pane name="info" label="基本信息">
-        <Info :data="detailData" v-if="detailData.id" @refresh="reloadDevice"></Info>
+        <Info v-if="detailData.id" :data="detailData" @refresh="reloadDevice"></Info>
       </el-tab-pane>
       <el-tab-pane name="tsl" label="物模型">
         <TSL
+           v-if="detailData.id"
           :product="detailData"
           :propertyData="properties"
           :functionsData="functions"
@@ -47,7 +46,7 @@
         ></TSL>
       </el-tab-pane>
       <el-tab-pane name="codec" label="编解码">
-        <Codec :id="GetId" :product="detailData" @refresh="reloadDevice" @save="updateData"></Codec>
+        <Codec v-if="detailData.id" :id="GetId" :product="detailData" @refresh="reloadDevice" @save="updateData"></Codec>
       </el-tab-pane>
     </el-tabs>
   </ContentDetailWrap>

@@ -3,9 +3,9 @@
     name="file"
     :multiple="false"
     action="api/file/base64"
+    :show-file-list="false"
+    :with-credentials="true"
     @change="handleChange"
-    :showUploadList="false"
-    :withCredentials="true"
   >
     <el-button> <a-icon type="upload" /> 上传文件 </el-button>
   </el-upload>

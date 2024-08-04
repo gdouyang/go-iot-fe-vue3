@@ -66,7 +66,7 @@ export default {
       this.$emit('save', temp)
     },
     saveData(item, onlySave) {
-      const data = this.data
+      const data = this.data || []
       const i = data.findIndex((j) => j.id === item.id)
       if (i > -1) {
         if (!this.isEdit) {

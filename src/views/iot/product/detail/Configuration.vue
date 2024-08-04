@@ -3,7 +3,7 @@
     <el-descriptions>
       <template #title>
         配置
-        <el-button class="link" link @click="addConfig">添加</el-button>
+        <el-button type="primary" link @click="addConfig">添加</el-button>
       </template>
     </el-descriptions>
 
@@ -15,7 +15,7 @@
               {{ item.property }}
             </span>
           </el-tooltip>
-          <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small"
+          <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small" title="编辑"
             ><Icon icon="carbon:edit"
           /></BaseButton>
           <el-popconfirm title="确认删除配置？" v-if="!item.buildin" @confirm="deleteConfig(item)">
