@@ -1,25 +1,18 @@
 <template>
-  <a-spin :spinning="spinning">
-    <el-card shadow="never" title="功能调试">
-      <el-collapse v-model="activeKey" style="width: 500px">
-        <el-collapse-item
-          v-for="f in functionsSelectList"
-          :key="f.id"
-          :name="f.name"
-          :title="f.name"
-        >
-          <div style="text-align: right">
-            <el-button link type="primary" @click.prevent="debugFunction(f)"> 发送指令 </el-button>
-          </div>
-          <!-- <a-empty :description="false" v-if="!f.inputs || f.inputs.length < 1"/> -->
-          <p>
-            <FunctionForm :inputs="f.inputs" :ref="'funcForm-' + f.id" />
-            <!-- {{ f.inputs }} -->
-          </p>
-        </el-collapse-item>
-      </el-collapse>
-    </el-card>
-  </a-spin>
+  <el-card shadow="never" title="功能调试" v-loading="spinning">
+    <el-collapse v-model="activeKey" style="width: 500px">
+      <el-collapse-item v-for="f in functionsSelectList" :key="f.id" :name="f.name" :title="f.name">
+        <div style="text-align: right">
+          <el-button link type="primary" @click.prevent="debugFunction(f)"> 发送指令 </el-button>
+        </div>
+        <!-- <a-empty :description="false" v-if="!f.inputs || f.inputs.length < 1"/> -->
+        <p>
+          <FunctionForm :inputs="f.inputs" :ref="'funcForm-' + f.id" />
+          <!-- {{ f.inputs }} -->
+        </p>
+      </el-collapse-item>
+    </el-collapse>
+  </el-card>
 </template>
 
 <script lang="jsx">

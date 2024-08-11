@@ -3,7 +3,7 @@
     <ContentWrap>
       <div>
         <el-form label-width="auto">
-          <el-row :gutter="{ md: 8, lg: 4, xl: 48 }">
+          <el-row>
             <el-col :md="5" :sm="24">
               <el-form-item label="日志类型">
                 <el-select mode="multiple" v-model="searchParams.type">

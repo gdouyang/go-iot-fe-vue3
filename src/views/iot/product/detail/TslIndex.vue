@@ -1,22 +1,20 @@
 <template>
-  <ContentWrap :style="{ marginBottom: '20px' }">
-    <a-spin :spinning="loading">
-      <el-tabs model-value="1">
-        <template #add-icon>
-          <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
-          <el-button @click="showTSL">物模型</el-button>
-        </template>
-        <el-tab-pane label="属性定义" name="1">
-          <Properties :product="product" :data="propertyData" @save="saveProperties" />
-        </el-tab-pane>
-        <el-tab-pane label="功能定义" name="2">
-          <Functions :product="product" :data="functionsData" @save="saveFunctions" />
-        </el-tab-pane>
-        <el-tab-pane label="事件定义" name="3">
-          <Events :data="eventsData" @save="saveEvents" />
-        </el-tab-pane>
-      </el-tabs>
-    </a-spin>
+  <ContentWrap :style="{ marginBottom: '20px' }" v-loading="loading">
+    <el-tabs model-value="1">
+      <template #add-icon>
+        <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
+        <el-button @click="showTSL">物模型</el-button>
+      </template>
+      <el-tab-pane label="属性定义" name="1">
+        <Properties :product="product" :data="propertyData" @save="saveProperties" />
+      </el-tab-pane>
+      <el-tab-pane label="功能定义" name="2">
+        <Functions :product="product" :data="functionsData" @save="saveFunctions" />
+      </el-tab-pane>
+      <el-tab-pane label="事件定义" name="3">
+        <Events :data="eventsData" @save="saveEvents" />
+      </el-tab-pane>
+    </el-tabs>
     <TslImportDialog ref="TslImportDialog" @import="saveAll" />
   </ContentWrap>
 </template>

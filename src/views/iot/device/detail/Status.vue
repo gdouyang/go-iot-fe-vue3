@@ -1,35 +1,33 @@
 <template>
-  <a-spin :spinning="loading">
-    <el-row :gutter="24" id="device-status">
-      <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" style="margin-bottom: 24px">
-        <DeviceState :state="device.state" :device="device" />
-      </el-col>
-      <el-col
-        :xs="12"
-        :sm="10"
-        :md="8"
-        :lg="6"
-        :xl="4"
-        style="margin-bottom: 24px"
-        v-for="item in properties"
-        :key="item.id"
-      >
-        <PropertiesCard :item="item" :device="device" :ref="'propCard' + item.id" />
-      </el-col>
-      <el-col
-        :xs="12"
-        :sm="10"
-        :md="8"
-        :lg="6"
-        :xl="4"
-        style="margin-bottom: 24px"
-        v-for="item in events"
-        :key="item.id"
-      >
-        <EventCard :item="item" :device="device" :ref="'eventCard' + item.id" />
-      </el-col>
-    </el-row>
-  </a-spin>
+  <el-row :gutter="24" v-loading="loading">
+    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" style="margin-bottom: 24px">
+      <DeviceState :state="device.state" :device="device" />
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="10"
+      :md="8"
+      :lg="6"
+      :xl="4"
+      style="margin-bottom: 24px"
+      v-for="item in properties"
+      :key="item.id"
+    >
+      <PropertiesCard :item="item" :device="device" :ref="'propCard' + item.id" />
+    </el-col>
+    <el-col
+      :xs="12"
+      :sm="10"
+      :md="8"
+      :lg="6"
+      :xl="4"
+      style="margin-bottom: 24px"
+      v-for="item in events"
+      :key="item.id"
+    >
+      <EventCard :item="item" :device="device" :ref="'eventCard' + item.id" />
+    </el-col>
+  </el-row>
 </template>
 
 <script lang="jsx">

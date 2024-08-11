@@ -3,7 +3,7 @@
     <ContentWrap>
       <div>
         <el-form label-width="auto">
-          <el-row :gutter="{ md: 8, lg: 4, xl: 48 }">
+          <el-row :gutter="24">
             <el-col :md="6" :sm="24">
               <el-form-item label="事件">
                 <el-select v-model="eventId" @change="onEventIdChange">
