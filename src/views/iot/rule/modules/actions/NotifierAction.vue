@@ -1,33 +1,34 @@
 <template>
-  <div>
-    <el-col :span="4">
-      <el-tooltip content="请选择通知类型">
-        <el-select
-          placeholder="选择通知类型"
-          v-model="actionData.configuration.notifyType"
-          :class="{ 'v-error': notifyTypeError }"
-          @change="notifyTypeChange"
+  <el-col :span="4">
+    <el-tooltip content="请选择通知类型">
+      <el-select
+        placeholder="选择通知类型"
+        v-model="actionData.configuration.notifyType"
+        :class="{ 'v-error': notifyTypeError }"
+        @change="notifyTypeChange"
+      >
+        <el-option
+          v-for="item in notifyTypeConfig"
+          :key="item.type"
+          :value="item.type"
+          :label="item.name"
         >
-          <el-option v-for="item in notifyTypeConfig" :key="item.type" :value="item.type">
-            {{ item.name }}
-          </el-option>
-        </el-select>
-      </el-tooltip>
-    </el-col>
-    <el-col :span="4">
-      <el-tooltip content="请选择通知配置">
-        <el-select
-          placeholder="选择通知配置"
-          v-model="actionData.configuration.notifierId"
-          :class="{ 'v-error': notifierIdError }"
-        >
-          <el-option v-for="item in messageConfig" :key="item.id" :value="item.id">
-            {{ item.name }}
-          </el-option>
-        </el-select>
-      </el-tooltip>
-    </el-col>
-  </div>
+        </el-option>
+      </el-select>
+    </el-tooltip>
+  </el-col>
+  <el-col :span="4">
+    <el-tooltip content="请选择通知配置">
+      <el-select
+        placeholder="选择通知配置"
+        v-model="actionData.configuration.notifierId"
+        :class="{ 'v-error': notifierIdError }"
+      >
+        <el-option v-for="item in messageConfig" :key="item.id" :value="item.id" :label="item.name">
+        </el-option>
+      </el-select>
+    </el-tooltip>
+  </el-col>
 </template>
 
 <script lang="jsx">

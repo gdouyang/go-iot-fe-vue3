@@ -7,7 +7,10 @@
     :with-credentials="true"
     @change="handleChange"
   >
-    <el-button> <a-icon type="upload" /> 上传文件 </el-button>
+    <BaseButton>
+      <template #icon><Icon icon="carbon:cloud-upload" /></template>
+      选择文件
+    </BaseButton>
   </el-upload>
 </template>
 

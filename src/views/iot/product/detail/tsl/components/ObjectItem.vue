@@ -6,14 +6,14 @@
           <a-list-item>
             参数名称：{{ item.name }}
             <template slot="actions">
-              <el-button type="link" @click="edit(item)"> 编辑 </el-button>
-              <el-button type="link" @click="remove(item)"> 删除 </el-button>
+              <el-button link type="primary" @click="edit(item)"> 编辑 </el-button>
+              <el-button link type="primary" @click="remove(item)"> 删除 </el-button>
             </template>
           </a-list-item>
         </template>
       </a-list>
-      <el-button type="link" @click="add">
-        <a-icon type="plus" />
+      <el-button link type="primary" @click="add">
+        <Icon icon="carbon:add-alt" />
         添加参数
       </el-button>
     </el-form-item>

@@ -14,7 +14,7 @@
           </template>
         </el-popconfirm>
         <el-tooltip content="修改配置后需重新应用后才能生效。">
-          <a-icon type="question-circle-o" />
+          <Icon icon="carbon:help" />
         </el-tooltip>
         <span v-if="canResetConfig" v-action:device-mgr:save>
           <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
@@ -25,7 +25,7 @@
           <el-tooltip
             :title="`该设备单独编辑过[${deviceConfigKeys}]，点击此将恢复成默认的配置信息，请谨慎操作。`"
           >
-            <a-icon type="question-circle-o" />
+            <Icon icon="carbon:help" />
           </el-tooltip>
         </span>
       </template>

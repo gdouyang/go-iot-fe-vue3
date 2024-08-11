@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import _ from 'lodash-es'
 import request from '@/axios'
-import { PropType, defineExpose, ref, defineEmits, nextTick } from 'vue'
+import { PropType, ref } from 'vue'
 import Table from './Table.vue'
 import type { TableColumn } from './types'
 const props = defineProps({

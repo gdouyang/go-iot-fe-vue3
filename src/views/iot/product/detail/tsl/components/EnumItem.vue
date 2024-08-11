@@ -6,7 +6,7 @@
           <el-input placeholder="标识" :value="item.value" @change="valueChange($event, index)" />
         </el-col>
         <el-col :span="1" style="text-align: center">
-          <a-icon type="arrow-right" />
+          <Icon icon="carbon:arrow-right" />
         </el-col>
         <el-col :span="10">
           <el-input
@@ -17,15 +17,15 @@
         </el-col>
         <el-col :span="3" style="text-align: center">
           <template v-if="index === 0">
-            <a-icon v-if="arrayEnumData.length - 1 === 0" type="plus-circle" @click="plus" />
-            <a-icon v-else type="minus-circle" @click="minus(index)" />
+            <Icon v-if="arrayEnumData.length - 1 === 0" icon="carbon:add-alt" @click="plus" />
+            <Icon v-else icon="carbon:subtract-alt" @click="minus(index)" />
           </template>
           <template v-else>
             <el-row v-if="index === arrayEnumData.length - 1">
-              <a-icon type="plus-circle" @click="plus" />
-              <a-icon style="padding-left: 10px" type="minus-circle" @click="minus(index)" />
+              <Icon icon="carbon:add-alt" @click="plus" />
+              <Icon icon="carbon:subtract-alt" style="padding-left: 10px" @click="minus(index)" />
             </el-row>
-            <a-icon v-else type="minus-circle" @click="minus(index)" />
+            <Icon v-else icon="carbon:subtract-alt" @click="minus(index)" />
           </template>
         </el-col>
       </el-row>

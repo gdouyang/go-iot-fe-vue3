@@ -1,88 +1,90 @@
 <template>
-  <div>
-    <div v-if="propertiesData.type === 'enum'">
+  <el-col v-if="propertiesData.type === 'enum'" :span="4">
+    <el-select placeholder="选择属性值" :model-value="defaultValue" @change="selectChange">
+      <el-option v-for="item in propertiesData.elements" :key="item.value">{{
+        `${item.text}（${item.value}）`
+      }}</el-option>
+    </el-select>
+  </el-col>
+  <el-col v-else-if="propertiesData.type === 'array'" :span="24">
+    <el-row v-for="(value, index) in arrayData" :key="`array_${index}`">
       <el-col :span="4">
-        <el-select placeholder="选择属性值" :defaultValue="defaultValue" @change="selectChange">
-          <el-option v-for="item in propertiesData.elements" :key="item.value">{{
-            `${item.text}（${item.value}）`
-          }}</el-option>
-        </el-select>
+        <el-input v-model="arrayData[index]" @change="arrayInputChange($event, index)" />
       </el-col>
-    </div>
-    <div v-else-if="propertiesData.type === 'array'">
-      <el-col :span="24">
-        <el-row v-for="(value, index) in arrayData" :key="`array_${index}`">
-          <el-col :span="4">
-            <el-input v-model="arrayData[index]" @change="arrayInputChange($event, index)" />
-          </el-col>
-          <el-col :span="2">
-            <template v-if="index === 0">
-              <a-icon v-if="arrayData.length - 1 === 0" type="plus-circle" @click="arrayPlus" />
-              <a-icon v-else type="minus-circle" @click="arrayMinus(index)" />
-            </template>
-            <template v-else>
-              <el-row v-if="index === arrayData.length - 1">
-                <a-icon type="plus-circle" @click="arrayPlus" />
-                <a-icon style="paddingleft: 10" type="minus-circle" @click="arrayMinus(index)" />
-              </el-row>
-              <a-icon v-else type="minus-circle" @click="arrayMinus(index)" />
-            </template>
-          </el-col>
-        </el-row>
+      <el-col :span="2">
+        <template v-if="index === 0">
+          <Icon v-if="arrayData.length - 1 === 0" icon="carbon:add-alt" @click="arrayPlus" />
+          <Icon v-else icon="carbon:subtract-alt" @click="arrayMinus(index)" />
+        </template>
+        <template v-else>
+          <el-row v-if="index === arrayData.length - 1">
+            <Icon icon="carbon:add-alt" @click="arrayPlus" />
+            <Icon
+              icon="carbon:subtract-alt"
+              style="padding-left: 10px"
+              @click="arrayMinus(index)"
+            />
+          </el-row>
+          <Icon v-else icon="carbon:subtract-alt" @click="arrayMinus(index)" />
+        </template>
       </el-col>
-    </div>
-    <div v-else-if="propertiesData.type === 'boolean'">
-      <el-col
-        v-if="$_.isNil(propertiesData.trueValue) || $_.isNil(propertiesData.falseValue)"
-        :span="4"
-      >
-        <el-input
-          key="value"
-          placeholder="填写属性值"
-          :defaultValue="defaultValue"
-          @change="inputChange"
+    </el-row>
+  </el-col>
+  <template v-else-if="propertiesData.type === 'boolean'">
+    <el-col
+      v-if="$_.isNil(propertiesData.trueValue) || $_.isNil(propertiesData.falseValue)"
+      :span="4"
+    >
+      <el-input
+        key="value"
+        placeholder="填写属性值"
+        :model-value="defaultValue"
+        @change="inputChange"
+      />
+    </el-col>
+    <el-col :span="4" v-else>
+      <el-select placeholder="选择属性值" :model-value="defaultValue" @change="selectChange">
+        <el-option
+          :key="propertiesData.trueValue + ''"
+          :label="`${propertiesData.trueText}（${propertiesData.trueValue}）`"
+        >
+        </el-option>
+        <el-option
+          :key="propertiesData.falseValue + ''"
+          :label="`${propertiesData.falseText}（${propertiesData.falseValue}）`"
+        >
+        </el-option>
+      </el-select>
+    </el-col>
+  </template>
+  <template v-else-if="propertiesData.type === 'object'">
+    <el-col
+      :span="24"
+      v-for="(item, index) in propertiesData.properties"
+      :key="`object${item.id}_${index}`"
+    >
+      <div>
+        <el-col :span="4">
+          <el-input :value="`${item.name}(${item.id})`" :disabled="true" />
+        </el-col>
+        <PropertiesObject
+          :properties="item"
+          :actionData="actionData"
+          :propertiesData="propertiesData"
         />
-      </el-col>
-      <el-col :span="4" v-else>
-        <el-select placeholder="选择属性值" :defaultValue="defaultValue" @change="selectChange">
-          <el-option :key="propertiesData.trueValue + ''">
-            {{ `${propertiesData.trueText}（${propertiesData.trueValue}）` }}
-          </el-option>
-          <el-option :key="propertiesData.falseValue + ''">
-            {{ `${propertiesData.falseText}（${propertiesData.falseValue}）` }}
-          </el-option>
-        </el-select>
-      </el-col>
-    </div>
-    <div v-else-if="propertiesData.type === 'object'">
-      <el-col
-        :span="24"
-        v-for="(item, index) in propertiesData.properties"
-        :key="`object${item.id}_${index}`"
-      >
-        <div>
-          <el-col :span="4">
-            <el-input :value="`${item.name}(${item.id})`" :disabled="true" />
-          </el-col>
-          <PropertiesObject
-            :properties="item"
-            :actionData="actionData"
-            :propertiesData="propertiesData"
-          />
-        </div>
-      </el-col>
-    </div>
-    <div v-else>
-      <el-col :span="4">
-        <el-input
-          key="value"
-          placeholder="填写属性值"
-          :defaultValue="defaultValue"
-          @change="inputChange"
-        />
-      </el-col>
-    </div>
-  </div>
+      </div>
+    </el-col>
+  </template>
+  <template v-else>
+    <el-col :span="4">
+      <el-input
+        key="value"
+        placeholder="填写属性值"
+        :model-value="defaultValue"
+        @change="inputChange"
+      />
+    </el-col>
+  </template>
 </template>
 
 <script lang="jsx">
@@ -120,7 +122,8 @@ export default {
   },
   data() {
     return {
-      defaultValue: ''
+      defaultValue: '',
+      $_: _
     }
   },
   methods: {

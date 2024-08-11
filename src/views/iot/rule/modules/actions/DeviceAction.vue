@@ -1,21 +1,22 @@
 <template>
-  <div>
-    <el-col :span="4">
-      <el-input placeholder="点击选择设备" v-model="deviceData.name" :disabled="true">
-        <a-icon slot="addonAfter" type="api" @click="selectDevice" title="点击选择设备"></a-icon>
-      </el-input>
-    </el-col>
-    <el-col :span="4" v-if="deviceData.name">
-      <el-select
-        placeholder="选择类型，如：属性/功能"
-        :defaultValue="messageTypeDefaultValue"
-        @change="messageTypeChange"
-      >
-        <!-- <el-option value="WRITE_PROPERTY">设置属性</el-option> -->
-        <el-option value="INVOKE_FUNCTION">调用功能</el-option>
-      </el-select>
-    </el-col>
-    <!-- <div v-show="messageType === 'WRITE_PROPERTY'">
+  <el-col :span="4">
+    <el-input placeholder="点击选择设备" v-model="deviceData.name">
+      <template #append>
+        <BaseButton circle><Icon icon="carbon:link" @click="selectDevice" title="点击选择设备" /> </BaseButton>
+      </template>
+    </el-input>
+  </el-col>
+  <el-col v-if="deviceData.name" :span="4">
+    <el-select
+      placeholder="选择类型，如：属性/功能"
+      :model-value="messageTypeDefaultValue"
+      @change="messageTypeChange"
+    >
+      <!-- <el-option value="WRITE_PROPERTY">设置属性</el-option> -->
+      <el-option value="INVOKE_FUNCTION" label="调用功能"></el-option>
+    </el-select>
+  </el-col>
+  <!-- <div v-show="messageType === 'WRITE_PROPERTY'">
       <el-col :span="4">
         <el-select
           placeholder="物模型属性"
@@ -27,34 +28,37 @@
       </el-col>
       <Properties :propertiesData="propertiesData" :actionData="actionData" :arrayData.sync="arrayData" />
     </div> -->
-    <div v-show="messageType === 'INVOKE_FUNCTION'">
-      <el-col :span="4">
-        <el-select
-          placeholder="物模型功能"
-          :value="functionDefaultValue"
-          @change="functionIdChange"
-        >
-          <el-option template v-for="item in functions" :key="item.id" :value="item.id"
-            >{{ item.name }}({{ item.id }})</el-option
-          >
-        </el-select>
-      </el-col>
-      <el-col
-        :span="24"
+  <template v-if="messageType === 'INVOKE_FUNCTION'">
+    <el-col :span="4">
+      <el-select
+        placeholder="物模型功能"
+        :model-value="functionDefaultValue"
+        @change="functionIdChange"
+      >
+        <el-option
+          v-for="item in functions"
+          :key="item.id"
+          :value="item.id"
+          :label="`${item.name}(${item.id})`"
+        ></el-option>
+      </el-select>
+    </el-col>
+    <el-col :span="24">
+      <el-row
         v-for="(item, index) in functionData.inputs"
         :key="`function_${item.id}_${index}`"
+        :gutter="16"
+        style="margin-top: 5px;"
       >
-        <div>
-          <el-col :span="4">
-            <el-input :value="`${item.name}(${item.id})`" :readOnly="true" />
-          </el-col>
-          <DeviceFunction :item="item" :index="index" :actionData="actionData" />
-        </div>
-      </el-col>
-    </div>
+        <el-col :span="4">
+          <el-input :model-value="`${item.name}(${item.id})`" readonly />
+        </el-col>
+        <DeviceFunction :item="item" :index="index" :actionData="actionData" />
+      </el-row>
+    </el-col>
+  </template>
 
-    <DeviceSelect @select="select" ref="DeviceSelect" />
-  </div>
+  <DeviceSelect @select="select" ref="DeviceSelect" />
 </template>
 
 <script lang="jsx">
@@ -90,10 +94,21 @@ export default {
       return (message && message.functionId) || undefined
     }
   },
-  created() {
+  mounted() {
     const deviceId = this.actionData.configuration.deviceId
     if (deviceId) {
-      this.findDevice(deviceId)
+      this.findDevice(deviceId).then(() => {
+        const configuration = this.actionData.configuration
+        if (configuration && configuration.messageType) {
+          this.messageTypeChange(configuration.messageType)
+        }
+        if (this.propertiesData.id) {
+          this.propertiesDataChange(this.propertiesData.id)
+        }
+        if (configuration && configuration.functionId) {
+          this.functionIdChange(configuration.functionId)
+        }
+      })
     }
   },
   data() {
@@ -129,10 +144,12 @@ export default {
       this.$refs.DeviceSelect.open()
     },
     select(item) {
-      this.findDevice(item.id)
+      if (item && item.id) {
+        this.findDevice(item.id)
+      }
     },
     findDevice(deviceId) {
-      getDevice(deviceId).then((data) => {
+      return getDevice(deviceId).then((data) => {
         if (data.success) {
           const result = data.result
           if (result.metadata) {

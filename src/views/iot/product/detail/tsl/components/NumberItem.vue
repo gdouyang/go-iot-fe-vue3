@@ -7,6 +7,7 @@
         :min="0"
         :max="10"
         :step="1"
+        controls-position="right"
         placeholder="小数点位数"
         style="width: 100%"
       />

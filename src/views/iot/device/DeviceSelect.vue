@@ -30,14 +30,7 @@
           </el-row>
         </el-form>
       </div>
-      <PageTable ref="tb" :url="url" :columns="columns" rowKey="id">
-        <span slot="state" slot-scope="text, record">
-          {{ record.state }}
-        </span>
-        <span slot="action" slot-scope="text, record">
-          <a size="small" @click="select(record)">选择</a>
-        </span>
-      </PageTable>
+      <PageTable ref="tb" :url="url" :columns="columns" rowKey="id"> </PageTable>
     </div>
   </Dialog>
 </template>
@@ -65,8 +58,21 @@ export default {
         { label: '编码', field: 'id' },
         { label: '名称', field: 'name' },
         { label: '产品', field: 'productId' },
-        { label: '状态', field: 'state', scopedSlots: { customRender: 'state' } },
-        { label: '操作', field: 'action', minWidth: 110, scopedSlots: { customRender: 'action' } }
+        { label: '状态', field: 'state' },
+        {
+          label: '操作',
+          field: 'action',
+          minWidth: '120px',
+          slots: {
+            default: (data) => {
+              return (
+                <el-button link type="primary" onClick={() => this.select(data.row)}>
+                  选择
+                </el-button>
+              )
+            }
+          }
+        }
       ]
     }
   },

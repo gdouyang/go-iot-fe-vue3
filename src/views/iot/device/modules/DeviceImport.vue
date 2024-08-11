@@ -34,7 +34,10 @@
           :before-upload="beforeUpload"
           @change="uploadChange"
         >
-          <el-button> <a-icon type="upload" /> 选择文件 </el-button>
+          <BaseButton>
+            <template #icon><Icon icon="carbon:cloud-upload" /></template>
+            选择文件
+          </BaseButton>
         </el-upload>
         <span>{{ addObj.fileName }}</span>
       </el-form-item>

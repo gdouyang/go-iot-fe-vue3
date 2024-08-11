@@ -1,37 +1,35 @@
 <template>
-  <div>
-    <div v-if="properties.type === 'enum'">
-      <el-col :span="4">
-        <el-select placeholder="选择属性值" :defaultValue="defaultValue" @change="selectChange">
-          <el-option v-if="item in properties.elements" :key="item.value">{{
-            `${item.text}（${item.value}）`
-          }}</el-option>
-        </el-select>
-      </el-col>
-    </div>
-    <div v-else-if="properties.type === 'bool'">
-      <el-col :span="4">
-        <el-select placeholder="选择属性值" :defaultValue="defaultValue" @change="selectChange">
-          <el-option :key="properties.trueValue">
-            {{ `${properties.trueText}（${properties.trueValue}）` }}
-          </el-option>
-          <el-option :key="properties.falseValue">
-            {{ `${properties.falseText}（${properties.falseValue}）` }}
-          </el-option>
-        </el-select>
-      </el-col>
-    </div>
-    <div v-else>
-      <el-col :span="4">
-        <el-input
-          key="value"
-          placeholder="填写属性值"
-          :defaultValue="defaultValue"
-          @change="inputChange"
-        />
-      </el-col>
-    </div>
-  </div>
+  <el-col :span="4" v-if="properties.type === 'enum'">
+    <el-select placeholder="选择属性值" :model-value="defaultValue" @change="selectChange">
+      <el-option
+        v-if="item in properties.elements"
+        :key="item.value"
+        :label="`${item.text}（${item.value}）`"
+      ></el-option>
+    </el-select>
+  </el-col>
+  <el-col v-else-if="properties.type === 'bool'" :span="4">
+    <el-select placeholder="选择属性值" :model-value="defaultValue" @change="selectChange">
+      <el-option
+        :key="properties.trueValue"
+        :label="`${properties.trueText}（${properties.trueValue}）`"
+      >
+      </el-option>
+      <el-option
+        :key="properties.falseValue"
+        :label="`${properties.falseText}（${properties.falseValue}）`"
+      >
+      </el-option>
+    </el-select>
+  </el-col>
+  <el-col v-else :span="4">
+    <el-input
+      key="value"
+      placeholder="填写属性值"
+      :model-value="defaultValue"
+      @change="inputChange"
+    />
+  </el-col>
 </template>
 
 <script lang="jsx">

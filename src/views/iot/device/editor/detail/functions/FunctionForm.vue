@@ -12,6 +12,7 @@
           <el-input-number
             v-if="isNumber(domain.type)"
             v-model="domain.value"
+            controls-position="right"
             class="func-form-item"
           ></el-input-number>
           <!-- { "type": "bool", "trueText": "是", "trueValue": "1", "falseText": "否", "falseValue": "0" } -->

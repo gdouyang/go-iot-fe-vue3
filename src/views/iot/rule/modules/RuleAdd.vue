@@ -2,40 +2,40 @@
   <Dialog
     :title="title"
     ref="addModal"
-    @confirm="submitData"
-    @close="addClose"
     width="70%"
     style="margin-top: -3%"
+    @confirm="submitData"
+    @close="addClose"
   >
-    <div :style="{ maxHeight: 750, overflowY: 'auto', overflowX: 'hidden' }">
-      <el-form :model="scene" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }" ref="addAlarmForm">
+    <div :style="{ overflowY: 'auto', overflowX: 'hidden' }">
+      <el-form :model="scene" ref="addAlarmForm" label-width="auto">
         <el-row>
-          <el-col :span="24">
-            <el-col :span="12">
-              <el-form-item
-                label="规则名称"
-                prop="name"
-                :rules="[
-                  { required: true, message: '规则名称不能为空' },
-                  { max: 50, message: '不能超过50个字符' }
-                ]"
-              >
-                <el-input v-model="scene.name" placeholder="输入规则名称" />
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item
-                label="类型"
-                prop="type"
-                :rules="[{ required: true, message: '选择类型' }]"
-              >
-                <el-select v-model="scene.type">
-                  <el-option value="scene">场景联动</el-option>
-                  <el-option value="alarm">设备告警</el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="规则名称"
+              prop="name"
+              :rules="[
+                { required: true, message: '规则名称不能为空' },
+                { max: 50, message: '不能超过50个字符' }
+              ]"
+            >
+              <el-input v-model="scene.name" placeholder="输入规则名称" />
+            </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="类型"
+              prop="type"
+              :rules="[{ required: true, message: '选择类型' }]"
+            >
+              <el-select v-model="scene.type" placeholder="选择类型">
+                <el-option value="scene" label="场景联动"></el-option>
+                <el-option value="alarm" label="设备告警"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item
               label="触发器类型"
@@ -47,8 +47,8 @@
                 v-model="scene.triggerType"
                 @change="sceneTypeChange"
               >
-                <el-option value="device">设备触发</el-option>
-                <el-option value="timer">定时触发</el-option>
+                <el-option value="device" label="设备触发"></el-option>
+                <el-option value="timer" label="定时触发"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -62,9 +62,9 @@
               ]"
             >
               <el-input placeholder="cron表达式" v-model="scene.cron">
-                <template #suffix>
+                <template #append>
                   <el-tooltip content="点击查看说明">
-                    <a-icon type="info-circle" @click="openDrawer = true"></a-icon>
+                    <Icon icon="carbon:help" @click="openDrawer = true" />
                   </el-tooltip>
                 </template>
               </el-input>
@@ -73,10 +73,10 @@
         </el-row>
         <!-- 触发条件 -->
         <el-card
+          v-if="scene.triggerType === 'device'"
           style="margin-bottom: 10px"
           size="small"
           shadow="never"
-          v-if="scene.triggerType === 'device'"
         >
           <Trigger :data="scene" />
         </el-card>
@@ -91,18 +91,17 @@
             @save="saveAction"
             @remove="removeAction"
           />
-          <el-button icon="plus" type="link" @click="addAction"> 执行动作 </el-button>
+          <el-button link type="primary" @click="addAction"> 执行动作 </el-button>
         </el-card>
       </el-form>
     </div>
 
     <el-drawer
-      title="cron表达式说明"
-      placement="right"
-      width="750"
-      @close="openDrawer = false"
-      :visible="openDrawer"
       v-if="openDrawer"
+      title="cron表达式说明"
+      width="750"
+      :model-value="true"
+      @close="openDrawer = false"
     >
       <Doc type="Cron" />
     </el-drawer>
@@ -115,7 +114,6 @@ import { newEmtpyAction } from '@/views/iot/rule/modules/actions/data.js'
 import Trigger from './triggers/TriggerIndex.vue'
 import Action from './actions/index.vue'
 import _ from 'lodash-es'
-// import dayjs from 'dayjs'
 
 export default {
   name: 'SceneAdd',
@@ -199,6 +197,7 @@ export default {
       })
       this.formChecker.forEach((checker, key) => {
         if (!checker()) {
+          console.error(key + '校验不通过')
           isPass = false
         }
       })

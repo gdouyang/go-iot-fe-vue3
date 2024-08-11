@@ -2,10 +2,10 @@
   <div>
     <p style="font-size: 16px">触发条件</p>
     <el-card size="small" shadow="never" style="background-color: #eee">
-      <el-row :gutter="16">
+      <el-row>
         <el-col :span="24">
           <div class="shake-limit">
-            <a-switch
+            <el-switch
               v-model="shakeLimit.enabled"
               checkedChildren="防抖(已开启)"
               unCheckedChildren="防抖(已关闭)"
@@ -17,6 +17,7 @@
                 :min="1"
                 :max="3600"
                 :step="1"
+                controls-position="right"
                 style="width: 70px; margin-left: 3px"
                 size="small"
               />
@@ -26,174 +27,190 @@
                 :min="1"
                 :max="1000"
                 :step="1"
+                controls-position="right"
                 style="width: 70px"
                 size="small"
               />
               <small style="margin: 0px 5px">次及以上时，处理</small>
               <el-radio-group v-model="shakeLimit.alarmFirst" size="small" buttonStyle="solid">
-                <el-radio-button :value="true">第一次</el-radio-button>
-                <el-radio-button :value="false">最后一次</el-radio-button>
+                <el-radio-button :value="true" label="第一次"></el-radio-button>
+                <el-radio-button :value="false" label="最后一次"></el-radio-button>
               </el-radio-group>
             </template>
           </div>
         </el-col>
-        <el-col :span="24" style="margin-top: 5px">
-          <el-col :span="4">
-            <el-select
-              v-model="scene.productId"
-              @change="productIdChange"
-              placeholder="产品"
-              :class="{ 'v-error': !scene.productId }"
-            >
-              <el-option v-for="p in productList" :key="p.id" :value="p.id">{{ p.name }}</el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="4">
-            <el-input placeholder="点击选择设备" v-model="scene.deviceName" :disabled="true">
-              <a-icon
-                slot="addonAfter"
-                type="api"
-                @click="selectDevice"
-                title="点击选择设备"
-              ></a-icon>
-            </el-input>
-          </el-col>
-          <el-col :span="24">
-            <div class="device-box">
-              <el-tag
-                color="blue"
-                v-for="devId in scene.deviceIds"
-                :key="devId"
-                closable
-                @close="removeDevice(devId)"
-              >
-                {{ devId }}
-              </el-tag>
-            </div>
-          </el-col>
-          <el-col :span="4" v-if="scene.productId">
-            <el-select
-              placeholder="选择类型，如：属性/事件"
-              v-model="scene.trigger.filterType"
-              @change="triggerTypeChange"
-              :class="{ 'v-error': !scene.trigger.filterType }"
-            >
-              <el-option value="online">上线</el-option>
-              <el-option value="offline">离线</el-option>
-              <el-option value="properties" v-if="metaData.properties">属性</el-option>
-              <el-option value="event" v-if="metaData.events">事件</el-option>
-            </el-select>
-          </el-col>
-        </el-col>
-        <template
-          v-if="scene.trigger.filterType === 'properties' || scene.trigger.filterType === 'event'"
-        >
-          <el-col
-            class="properties-col"
-            :span="24"
-            style="margin-top: 5px"
-            v-for="(item, index) in scene.trigger.filters"
-            :key="index"
+      </el-row>
+      <el-row style="margin-top: 5px">
+        <el-col :span="4">
+          <el-select
+            v-model="scene.productId"
+            @change="productIdChange"
+            placeholder="选择产品"
+            :class="{ 'v-error': !scene.productId }"
           >
-            <el-col :span="6" v-if="index != 0">
-              <el-select
-                placeholder="逻辑符"
-                v-model="item.logic"
-                :class="{ 'v-error': !item.logic }"
-              >
-                <el-option value="and">AND(并且)</el-option>
-                <el-option value="or">OR(或)</el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="6">
-              <el-select
-                placeholder="过滤条件KEY"
-                v-model="item.key"
-                @change="filterKeyChange($event, item)"
-                :class="{ 'v-error': !item.key }"
-              >
-                <el-option v-for="d in dataSource" :value="d.id" :key="d.id">{{
-                  `${d.id}(${d.name})`
-                }}</el-option>
-              </el-select>
-            </el-col>
-            <el-col :span="4" v-if="item.valueType.type && item.valueType.type !== 'this'">
-              <el-select
-                placeholder="操作符"
-                v-model="item.operator"
-                :class="{ 'v-error': !item.operator }"
-              >
-                <el-option value="eq">等于(=)</el-option>
-                <el-option value="neq">不等于(!=)</el-option>
-                <template v-if="isNumberType(item)">
-                  <el-option value="gt">大于(>)</el-option>
-                  <el-option value="lt">小于(&lt;)</el-option>
-                  <el-option value="gte">大于等于(>=)</el-option>
-                  <el-option value="lte">小于等于(&lt;=)</el-option>
-                </template>
-                <!-- <el-option value="like">模糊(%)</el-option> -->
-              </el-select>
-            </el-col>
-            <el-col
-              :span="4"
-              v-if="item.valueType.type && item.valueType.type !== 'this'"
-              :class="{ 'v-error': item.value === '' || $_.isNil(item.value) }"
+            <el-option
+              v-for="p in productList"
+              :key="p.id"
+              :value="p.id"
+              :label="p.name"
+            ></el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="4" style="text-align: center">
+          <el-button @click="selectDevice" :disabled="!scene.productId"
+            ><Icon icon="carbon:link" />点击选择设备</el-button
+          >
+        </el-col>
+        <el-col :span="4" v-if="scene.productId">
+          <el-select
+            placeholder="选择类型，如：属性/事件"
+            v-model="scene.trigger.filterType"
+            :class="{ 'v-error': !scene.trigger.filterType }"
+            @change="triggerTypeChange"
+          >
+            <el-option value="online" label="上线"></el-option>
+            <el-option value="offline" label="离线"></el-option>
+            <el-option value="properties" v-if="metaData.properties" label="属性"></el-option>
+            <el-option value="event" v-if="metaData.events" label="事件"></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <div class="device-box">
+            <el-tag
+              v-for="devId in scene.deviceIds"
+              :key="devId"
+              closable
+              @close="removeDevice(devId)"
             >
-              <el-select
-                v-if="
-                  item.valueType.type === 'bool' &&
-                  !$_.isNil(item.valueType.trueValue) &&
-                  !$_.isNil(item.valueType.falseValue)
-                "
-                placeholder="过滤条件值"
-                v-model="item.value"
-              >
-                <el-option :key="item.valueType.trueValue + ''">
-                  {{ `${item.valueType.trueText}（${item.valueType.trueValue}）` }}
-                </el-option>
-                <el-option :key="item.valueType.falseValue + ''">
-                  {{ `${item.valueType.falseText}（${item.valueType.falseValue}）` }}
-                </el-option>
-              </el-select>
-              <el-select
-                v-if="item.valueType.type === 'enum'"
-                placeholder="过滤条件值"
-                v-model="item.value"
-              >
-                <el-option v-for="elem in item.valueType.elements" :key="elem.value + ''">
-                  {{ `${elem.text}（${elem.value}）` }}
-                </el-option>
-              </el-select>
-              <el-input-number
-                v-else-if="['float', 'double'].indexOf(item.valueType.type) !== -1"
-                v-model="item.value"
-                placeholder="过滤条件值"
-              />
-              <el-input-number
-                v-else-if="['int', 'long'].indexOf(item.valueType.type) !== -1"
-                v-model="item.value"
-                :precision="0"
-                :step="1"
-                placeholder="过滤条件值"
-              />
-              <el-input v-else placeholder="过滤条件值" v-model="item.value" />
-            </el-col>
-            <el-col :span="3">
-              <el-popconfirm title="确认删除？" @confirm="removeFilter(index)">
-                <a>删除</a>
-              </el-popconfirm>
-            </el-col>
-          </el-col>
-        </template>
-        <el-col
-          :span="24"
-          v-if="scene.trigger.filterType === 'properties' || scene.trigger.filterType === 'event'"
-        >
-          <div>
-            <a @click="addFilter">添加</a>
+              {{ devId }}
+            </el-tag>
           </div>
         </el-col>
       </el-row>
+      <el-row
+        v-if="scene.trigger.filterType === 'properties' || scene.trigger.filterType === 'event'"
+      >
+        <el-col
+          class="properties-col"
+          :span="24"
+          style="margin-top: 5px"
+          v-for="(item, index) in scene.trigger.filters"
+          :key="index"
+        >
+          <el-col v-if="index != 0" :span="6">
+            <el-select
+              placeholder="逻辑符"
+              v-model="item.logic"
+              :class="{ 'v-error': !item.logic }"
+            >
+              <el-option value="and" label="AND(并且)"></el-option>
+              <el-option value="or" label="OR(或)"></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6">
+            <el-select
+              placeholder="过滤条件KEY"
+              v-model="item.key"
+              @change="filterKeyChange($event, item)"
+              :class="{ 'v-error': !item.key }"
+            >
+              <el-option
+                v-for="d in dataSource"
+                :value="d.id"
+                :key="d.id"
+                :label="`${d.id}(${d.name})`"
+              ></el-option>
+            </el-select>
+          </el-col>
+          <el-col v-if="item.valueType.type && item.valueType.type !== 'this'" :span="4">
+            <el-select
+              placeholder="操作符"
+              v-model="item.operator"
+              :class="{ 'v-error': !item.operator }"
+            >
+              <el-option value="eq" label="等于(=)"></el-option>
+              <el-option value="neq" label="不等于(!=)"></el-option>
+              <template v-if="isNumberType(item)">
+                <el-option value="gt" label="大于(>)"></el-option>
+                <el-option value="lt" label="小于(<)"></el-option>
+                <el-option value="gte" label="大于等于(>=)"></el-option>
+                <el-option value="lte" label="小于等于(<=)"></el-option>
+              </template>
+              <!-- <el-option value="like">模糊(%)</el-option> -->
+            </el-select>
+          </el-col>
+          <el-col
+            v-if="item.valueType.type && item.valueType.type !== 'this'"
+            :span="4"
+            :class="{ 'v-error': item.value === '' || $_.isNil(item.value) }"
+          >
+            <el-select
+              v-if="
+                item.valueType.type === 'bool' &&
+                !$_.isNil(item.valueType.trueValue) &&
+                !$_.isNil(item.valueType.falseValue)
+              "
+              placeholder="过滤条件值"
+              v-model="item.value"
+            >
+              <el-option
+                :key="item.valueType.trueValue + ''"
+                :label="`${item.valueType.trueText}（${item.valueType.trueValue}）`"
+              >
+              </el-option>
+              <el-option
+                :key="item.valueType.falseValue + ''"
+                :label="`${item.valueType.falseText}（${item.valueType.falseValue}）`"
+              >
+              </el-option>
+            </el-select>
+            <el-select
+              v-if="item.valueType.type === 'enum'"
+              placeholder="过滤条件值"
+              v-model="item.value"
+            >
+              <el-option
+                v-for="elem in item.valueType.elements"
+                :key="elem.value + ''"
+                :label="`${elem.text}（${elem.value}）`"
+              >
+              </el-option>
+            </el-select>
+            <el-input-number
+              v-else-if="['float', 'double'].indexOf(item.valueType.type) !== -1"
+              v-model="item.value"
+              controls-position="right"
+              placeholder="过滤条件值"
+            />
+            <el-input-number
+              v-else-if="['int', 'long'].indexOf(item.valueType.type) !== -1"
+              v-model="item.value"
+              :precision="0"
+              :step="1"
+              controls-position="right"
+              placeholder="过滤条件值"
+            />
+            <el-input v-else placeholder="过滤条件值" v-model="item.value" />
+          </el-col>
+          <el-col :span="3">
+            <el-popconfirm title="确认删除？" @confirm="removeFilter(index)">
+              <template #reference>
+                <el-button link type="primary">删除</el-button>
+              </template>
+            </el-popconfirm>
+          </el-col>
+        </el-col>
+      </el-row>
+      <el-col
+        :span="24"
+        v-if="scene.trigger.filterType === 'properties' || scene.trigger.filterType === 'event'"
+      >
+        <div>
+          <el-button link type="primary" @click="addFilter">添加</el-button>
+        </div>
+      </el-col>
     </el-card>
     <DeviceSelect @select="doSelectDevice" :productId="scene.productId" ref="DeviceSelect" />
   </div>
@@ -233,7 +250,8 @@ export default {
         alarmFirst: true
       },
       scene: {},
-      productList: []
+      productList: [],
+      $_: _
     }
   },
   created() {
@@ -401,12 +419,14 @@ export default {
       this.$refs.DeviceSelect.open()
     },
     doSelectDevice(item) {
-      const deviceId = item.id
-      getDetail(deviceId).then((data) => {
-        if (data.success && !_.find(this.scene.deviceIds, (id) => id === deviceId)) {
-          this.scene.deviceIds.push(data.result.id)
-        }
-      })
+      if (item && item.id) {
+        const deviceId = item.id
+        getDetail(deviceId).then((data) => {
+          if (data.success && !_.find(this.scene.deviceIds, (id) => id === deviceId)) {
+            this.scene.deviceIds.push(data.result.id)
+          }
+        })
+      }
     },
     removeDevice(deviceId) {
       this.scene.deviceIds = _.filter(this.scene.deviceIds, (id) => id !== deviceId)
@@ -430,6 +450,9 @@ export default {
 .properties-col {
   display: flex;
   align-items: center;
+  .el-col {
+    padding-right: 10px;
+  }
 }
 .ant-input-number {
   width: 100%;

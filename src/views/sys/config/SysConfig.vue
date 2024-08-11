@@ -65,11 +65,14 @@
                   name="file"
                   :multiple="false"
                   action="api/file/upload"
+                  :show-file-list="false"
+                  :with-credentials="true"
                   @change="handleChange"
-                  :showUploadList="false"
-                  :withCredentials="true"
                 >
-                  <el-button> <a-icon type="upload" /> 上传文件 </el-button>
+                  <BaseButton>
+                    <template #icon><Icon icon="carbon:cloud-upload" /></template>
+                    选择文件
+                  </BaseButton>
                 </el-upload>
               </el-col>
             </el-row>

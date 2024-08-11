@@ -37,6 +37,8 @@ import App from './App.vue'
 
 import './permission'
 
+import Doc from '@/views/doc/Doc.vue'
+
 // 创建实例
 const setupAll = async () => {
   const app = createApp(App)
@@ -49,6 +51,8 @@ const setupAll = async () => {
 
   // setupElementPlus(app)
   app.use(ElementUI)
+
+  app.component('Doc', Doc)
 
   setupRouter(app)
 

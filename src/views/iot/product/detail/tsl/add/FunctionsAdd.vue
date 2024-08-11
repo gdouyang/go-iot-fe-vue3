@@ -54,6 +54,7 @@
             :min="0"
             :max="65535"
             :step="1"
+            controls-position="right"
             placeholder="采集间隔(秒)"
             style="width: 100%"
           />
@@ -63,13 +64,13 @@
             <div v-for="item in inputs" class="input-div">
               <div>参数名称：{{ item.name }}</div>
               <div>
-                <el-button type="link" @click="editInput(item)"> 编辑 </el-button>
-                <el-button type="link" @click="removeInput(item)"> 删除 </el-button>
+                <el-button link @click="editInput(item)"> 编辑 </el-button>
+                <el-button link @click="removeInput(item)"> 删除 </el-button>
               </div>
             </div>
           </div>
-          <el-button type="link" @click="addInput">
-            <a-icon type="plus" />
+          <el-button link @click="addInput">
+            <Icon icon="carbon:add" />
             添加参数
           </el-button>
         </el-form-item>

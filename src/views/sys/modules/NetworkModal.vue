@@ -9,7 +9,12 @@
     >
       <el-form ref="addFormRef" :model="addObj" label-width="auto">
         <el-form-item label="端口" prop="port" :rules="[{ required: true, message: '请输入' }]">
-          <el-input-number placeholder="端口" :maxlength="20" v-model.number="addObj.port" />
+          <el-input-number
+            v-model.number="addObj.port"
+            placeholder="端口"
+            :max="65535"
+            controls-position="right"
+          />
         </el-form-item>
       </el-form>
     </Dialog>
