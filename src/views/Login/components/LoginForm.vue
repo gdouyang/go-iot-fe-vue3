@@ -8,6 +8,7 @@ import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useRouter } from 'vue-router'
 import type { RouteLocationNormalizedLoaded, RouteRecordRaw } from 'vue-router'
+import { resetRouter } from '@/router'
 import { UserType } from '@/api/login/types'
 import { useValidator } from '@/hooks/web/useValidator'
 import { useUserStore } from '@/store/modules/user'
@@ -152,7 +153,8 @@ const signIn = async () => {
           userStore.setToken(res.result)
           const uInfoRes = await getInfo()
           userStore.setUserInfo(uInfoRes.result)
-          await permissionStore.generateRoutes('static').catch(() => {})
+          resetRouter() // 重置静态路由表
+          await permissionStore.generateRoutes('static')
           permissionStore.getAddRouters.forEach((route) => {
             addRoute(route as RouteRecordRaw) // 动态添加可访问路由表
           })

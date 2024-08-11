@@ -60,6 +60,7 @@ export const useUserStore = defineStore('user', {
       if (userInfo) {
         const permissions = new Array<string>()
         _.forEach(userInfo.role.permissions, (item) => {
+          permissions.push(item.permissionId)
           _.forEach(item.actionEntitySet, (e) => {
             permissions.push(e.action)
           })

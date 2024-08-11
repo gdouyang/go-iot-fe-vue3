@@ -1,11 +1,13 @@
+import _ from 'lodash-es'
 import { defineStore } from 'pinia'
-import { asyncRouterMap, constantRouterMap } from '@/router'
+import router, { asyncRouterMap, constantRouterMap } from '@/router'
 import {
   generateRoutesByFrontEnd,
   generateRoutesByServer,
   flatMultiLevelRoutes
 } from '@/utils/routerHelper'
 import { store } from '../index'
+import { useUserStoreWithOut } from '@/store/modules/user'
 import { cloneDeep } from 'lodash-es'
 
 export interface PermissionState {
@@ -52,6 +54,28 @@ export const usePermissionStore = defineStore('permission', {
         } else {
           // 直接读取静态路由表
           routerMap = cloneDeep(asyncRouterMap)
+          const userStore = useUserStoreWithOut()
+          if (userStore.getUserInfo) {
+            const permissions = userStore.getUserInfo.permissions
+            const rootRouter = new Array<AppRouteRecordRaw>()
+            routerMap.forEach((r) => {
+              const children = new Array<AppRouteRecordRaw>()
+              _.forEach(r.children, (child) => {
+                const childPermission = child.meta.permission
+                const hasCommonElements =
+                  _.isEmpty(childPermission) ||
+                  _.intersection(permissions, childPermission).length > 0
+                if (hasCommonElements) {
+                  children.push(child)
+                }
+              })
+              if (!_.isEmpty(children)) {
+                r.children = children
+                rootRouter.push(r)
+              }
+            })
+            routerMap = rootRouter
+          }
         }
         // 动态路由，404一定要放到最后面
         this.addRouters = routerMap.concat([

@@ -15,6 +15,7 @@ export type Role = {
 }
 
 export type Permission = {
+  permissionId: string
   actionEntitySet: ActionEntity[]
 }
 

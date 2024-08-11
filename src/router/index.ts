@@ -67,6 +67,16 @@ export const constantRouterMap: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/403',
+    component: () => import('@/views/Error/403.vue'),
+    name: 'NoPermission',
+    meta: {
+      hidden: true,
+      title: '403',
+      noTagsView: true
+    }
+  },
+  {
     path: '/404',
     component: () => import('@/views/Error/404.vue'),
     name: 'NoFind',
@@ -170,7 +180,11 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     path: '/sys',
     name: 'sysPage',
     component: Layout,
-    meta: { title: '系统管理', icon: 'carbon:settings' },
+    meta: {
+      title: '系统管理',
+      icon: 'carbon:settings',
+      alwaysShow: true
+    },
     children: [
       {
         path: 'role-list',
