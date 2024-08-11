@@ -47,7 +47,13 @@ const locale = computed(() => appStore.getLocale)
           :class="`${prefixCls}__left flex-1 bg-gray-500 bg-opacity-20 relative p-30px lt-xl:hidden`"
         >
           <div class="flex items-center relative text-white">
-            <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
+            <img
+              v-if="appStore.getSysConfig && appStore.getSysConfig.img"
+              :src="appStore.getSysConfig.img"
+              alt=""
+              class="w-48px h-48px mr-10px"
+            />
+            <img v-else src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
             <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
           <div class="flex justify-center items-center text-center h-[calc(100%-60px)]">

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { ConfigGlobal } from '@/components/ConfigGlobal'
 import { useDesign } from '@/hooks/web/useDesign'
+import { getSysConfig } from '@/views/sys/api.js'
 
 const { getPrefixCls } = useDesign()
 
@@ -15,6 +16,10 @@ const currentSize = computed(() => appStore.getCurrentSize)
 const greyMode = computed(() => appStore.getGreyMode)
 
 appStore.initTheme()
+
+getSysConfig().then((resp: any) => {
+  appStore.setSysConfig(resp.result)
+})
 </script>
 
 <template>

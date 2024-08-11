@@ -54,3 +54,20 @@ export function disableUser(id) {
 export function removeUser(id) {
   return request.delete(`/user/${id}`)
 }
+
+export function saveSysConfig(data) {
+  return request.post(`/system/config`, data)
+}
+export function getSysConfig() {
+  return request.get(`/anon/system/config`)
+}
+
+export function uploadFile(file) {
+  return request.post(
+    `/file/upload`,
+    { file: file },
+    {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
+  )
+}

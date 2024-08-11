@@ -203,13 +203,13 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         name: 'NetWorkList',
         component: () => import('@/views/sys/NetworkList.vue'),
         meta: { title: '网络管理', keepAlive: true, permission: ['network-config'] }
+      },
+      {
+        path: 'system-config',
+        name: 'SystemConfig',
+        component: () => import('@/views/sys/config/SysConfig.vue'),
+        meta: { title: '系统配置', keepAlive: true, permission: ['sys-config'] }
       }
-      // {
-      //   path: '/sys/system-config',
-      //   name: 'SystemConfig',
-      //   component: () => import('@/views/sys/config/SysConfig.vue'),
-      //   meta: { title: '系统配置', keepAlive: true, permission: [ 'sys-config' ] }
-      // }
     ]
   }
 ]

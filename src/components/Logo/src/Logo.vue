@@ -65,6 +65,12 @@ watch(
       to="/"
     >
       <img
+        v-if="appStore.getSysConfig && appStore.getSysConfig.img"
+        :src="appStore.getSysConfig.img"
+        class="w-[calc(var(--logo-height)-10px)] h-[calc(var(--logo-height)-10px)]"
+      />
+      <img
+        v-else
         src="@/assets/imgs/logo.png"
         class="w-[calc(var(--logo-height)-10px)] h-[calc(var(--logo-height)-10px)]"
       />

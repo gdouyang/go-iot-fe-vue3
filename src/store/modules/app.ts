@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { store } from '../index'
 import { setCssVar, humpToUnderline } from '@/utils'
-import { ElMessage, ComponentSize } from 'element-plus'
+import { ElMessage, ComponentSize, SysConfig } from 'element-plus'
 import { colorIsDark, hexToRGB, lighten, mix } from '@/utils/color'
 import { unref } from 'vue'
 import { useCssVar } from '@vueuse/core'
@@ -33,6 +33,7 @@ interface AppState {
   footer: boolean
   theme: ThemeTypes
   fixedMenu: boolean
+  sysConfig: SysConfig
 }
 
 export const useAppStore = defineStore('app', {
@@ -92,6 +93,10 @@ export const useAppStore = defineStore('app', {
         topHeaderHoverColor: '#f6f6f6',
         // 头部边框颜色
         topToolBorderColor: '#eee'
+      },
+      sysConfig: {
+        title: '',
+        img: ''
       }
     }
   },
@@ -170,6 +175,9 @@ export const useAppStore = defineStore('app', {
     },
     getFooter(): boolean {
       return this.footer
+    },
+    getSysConfig(): any {
+      return this.sysConfig
     }
   },
   actions: {
@@ -328,6 +336,12 @@ export const useAppStore = defineStore('app', {
         valueLight: 'light'
       })
       isDark.value = this.getIsDark
+    },
+    setSysConfig(config: SysConfig) {
+      this.sysConfig = config
+      if (config) {
+        this.setTitle(config.title)
+      }
     }
   },
   persist: true
