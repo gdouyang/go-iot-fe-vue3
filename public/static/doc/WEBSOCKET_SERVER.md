@@ -112,6 +112,13 @@ function OnInvoke(context) {
 
 ### 样例
 ```javascript
+function OnConnect(context) {
+  var session = context.GetSession()
+  var value = context.GetQuery("id")
+  session.SendText('success')
+  // 使设备的上线
+  context.DeviceOnline(value)
+}
 // 设备报文 -> 物模型
 function OnMessage(context) {
   var session = context.GetSession();
