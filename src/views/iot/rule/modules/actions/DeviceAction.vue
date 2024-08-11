@@ -2,7 +2,9 @@
   <el-col :span="4">
     <el-input placeholder="点击选择设备" v-model="deviceData.name">
       <template #append>
-        <BaseButton circle><Icon icon="carbon:link" @click="selectDevice" title="点击选择设备" /> </BaseButton>
+        <BaseButton circle
+          ><Icon icon="carbon:link" @click="selectDevice" title="点击选择设备" />
+        </BaseButton>
       </template>
     </el-input>
   </el-col>
@@ -48,7 +50,7 @@
         v-for="(item, index) in functionData.inputs"
         :key="`function_${item.id}_${index}`"
         :gutter="16"
-        style="margin-top: 5px;"
+        style="margin-top: 5px"
       >
         <el-col :span="4">
           <el-input :model-value="`${item.name}(${item.id})`" readonly />

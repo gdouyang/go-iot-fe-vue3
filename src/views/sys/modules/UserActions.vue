@@ -1,6 +1,8 @@
 <template>
   <span>
-    <el-button link @click="handleEdit(record)" v-action:user-mgr:save>编辑</el-button>
+    <el-button link type="primary" @click="handleEdit(record)" v-action:user-mgr:save
+      >编辑</el-button
+    >
     <span v-action:user-mgr:save>
       <el-divider direction="vertical" />
       <el-popconfirm
@@ -9,12 +11,12 @@
         @confirm="enable(record)"
       >
         <template #reference>
-          <el-button link>启用</el-button>
+          <el-button link type="primary">启用</el-button>
         </template>
       </el-popconfirm>
       <el-popconfirm title="确认禁用？" v-else @confirm="disable(record)">
         <template #reference>
-          <el-button link>禁用</el-button>
+          <el-button link type="primary">禁用</el-button>
         </template>
       </el-popconfirm>
     </span>
@@ -22,7 +24,7 @@
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
-          <el-button link>删除</el-button>
+          <el-button link type="primary">删除</el-button>
         </template>
       </el-popconfirm>
     </span>

@@ -1,15 +1,15 @@
 <template>
   <span>
-    <el-button link @click="meters(record)">查看</el-button>
+    <el-button link type="primary" @click="meters(record)">查看</el-button>
     <span v-action:network-config:save>
       <el-divider direction="vertical" />
-      <el-button link @click="handleEdit(record)">编辑</el-button>
+      <el-button link type="primary" @click="handleEdit(record)">编辑</el-button>
     </span>
     <span v-if="!record.productId" v-action:network-config:delete>
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
-          <el-button link>删除</el-button>
+          <el-button link type="primary">删除</el-button>
         </template>
       </el-popconfirm>
     </span>

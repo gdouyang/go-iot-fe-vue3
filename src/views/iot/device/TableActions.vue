@@ -1,16 +1,18 @@
 <template>
   <span>
-    <el-button link @click="detail(record.id)">查看</el-button>
+    <el-button link type="primary" @click="detail(record.id)">查看</el-button>
     <span v-action:device-mgr:save>
       <el-divider direction="vertical" />
-      <el-button link @click="handleEdit(record)">修改</el-button>
+      <el-button link type="primary" @click="handleEdit(record)">修改</el-button>
     </span>
     <span v-action:device-mgr:save>
       <el-divider direction="vertical" />
-      <el-button link @click="deploy(record.id)" v-if="record.state === 'noActive'">激活</el-button>
+      <el-button link type="primary" @click="deploy(record.id)" v-if="record.state === 'noActive'"
+        >激活</el-button
+      >
       <el-popconfirm v-else title="确认停用？" @confirm="unDeploy(record.id)">
         <template #reference>
-          <el-button link>停用</el-button>
+          <el-button link type="primary">停用</el-button>
         </template>
       </el-popconfirm>
     </span>
@@ -18,7 +20,7 @@
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
-          <el-button link>删除</el-button>
+          <el-button link type="primary">删除</el-button>
         </template>
       </el-popconfirm>
     </span>

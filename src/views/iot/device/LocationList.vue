@@ -33,7 +33,7 @@
 import _ from 'lodash-es'
 import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
 import BmGeolocation from 'vue-baidu-map/components/controls/Geolocation.vue'
-import DeviceDetail from './editor/Index.vue'
+import DeviceDetail from './DetailIndex.vue'
 
 const defautSearchObj = {
   name: ''

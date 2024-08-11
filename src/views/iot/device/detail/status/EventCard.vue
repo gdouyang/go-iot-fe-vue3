@@ -12,7 +12,7 @@
 <script lang="jsx">
 // import _ from 'lodash-es'
 import ChartCard from './ChartCard.vue'
-import { queryEvent } from '../../../api.js'
+import { queryEvent } from '../../api.js'
 export default {
   name: 'EventCard',
   props: {

@@ -1,11 +1,13 @@
 <template>
   <span>
-    <el-button link @click="handleEdit(record)" v-action:notify-config:save>编辑</el-button>
+    <el-button link type="primary" @click="handleEdit(record)" v-action:notify-config:save
+      >编辑</el-button
+    >
     <span v-action:notify-config:delete>
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
-          <el-button link>删除</el-button>
+          <el-button link type="primary">删除</el-button>
         </template>
       </el-popconfirm>
     </span>
@@ -13,7 +15,7 @@
       <el-divider direction="vertical" />
       <el-popconfirm title="确认复制？" @confirm="copy(record)">
         <template #reference>
-          <el-button link>复制</el-button>
+          <el-button link type="primary">复制</el-button>
         </template>
       </el-popconfirm>
     </span>
@@ -21,12 +23,12 @@
       <el-divider direction="vertical" />
       <el-popconfirm title="确认停止？" @confirm="stop(record)" v-if="record.state !== 'stopped'">
         <template #reference>
-          <el-button link>停止</el-button>
+          <el-button link type="primary">停止</el-button>
         </template>
       </el-popconfirm>
       <el-popconfirm title="确认启动？" @confirm="start(record)" v-else>
         <template #reference>
-          <el-button link>启动</el-button>
+          <el-button link type="primary">启动</el-button>
         </template>
       </el-popconfirm>
     </span>

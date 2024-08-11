@@ -10,7 +10,7 @@
 
 <script lang="jsx">
 import ChartCard from './ChartCard.vue'
-import { queryLogs } from '../../../api.js'
+import { queryLogs } from '../../api.js'
 // eslint-disable-next-line no-unused-vars
 // import dayjs from 'dayjs'
 export default {

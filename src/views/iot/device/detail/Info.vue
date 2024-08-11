@@ -25,7 +25,7 @@
 <script lang="jsx">
 import dayjs from 'dayjs'
 import { updateLocation } from '@/views/iot/device/api.js'
-import DeviceAdd from '../../modules/DeviceAdd.vue'
+import DeviceAdd from '../modules/DeviceAdd.vue'
 import Configuration from './Configuration.vue'
 
 export default {

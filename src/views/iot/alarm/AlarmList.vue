@@ -101,20 +101,21 @@ export default {
           field: 'state',
           slots: {
             default: (data) => {
-              return
-              ;<>
-                <el-button link onClick={detail(data.row)}>
-                  详情
-                </el-button>
-                {data.row.state !== 'solve' && (
-                  <>
-                    <el-divider direction="vertical" />
-                    <el-button link onClick={detail(data.row)}>
-                      详情
-                    </el-button>
-                  </>
-                )}
-              </>
+              return (
+                <>
+                  <el-button link type="primary" onClick={() => detail(data.row)}>
+                    详情
+                  </el-button>
+                  {data.row.state !== 'solve' && (
+                    <>
+                      <el-divider direction="vertical" />
+                      <el-button link type="primary" onClick={() => detail(data.row)}>
+                        详情
+                      </el-button>
+                    </>
+                  )}
+                </>
+              )
             }
           }
         }

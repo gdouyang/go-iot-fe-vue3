@@ -6,10 +6,12 @@
       </span>
       <span slot="state" slot-scope="text, record">
         <el-tag :color="colorMap.get(text.value)">{{ text.text }}</el-tag>
-        <el-button link v-if="text.value === 'error'" @click="showError(record)">查看</el-button>
+        <el-button link type="primary" v-if="text.value === 'error'" @click="showError(record)"
+          >查看</el-button
+        >
       </span>
       <span slot="action" slot-scope="text, record">
-        <el-button link @click="showDetail(record)">查看数据</el-button>
+        <el-button link type="primary" @click="showDetail(record)">查看数据</el-button>
       </span>
     </PageTable>
   </Dialog>

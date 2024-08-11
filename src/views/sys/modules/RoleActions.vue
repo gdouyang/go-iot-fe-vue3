@@ -1,11 +1,11 @@
 <template>
   <span>
-    <ElButton link @click="handleEdit(record)">编辑</ElButton>
+    <el-button link type="primary" @click="handleEdit(record)">编辑</el-button>
     <span>
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
-          <el-button link>删除</el-button>
+          <el-button link type="primary">删除</el-button>
         </template>
       </el-popconfirm>
     </span>

@@ -1,5 +1,5 @@
 <template>
-  <ContentDetailWrap :header-border="false">
+  <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
       <el-row class="el-descriptions__title" style="align-items: center">
         <BaseButton @click="back" circle size="small" title="返回"
@@ -8,9 +8,13 @@
         <span class="detail-title">
           <span>设备：{{ getDeviceId }}</span>
         </span>
-        <el-tag :type="deviceState === 'online' ? 'success' : 'info'" round size="small">{{
-          deviceStateText
-        }}</el-tag>
+        <el-tag
+          :type="deviceState === 'online' ? 'success' : 'info'"
+          round
+          size="small"
+          class="link"
+          >{{ deviceStateText }}</el-tag
+        >
         <span v-action:device-mgr:save>
           <el-popconfirm
             v-if="deviceState === 'online'"
@@ -44,7 +48,7 @@
           </el-popconfirm>
         </span>
         <el-tooltip content="刷新">
-          <BaseButton @click="reloadDevice" circle size="small"
+          <BaseButton @click="reloadDevice" circle size="small" class="link"
             ><Icon icon="carbon:renew"
           /></BaseButton>
         </el-tooltip>
@@ -94,7 +98,7 @@
 </template>
 
 <script lang="jsx">
-import { getDetail, connect, disconnect, deploy, getEventBusUrl } from '../api.js'
+import { getDetail, connect, disconnect, deploy, getEventBusUrl } from './api.js'
 import Info from './detail/Info.vue'
 import Status from './detail/Status.vue'
 import Function from './detail/Function.vue'
@@ -252,5 +256,8 @@ export default {
 .deviceInsTitle {
   display: flex;
   flex-direction: column;
+}
+.link {
+  margin-right: 5px;
 }
 </style>

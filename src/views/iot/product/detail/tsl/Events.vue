@@ -8,11 +8,11 @@
         <el-table-column prop="description" label="说明" />
         <el-table-column label="操作">
           <template #default="scope">
-            <el-button link @click="edit(scope.row)">修改</el-button>
+            <el-button link type="primary" @click="edit(scope.row)">修改</el-button>
             <el-divider direction="vertical" />
             <el-popconfirm title="确认删除？" @confirm="remove(scope.row)">
               <template #reference>
-                <el-button link>删除</el-button>
+                <el-button link type="primary">删除</el-button>
               </template>
             </el-popconfirm>
           </template>

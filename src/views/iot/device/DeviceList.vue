@@ -86,7 +86,7 @@ import { pageUrl, batchDeploy, batchUndeploy, getProductList, getImportResultUrl
 import TableActions from './TableActions.vue'
 import DeviceAdd from './modules/DeviceAdd.vue'
 import DeviceImport from './modules/DeviceImport.vue'
-import DeviceDetail from './editor/Index.vue'
+import DeviceDetail from './DetailIndex.vue'
 
 const defautSearchObj = {}
 export default {

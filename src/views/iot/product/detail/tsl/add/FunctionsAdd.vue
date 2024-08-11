@@ -64,12 +64,12 @@
             <div v-for="item in inputs" class="input-div">
               <div>参数名称：{{ item.name }}</div>
               <div>
-                <el-button link @click="editInput(item)"> 编辑 </el-button>
-                <el-button link @click="removeInput(item)"> 删除 </el-button>
+                <el-button link type="primary" @click="editInput(item)"> 编辑 </el-button>
+                <el-button link type="primary" @click="removeInput(item)"> 删除 </el-button>
               </div>
             </div>
           </div>
-          <el-button link @click="addInput">
+          <el-button link type="primary" @click="addInput">
             <Icon icon="carbon:add" />
             添加参数
           </el-button>

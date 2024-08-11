@@ -1,15 +1,15 @@
 <template>
   <a-spin :spinning="loading">
     <el-row :gutter="24" id="device-status">
-      <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="6" style="margin-bottom: 24px">
+      <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" style="margin-bottom: 24px">
         <DeviceState :state="device.state" :device="device" />
       </el-col>
       <el-col
-        :xs="24"
-        :sm="12"
-        :md="12"
-        :lg="12"
-        :xl="6"
+        :xs="12"
+        :sm="10"
+        :md="8"
+        :lg="6"
+        :xl="4"
         style="margin-bottom: 24px"
         v-for="item in properties"
         :key="item.id"
@@ -17,11 +17,11 @@
         <PropertiesCard :item="item" :device="device" :ref="'propCard' + item.id" />
       </el-col>
       <el-col
-        :xs="24"
-        :sm="12"
-        :md="12"
-        :lg="12"
-        :xl="6"
+        :xs="12"
+        :sm="10"
+        :md="8"
+        :lg="6"
+        :xl="4"
         style="margin-bottom: 24px"
         v-for="item in events"
         :key="item.id"
