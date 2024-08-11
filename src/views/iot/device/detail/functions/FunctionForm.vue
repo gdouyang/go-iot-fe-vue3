@@ -126,8 +126,5 @@ export default {
 .func-form-item {
   width: 60%;
   margin-right: 8px;
-  /deep/ .ant-input-number-handler-wrap {
-    opacity: 1;
-  }
 }
 </style>

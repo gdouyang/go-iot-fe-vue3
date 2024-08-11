@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { LoginForm, RegisterForm } from './components'
 import { ThemeSwitch } from '@/components/ThemeSwitch'
 import { LocaleDropdown } from '@/components/LocaleDropdown'
@@ -6,7 +7,6 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { getCssVar, underlineToHump } from '@/utils'
 import { useAppStore } from '@/store/modules/app'
 import { useDesign } from '@/hooks/web/useDesign'
-import { ref } from 'vue'
 import { ElScrollbar } from 'element-plus'
 
 const { getPrefixCls } = useDesign()
@@ -32,6 +32,8 @@ const themeChange = () => {
   appStore.setMenuTheme(color)
   appStore.setHeaderTheme(color)
 }
+// 多语言图标
+const locale = computed(() => appStore.getLocale)
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const themeChange = () => {
             <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
             <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
-          <div class="flex justify-center items-center h-[calc(100%-60px)]">
+          <div class="flex justify-center items-center text-center h-[calc(100%-60px)]">
             <TransitionGroup
               appear
               tag="div"
@@ -73,7 +75,7 @@ const themeChange = () => {
 
             <div class="flex justify-end items-center space-x-10px">
               <ThemeSwitch @change="themeChange" />
-              <LocaleDropdown class="lt-xl:text-white dark:text-white" />
+              <LocaleDropdown v-if="locale" class="lt-xl:text-white dark:text-white" />
             </div>
           </div>
           <Transition appear enter-active-class="animate__animated animate__bounceInRight">

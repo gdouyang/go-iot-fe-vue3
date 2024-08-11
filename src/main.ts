@@ -6,7 +6,7 @@ import '@/plugins/unocss'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
-import ElementUI from 'element-plus'
+import ElementPlus from 'element-plus'
 
 import 'element-plus/dist/index.css'
 
@@ -31,6 +31,9 @@ import '@/plugins/animate.css'
 // 路由
 import { setupRouter } from './router'
 
+// 权限
+import { setupPermission } from './directives'
+
 import { createApp } from 'vue'
 
 import App from './App.vue'
@@ -49,12 +52,13 @@ const setupAll = async () => {
 
   setupGlobCom(app)
 
-  // setupElementPlus(app)
-  app.use(ElementUI)
+  app.use(ElementPlus)
 
   app.component('Doc', Doc)
 
   setupRouter(app)
+
+  setupPermission(app)
 
   app.mount('#app')
 }

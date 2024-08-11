@@ -11,7 +11,7 @@
         <el-tag :type="detailData.state ? 'success' : 'info'" round size="small">{{
           detailData.state ? '发布' : '停用'
         }}</el-tag>
-        <span v-action:product-mgr:save>
+        <span v-hasPermi="'product-mgr:save'">
           <el-popconfirm v-if="detailData.state" title="确认停用？" @confirm="unDeploy">
             <template #reference>
               <el-button link type="primary" class="link">停用</el-button>

@@ -1,11 +1,11 @@
 <template>
   <span>
     <el-button link type="primary" @click="detail(record.id)">查看</el-button>
-    <span v-action:device-mgr:save>
+    <span v-hasPermi="'device-mgr:save'">
       <el-divider direction="vertical" />
       <el-button link type="primary" @click="handleEdit(record)">修改</el-button>
     </span>
-    <span v-action:device-mgr:save>
+    <span v-hasPermi="'device-mgr:save'">
       <el-divider direction="vertical" />
       <el-button link type="primary" @click="deploy(record.id)" v-if="record.state === 'noActive'"
         >激活</el-button
@@ -16,7 +16,7 @@
         </template>
       </el-popconfirm>
     </span>
-    <span v-if="record.state === 'noActive'" v-action:device-mgr:delete>
+    <span v-if="record.state === 'noActive'" v-hasPermi="'device-mgr:delete'">
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>

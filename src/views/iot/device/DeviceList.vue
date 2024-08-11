@@ -46,10 +46,10 @@
           </el-form>
         </div>
         <div class="table-operator">
-          <el-button type="primary" @click="add" v-action:device-mgr:add>新建</el-button>
-          <el-button @click="showImport" v-action:device-mgr:add>批量导入设备</el-button>
-          <el-button @click="batchDeploy" v-action:device-mgr:save>批量激活</el-button>
-          <el-button @click="batchUndeploy" v-action:device-mgr:save>批量停用</el-button>
+          <el-button type="primary" @click="add" v-hasPermi="'device-mgr:add'">新建</el-button>
+          <el-button @click="showImport" v-hasPermi="'device-mgr:add'">批量导入设备</el-button>
+          <el-button @click="batchDeploy" v-hasPermi="'device-mgr:save'">批量激活</el-button>
+          <el-button @click="batchUndeploy" v-hasPermi="'device-mgr:save'">批量停用</el-button>
         </div>
         <PageTable
           ref="tb"
@@ -126,9 +126,9 @@ export default {
               if (data.row.state == 'online') {
                 return <el-tag type="success">在线</el-tag>
               } else if (data.row.state == 'offline') {
-                return <el-tag type="info">在线</el-tag>
+                return <el-tag type="danger">离线</el-tag>
               } else {
-                return <el-tag>未激活</el-tag>
+                return <el-tag type="info">未激活</el-tag>
               }
             }
           }

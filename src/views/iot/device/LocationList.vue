@@ -122,9 +122,6 @@ export default {
 
 <style lang="less" scoped>
 .location-card {
-  /deep/ .ant-card-body {
-    padding: 0px;
-  }
 }
 .map {
   width: 100%;

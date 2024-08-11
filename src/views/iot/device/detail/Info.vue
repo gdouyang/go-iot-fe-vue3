@@ -4,7 +4,7 @@
       <el-descriptions border :column="2">
         <template #title>
           设备信息
-          <el-button link type="primary" v-action:device-mgr:save @click="openBasicInfo"
+          <el-button link type="primary" v-hasPermi="'device-mgr:save'" @click="openBasicInfo"
             >编辑</el-button
           >
         </template>

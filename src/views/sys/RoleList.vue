@@ -19,7 +19,7 @@
     </div>
 
     <div class="table-operator">
-      <el-button type="primary" @click="handleAdd" v-action:role-mgr:add>新建</el-button>
+      <el-button type="primary" @click="handleAdd" v-hasPermi="'role-mgr:add'">新建</el-button>
     </div>
 
     <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>

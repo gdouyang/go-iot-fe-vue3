@@ -6,6 +6,7 @@ import { useI18n } from '@/hooks/web/useI18n'
 import { loginOutApi } from '@/api/login'
 import { useTagsViewStore } from './tagsView'
 import router from '@/router'
+import _ from 'lodash-es'
 
 interface UserState {
   userInfo?: UserType
@@ -56,6 +57,15 @@ export const useUserStore = defineStore('user', {
       this.token = token
     },
     setUserInfo(userInfo?: UserType) {
+      if (userInfo) {
+        const permissions = new Array<string>()
+        _.forEach(userInfo.role.permissions, (item) => {
+          _.forEach(item.actionEntitySet, (e) => {
+            permissions.push(e.action)
+          })
+        })
+        userInfo.permissions = permissions
+      }
       this.userInfo = userInfo
     },
     setRoleRouters(roleRouters: string[] | AppCustomRouteRecordRaw[]) {

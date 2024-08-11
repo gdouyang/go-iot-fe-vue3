@@ -1,13 +1,13 @@
 <template>
   <span>
-    <el-button link type="primary" @click="detail(record.id)" v-action:product-mgr:add
+    <el-button link type="primary" @click="detail(record.id)" v-hasPermi="'product-mgr:add'"
       >查看</el-button
     >
-    <span v-action:product-mgr:add>
+    <span v-hasPermi="'product-mgr:add'">
       <el-divider direction="vertical" />
       <el-link type="primary" :href="getExportUrl(record.id)" target="_blank">导出</el-link>
     </span>
-    <span v-action:product-mgr:save>
+    <span v-hasPermi="'product-mgr:save'">
       <el-divider direction="vertical" />
       <el-popconfirm v-if="record.state" title="确认停用？" @confirm="unDeploy(record.id)">
         <template #reference>
@@ -16,7 +16,7 @@
       </el-popconfirm>
       <el-button link type="primary" @click="deploy(record.id)" v-else>发布</el-button>
     </span>
-    <span v-if="!record.state" v-action:product-mgr:delete>
+    <span v-if="!record.state" v-hasPermi="'product-mgr:delete'">
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="deleteById(record.id)">
         <template #reference>

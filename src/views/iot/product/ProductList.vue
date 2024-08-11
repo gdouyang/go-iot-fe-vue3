@@ -33,11 +33,11 @@
           </el-form>
         </div>
         <div class="table-operator">
-          <el-button type="primary" @click="add" v-action:product-mgr:add>新建</el-button>
+          <el-button type="primary" @click="add" v-hasPermi="'product-mgr:add'">新建</el-button>
           <el-upload
             style="display: inline"
             name="file"
-            v-action:product-mgr:add
+            v-hasPermi="'product-mgr:add'"
             accept=".json"
             :multiple="false"
             :show-file-list="false"

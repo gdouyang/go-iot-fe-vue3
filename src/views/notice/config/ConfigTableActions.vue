@@ -1,9 +1,9 @@
 <template>
   <span>
-    <el-button link type="primary" @click="handleEdit(record)" v-action:notify-config:save
+    <el-button link type="primary" @click="handleEdit(record)" v-hasPermi="'notify-config:save'"
       >编辑</el-button
     >
-    <span v-action:notify-config:delete>
+    <span v-hasPermi="'notify-config:delete'">
       <el-divider direction="vertical" />
       <el-popconfirm title="确认删除？" @confirm="remove(record)">
         <template #reference>
@@ -11,7 +11,7 @@
         </template>
       </el-popconfirm>
     </span>
-    <span v-action:notify-config:add>
+    <span v-hasPermi="'notify-config:add'">
       <el-divider direction="vertical" />
       <el-popconfirm title="确认复制？" @confirm="copy(record)">
         <template #reference>
@@ -19,7 +19,7 @@
         </template>
       </el-popconfirm>
     </span>
-    <span v-action:notify-config:save>
+    <span v-hasPermi="'notify-config:save'">
       <el-divider direction="vertical" />
       <el-popconfirm title="确认停止？" @confirm="stop(record)" v-if="record.state !== 'stopped'">
         <template #reference>

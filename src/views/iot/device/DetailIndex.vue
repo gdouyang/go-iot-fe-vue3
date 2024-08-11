@@ -15,7 +15,7 @@
           class="link"
           >{{ deviceStateText }}</el-tag
         >
-        <span v-action:device-mgr:save>
+        <span v-hasPermi="'device-mgr:save'">
           <el-popconfirm
             v-if="deviceState === 'online'"
             title="确认让此设备断开连接？"

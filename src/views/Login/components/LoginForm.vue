@@ -102,7 +102,6 @@ const schema = reactive<FormSchema[]>([
 ])
 
 const remember = ref(userStore.getRememberMe)
-
 const initLoginInfo = () => {
   const loginInfo = userStore.getLoginInfo
   if (loginInfo) {
@@ -136,18 +135,16 @@ const signIn = async () => {
   const formRef = await getElFormExpose()
   await formRef?.validate(async (isValid) => {
     if (isValid) {
-      loading.value = true
       const formData = await getFormData<UserType>()
-
       try {
+        loading.value = true
         const res = await loginApi(formData)
 
         if (res) {
           // 是否记住我
           if (unref(remember)) {
             userStore.setLoginInfo({
-              username: formData.username,
-              password: formData.password
+              username: formData.username
             })
           } else {
             userStore.setLoginInfo(undefined)

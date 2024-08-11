@@ -6,7 +6,7 @@
         <el-popconfirm
           title="确认重新应用该配置？"
           width="200px"
-          v-action:device-mgr:save
+          v-hasPermi="'device-mgr:save'"
           @confirm="changeDeploy"
         >
           <template #reference>
@@ -16,7 +16,7 @@
         <el-tooltip content="修改配置后需重新应用后才能生效。">
           <Icon icon="carbon:help" />
         </el-tooltip>
-        <span v-if="canResetConfig" v-action:device-mgr:save>
+        <span v-if="canResetConfig" v-hasPermi="'device-mgr:save'">
           <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
             <template #reference>
               <el-button link type="primary">恢复默认</el-button>
@@ -39,11 +39,11 @@
           </el-tooltip>
           <BaseButton
             class="prop-edit"
-            v-action:device-mgr:save
-            @click="editConfigItem(item)"
+            v-hasPermi="'device-mgr:save'"
             circle
             size="small"
             title="编辑"
+            @click="editConfigItem(item)"
             ><Icon icon="carbon:edit"
           /></BaseButton>
         </template>
