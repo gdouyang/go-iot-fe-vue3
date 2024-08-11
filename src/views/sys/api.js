@@ -71,3 +71,14 @@ export function uploadFile(file) {
     }
   )
 }
+
+export function getUserInfo() {
+  return request.get('/user-info').then((res) => res.result)
+}
+
+export function saveUserInfo(values) {
+  return request.put('/user-info/save-basic', values)
+}
+export function updatePwd(values) {
+  return request.put('user-info/update-pwd', values)
+}

@@ -7,20 +7,14 @@ import UploadAvatar from './components/UploadAvatar.vue'
 import { Dialog } from '@/components/Dialog'
 import EditInfo from './components/EditInfo.vue'
 import EditPassword from './components/EditPassword.vue'
+import { getUserInfo } from '@/views/sys/api.js'
 
 const userInfo = ref()
-const fetchDetailUserApi = async () => {
+const fetchDetailUserApi = () => {
   // 这里可以调用接口获取用户信息
-  const data = {
-    id: 1,
-    username: 'admin',
-    realName: 'admin',
-    phoneNumber: '18888888888',
-    email: '502431556@qq.com',
-    avatarUrl: '',
-    roleList: ['超级管理员']
-  }
-  userInfo.value = data
+  getUserInfo().then((data) => {
+    userInfo.value = data
+  })
 }
 fetchDetailUserApi()
 
@@ -50,7 +44,7 @@ const saveAvatar = async () => {
 <template>
   <div class="flex w-100% h-100%">
     <ContentWrap title="个人信息" class="w-400px">
-      <div class="flex justify-center items-center">
+      <!-- <div class="flex justify-center items-center">
         <div
           class="avatar w-[150px] h-[150px] relative cursor-pointer"
           @click="dialogVisible = true"
@@ -62,7 +56,7 @@ const saveAvatar = async () => {
           />
         </div>
       </div>
-      <ElDivider />
+      <ElDivider /> -->
       <div class="flex justify-between items-center">
         <div>账号：</div>
         <div>{{ userInfo?.username }}</div>
@@ -70,17 +64,17 @@ const saveAvatar = async () => {
       <ElDivider />
       <div class="flex justify-between items-center">
         <div>昵称：</div>
-        <div>{{ userInfo?.realName }}</div>
-      </div>
-      <ElDivider />
-      <div class="flex justify-between items-center">
-        <div>手机号码：</div>
-        <div>{{ userInfo?.phoneNumber ?? '-' }}</div>
+        <div>{{ userInfo?.nickname }}</div>
       </div>
       <ElDivider />
       <div class="flex justify-between items-center">
         <div>用户邮箱：</div>
         <div>{{ userInfo?.email ?? '-' }}</div>
+      </div>
+      <ElDivider />
+      <!-- <div class="flex justify-between items-center">
+        <div>手机号码：</div>
+        <div>{{ userInfo?.phoneNumber ?? '-' }}</div>
       </div>
       <ElDivider />
       <div class="flex justify-between items-center">
@@ -94,7 +88,7 @@ const saveAvatar = async () => {
           <template v-else>-</template>
         </div>
       </div>
-      <ElDivider />
+      <ElDivider /> -->
     </ContentWrap>
     <ContentWrap title="基本资料" class="flex-[3] ml-20px">
       <ElTabs v-model="activeName">

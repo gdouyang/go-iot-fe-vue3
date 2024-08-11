@@ -163,7 +163,10 @@ export default {
     treeTable: 'Tree table',
     PicturePreview: 'Table Image Preview',
     department: 'Department management',
-    menuManagement: 'Menu management'
+    menuManagement: 'Menu management',
+    personalCenter: 'Personal center',
+    personal: 'Personal',
+    avatars: 'Avatars'
   },
   permission: {
     hasPermission: 'Please set the operation permission value'

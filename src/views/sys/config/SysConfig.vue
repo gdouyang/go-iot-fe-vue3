@@ -1,61 +1,59 @@
 <template>
-  <div class="page-header-index-wide">
-    <el-card shadow="never" header="系统配置">
-      <el-form ref="form" :model="mdl" label-width="120px" style="width: 500px">
-        <el-form-item
-          label="系统名称"
-          prop="title"
-          :rules="[{ required: true, message: '请输入系统名称' }]"
+  <ContentWrap title="系统配置">
+    <el-form ref="form" :model="mdl" label-width="120px" style="width: 500px">
+      <el-form-item
+        label="系统名称"
+        prop="title"
+        :rules="[{ required: true, message: '请输入系统名称' }]"
+      >
+        <el-input v-model="mdl.title" :maxlength="8" />
+      </el-form-item>
+
+      <el-form-item label="简介">
+        <el-input v-model="mdl.desc" :maxlength="30" />
+      </el-form-item>
+
+      <el-form-item label="默认位置">
+        <el-input v-model="defaultLocation" :disabled="true">
+          <el-button
+            slot="addonAfter"
+            @click="openLocation"
+            type="link"
+            icon="setting"
+            style="width: auto; height: auto"
+          ></el-button>
+        </el-input>
+      </el-form-item>
+
+      <el-form-item label="接入IP">
+        <el-input v-model="mdl.accessIp" :max-length="128"> </el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <div>
+          <el-image style="width: 100px; height: 100px" :src="img" />
+        </div>
+        <el-upload
+          name="file"
+          :multiple="false"
+          accept=".jpg,.png"
+          :show-file-list="false"
+          :with-credentials="true"
+          :before-upload="beforeUpload"
         >
-          <el-input v-model="mdl.title" :maxlength="8" />
-        </el-form-item>
+          <BaseButton>
+            <Icon icon="carbon:cloud-upload" />
+            选择文件
+          </BaseButton>
+        </el-upload>
+      </el-form-item>
 
-        <el-form-item label="简介">
-          <el-input v-model="mdl.desc" :maxlength="30" />
-        </el-form-item>
-
-        <el-form-item label="默认位置">
-          <el-input v-model="defaultLocation" :disabled="true">
-            <el-button
-              slot="addonAfter"
-              @click="openLocation"
-              type="link"
-              icon="setting"
-              style="width: auto; height: auto"
-            ></el-button>
-          </el-input>
-        </el-form-item>
-
-        <el-form-item label="接入IP">
-          <el-input v-model="mdl.accessIp" :max-length="128"> </el-input>
-        </el-form-item>
-
-        <el-form-item>
-          <div>
-            <el-image style="width: 100px; height: 100px" :src="img" />
-          </div>
-          <el-upload
-            name="file"
-            :multiple="false"
-            accept=".jpg,.png"
-            :show-file-list="false"
-            :with-credentials="true"
-            :before-upload="beforeUpload"
-          >
-            <BaseButton>
-              <Icon icon="carbon:cloud-upload" />
-              选择文件
-            </BaseButton>
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item>
-          <el-button type="primary" @click="saveBasic">更新</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+      <el-form-item>
+        <el-button type="primary" @click="saveBasic">更新</el-button>
+      </el-form-item>
+    </el-form>
     <LocationConfig ref="LocationConfig" @success="selectLocation" />
-  </div>
+  </ContentWrap>
 </template>
 
 <script lang="jsx">

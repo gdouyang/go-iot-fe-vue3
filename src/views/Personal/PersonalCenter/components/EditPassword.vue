@@ -4,12 +4,13 @@ import { useForm } from '@/hooks/web/useForm'
 import { reactive, ref } from 'vue'
 import { useValidator } from '@/hooks/web/useValidator'
 import { ElMessage, ElMessageBox, ElDivider } from 'element-plus'
+import { updatePwd } from '@/views/sys/api.js'
 
 const { required } = useValidator()
 
 const formSchema = reactive<FormSchema[]>([
   {
-    field: 'password',
+    field: 'passwordOld',
     label: '旧密码',
     component: 'InputPassword',
     colProps: {
@@ -17,7 +18,7 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'newPassword',
+    field: 'password',
     label: '新密码',
     component: 'InputPassword',
     colProps: {
@@ -28,7 +29,7 @@ const formSchema = reactive<FormSchema[]>([
     }
   },
   {
-    field: 'newPassword2',
+    field: 'password2',
     label: '确认新密码',
     component: 'InputPassword',
     colProps: {
@@ -41,14 +42,14 @@ const formSchema = reactive<FormSchema[]>([
 ])
 
 const rules = reactive({
-  password: [required()],
-  newPassword: [
+  passwordOld: [required()],
+  password: [
     required(),
     {
       asyncValidator: async (_, val, callback) => {
         const formData = await getFormData()
-        const { newPassword2 } = formData
-        if (val !== newPassword2) {
+        const { password2 } = formData
+        if (val !== password2) {
           callback(new Error('新密码与确认新密码不一致'))
         } else {
           callback()
@@ -56,13 +57,13 @@ const rules = reactive({
       }
     }
   ],
-  newPassword2: [
+  password2: [
     required(),
     {
       asyncValidator: async (_, val, callback) => {
         const formData = await getFormData()
-        const { newPassword } = formData
-        if (val !== newPassword) {
+        const { password } = formData
+        if (val !== password) {
           callback(new Error('确认新密码与新密码不一致'))
         } else {
           callback()
@@ -88,15 +89,15 @@ const save = async () => {
       type: 'warning'
     })
       .then(async () => {
-        try {
-          saveLoading.value = true
-          // 这里可以调用修改密码的接口
-          ElMessage.success('修改成功')
-        } catch (error) {
-          console.log(error)
-        } finally {
-          saveLoading.value = false
-        }
+        saveLoading.value = true
+        const data = await formMethods.getFormData()
+        updatePwd(data)
+          .then(() => {
+            ElMessage.success('修改成功')
+          })
+          .finally(() => {
+            saveLoading.value = false
+          })
       })
       .catch(() => {})
   }
