@@ -1,12 +1,15 @@
 <template>
-  <Dialog
-    :title="title"
-    ref="addModal"
-    width="70%"
-    style="margin-top: -3%"
-    @confirm="submitData"
-    @close="addClose"
-  >
+  <ContentDetailWrap :header-border="false" v-loading="loading">
+    <template #header>
+      <el-row class="el-descriptions__title" style="align-items: center">
+        <BaseButton @click="addClose" circle size="small" title="返回"
+          ><Icon icon="carbon:arrow-left"
+        /></BaseButton>
+        <span class="detail-title">
+          <span>{{ title }}</span>
+        </span>
+      </el-row>
+    </template>
     <div :style="{ overflowY: 'auto', overflowX: 'hidden' }">
       <el-form :model="scene" ref="addAlarmForm" label-width="auto">
         <el-row>
@@ -40,7 +43,7 @@
             <el-form-item
               label="触发器类型"
               prop="triggerType"
-              :rules="[{ required: true, message: '选择触发器类型' }]"
+              :rules="[{ required: true, message: '选择触发器类型', trigger: 'blur' }]"
             >
               <el-select
                 placeholder="选择触发器类型"
@@ -74,14 +77,14 @@
         <!-- 触发条件 -->
         <el-card
           v-if="scene.triggerType === 'device'"
-          style="margin-bottom: 10px"
+          style="margin-bottom: 10px; border: none;"
           size="small"
           shadow="never"
         >
           <Trigger :data="scene" />
         </el-card>
         <!-- 执行动作 -->
-        <el-card size="small" shadow="never">
+        <el-card size="small" shadow="never" style="border: none;">
           <p style="font-size: 16px">执行动作</p>
           <Action
             v-for="(item, index) in actions"
@@ -94,6 +97,10 @@
           <el-button link type="primary" @click="addAction"> 执行动作 </el-button>
         </el-card>
       </el-form>
+      <div class="mt-15px">
+        <el-button type="primary" @click="submitData">保存</el-button>
+        <el-button @click="addClose">取消</el-button>
+      </div>
     </div>
 
     <el-drawer
@@ -105,10 +112,10 @@
     >
       <Doc type="Cron" />
     </el-drawer>
-  </Dialog>
+  </ContentDetailWrap>
 </template>
 <script lang="jsx">
-import { addScene, updateScene } from '../api.js'
+import { get, addScene, updateScene } from '../api.js'
 import { newScene } from './triggers/data.js'
 import { newEmtpyAction } from '@/views/iot/rule/modules/actions/data.js'
 import Trigger from './triggers/TriggerIndex.vue'
@@ -117,12 +124,7 @@ import _ from 'lodash-es'
 
 export default {
   name: 'SceneAdd',
-  props: {
-    data: {
-      type: Object,
-      default: () => {}
-    }
-  },
+  props: {},
   provide() {
     return {
       formChecker: this.formChecker
@@ -139,6 +141,8 @@ export default {
   },
   data() {
     return {
+      loading: false,
+      data: {},
       scene: {},
       actions: [],
       formChecker: new Map(),
@@ -146,14 +150,24 @@ export default {
       oldState: ''
     }
   },
-  created() {
-    this.scene = _.cloneDeep(this.data)
-    this.init()
-  },
+  created() {},
   mounted() {
-    this.$nextTick(() => {
-      this.$refs.addModal.open()
-    })
+    const { id } = this.$route.query
+    if (id && id != 'add') {
+      this.loading = true
+      get(id).then((resp) => {
+        if (resp.success) {
+          const data = _.cloneDeep(resp.result)
+          this.data = data
+          this.scene = data
+          this.init()
+        }
+      }).finally(() => {
+        this.loading = false
+      })
+    } else {
+      this.init()
+    }
   },
   methods: {
     init() {

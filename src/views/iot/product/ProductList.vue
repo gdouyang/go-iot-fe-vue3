@@ -149,7 +149,6 @@ export default {
     back() {
       this.$router.push({ name: this.$route.name, query: {} }).then(() => {
         this.isEdit = false
-        this.search()
       })
     },
     beforeUpload(file) {

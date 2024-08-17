@@ -1,45 +1,43 @@
 <template>
-  <ContentWrap>
-    <div class="table-page-search-wrapper">
-      <el-form layout="inline">
-        <el-row :gutter="48">
-          <el-col :md="5" :sm="24">
-            <el-form-item label="名称">
-              <el-input v-model="searchObj.name" clearable placeholder="请输入" />
-            </el-form-item>
-          </el-col>
-          <el-col :md="5" :sm="24">
-            <el-form-item label="状态">
-              <el-select v-model="searchObj.state" clearable placeholder="请选择">
-                <el-option value="stopped" label="停止"></el-option>
-                <el-option value="started" label="启动"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :md="8" :sm="24">
-            <span class="table-page-search-submitButtons">
-              <el-button type="primary" @click="search">查询</el-button>
-              <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
-            </span>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
-
-    <div class="table-operator">
-      <el-button type="primary" @click="handleAdd" v-hasPermi="'rule-mgr:add'">新建</el-button>
-    </div>
-
-    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
-
-    <RuleAdd
-      ref="modal"
-      v-if="openModal"
-      :data="currentData"
-      @success="handleOk"
-      @close="openModal = false"
-    ></RuleAdd>
-  </ContentWrap>
+  <div v-show="!openModal">
+    <ContentWrap>
+      <div class="table-page-search-wrapper">
+        <el-form layout="inline">
+          <el-row :gutter="48">
+            <el-col :md="5" :sm="24">
+              <el-form-item label="名称">
+                <el-input v-model="searchObj.name" clearable placeholder="请输入" />
+              </el-form-item>
+            </el-col>
+            <el-col :md="5" :sm="24">
+              <el-form-item label="状态">
+                <el-select v-model="searchObj.state" clearable placeholder="请选择">
+                  <el-option value="stopped" label="停止"></el-option>
+                  <el-option value="started" label="启动"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :md="8" :sm="24">
+              <span class="table-page-search-submitButtons">
+                <el-button type="primary" @click="search">查询</el-button>
+                <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
+              </span>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+  
+      <div class="table-operator">
+        <el-button type="primary" @click="handleAdd" v-hasPermi="'rule-mgr:add'">新建</el-button>
+      </div>
+  
+      <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
+  
+    </ContentWrap>
+  </div>
+  <div v-if="openModal">
+    <RuleAdd @success="back" @close="back"></RuleAdd>
+  </div>
 </template>
 
 <script lang="jsx">
@@ -89,12 +87,16 @@ export default {
           }
         }
       ],
-      openModal: false,
-      currentData: {}
+      openModal: false
     }
   },
   mounted() {
-    this.search()
+    const id = this.$route.query.id
+    if (id) {
+      this.handleEdit(id)
+    } else {
+      this.search()
+    }
   },
   methods: {
     search() {
@@ -112,21 +114,24 @@ export default {
       this.search()
     },
     handleAdd() {
-      this.currentData = {}
-      this.openModal = true
+      this.$router.push({ name: this.$route.name, query: { id: 'add' } }).then(() => {
+        this.openModal = true
+      })
     },
     handleEdit(id) {
-      get(id).then((resp) => {
-        if (resp.success) {
-          this.currentData = _.cloneDeep(resp.result)
-          this.openModal = true
-        }
+      this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
+        this.openModal = true
       })
     },
     handleOk() {
       this.openModal = false
       // 新增/修改 成功时，重载列表
       this.search()
+    },
+    back() {
+      this.$router.push({ name: this.$route.name, query: {} }).then(() => {
+        this.openModal = false
+      })
     }
   }
 }

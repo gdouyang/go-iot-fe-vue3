@@ -211,7 +211,6 @@ export default {
     back() {
       this.$router.push({ name: this.$route.name, query: {} }).then(() => {
         this.GetDetailStatus = false
-        this.search()
       })
     },
     handleEdit(row) {

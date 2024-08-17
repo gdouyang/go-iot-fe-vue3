@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="24" v-loading="loading">
-    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="4" style="margin-bottom: 24px">
+    <el-col :xs="12" :sm="10" :md="8" :lg="6" :xl="6" style="margin-bottom: 24px">
       <DeviceState :state="device.state" :device="device" />
     </el-col>
     <el-col
@@ -8,7 +8,7 @@
       :sm="10"
       :md="8"
       :lg="6"
-      :xl="4"
+      :xl="6"
       style="margin-bottom: 24px"
       v-for="item in properties"
       :key="item.id"
@@ -20,7 +20,7 @@
       :sm="10"
       :md="8"
       :lg="6"
-      :xl="4"
+      :xl="6"
       style="margin-bottom: 24px"
       v-for="item in events"
       :key="item.id"
