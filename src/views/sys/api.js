@@ -59,7 +59,7 @@ export function saveSysConfig(data) {
   return request.post(`/system/config`, data)
 }
 export function getSysConfig() {
-  return request.get(`/anon/system/config`)
+  return request.get(`/anon/system/config`).then((res) => res.result)
 }
 
 export function uploadFile(file) {
@@ -71,7 +71,7 @@ export function uploadFile(file) {
     }
   )
 }
-
+/** 获取用户信息 */
 export function getUserInfo() {
   return request.get('/user-info').then((res) => res.result)
 }

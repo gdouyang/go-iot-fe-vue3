@@ -1,34 +1,32 @@
 <style lang="less"></style>
 
 <template>
-  <div>
-    <Dialog
-      ref="addModal"
-      @confirm="addConfirm"
-      @close="addClose"
-      :width="550"
-      :showOk="showOk"
-      cancelText="关闭"
+  <Dialog
+    ref="addModal"
+    @confirm="addConfirm"
+    @close="addClose"
+    :width="550"
+    :showOk="showOk"
+    cancelText="关闭"
+  >
+    <el-alert
+      style="margin-bottom: 5px"
+      title="导入的物模型会覆盖原来的属性、功能、事件，请谨慎操作！"
+      type="warning"
+      show-icon
+      v-if="showOk"
     >
-      <a-alert
-        style="margin-bottom: 5px"
-        message="导入的物模型会覆盖原来的属性、功能、事件，请谨慎操作！"
-        type="warning"
-        show-icon
-        v-if="showOk"
-      >
-      </a-alert>
-      <AceEditor
-        ref="AceEditor"
-        v-model="tsl"
-        lang="json"
-        theme="chrome"
-        width="500"
-        height="450"
-        :options="aceOptions"
-      />
-    </Dialog>
-  </div>
+    </el-alert>
+    <AceEditor
+      ref="AceEditor"
+      v-model:value="tsl"
+      lang="json"
+      theme="chrome"
+      style="width: 480px; height: 450px"
+      :options="aceOptions"
+      @init="init"
+    />
+  </Dialog>
 </template>
 
 <script lang="jsx">
@@ -44,14 +42,6 @@ export default {
   },
   data() {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       tsl: null,
       aceOptions: {
         enableBasicAutocompletion: true, // 启用基本自动完成功能
@@ -73,23 +63,16 @@ export default {
         this.showOk = true
         this.$refs.addModal.open({ title: '导入物模型' })
         this.tsl = ''
-        this.$nextTick(() => {
-          const editor = this.$refs.AceEditor.editor
-          editor.setOptions({
-            readOnly: false
-          })
-        })
       } else {
         this.showOk = false
         this.$refs.addModal.open({ title: '查看物模型' })
         this.tsl = tsl ? JSON.stringify(tsl, null, 2) : ''
-        this.$nextTick(() => {
-          const editor = this.$refs.AceEditor.editor
-          editor.setOptions({
-            readOnly: true
-          })
-        })
       }
+    },
+    init(editor) {
+      editor.setOptions({
+        readOnly: false
+      })
     },
     addConfirm() {
       this.$message.destroy()

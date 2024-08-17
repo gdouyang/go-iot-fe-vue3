@@ -7,8 +7,9 @@
           <div class="shake-limit">
             <el-switch
               v-model="shakeLimit.enabled"
-              checkedChildren="防抖(已开启)"
-              unCheckedChildren="防抖(已关闭)"
+              inline-prompt
+              active-text="防抖(已开启)"
+              inactive-text="防抖(已关闭)"
               style="margin-left: 20px"
             />
             <template v-if="shakeLimit.enabled">

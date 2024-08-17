@@ -1,10 +1,10 @@
 <template>
   <ContentWrap :style="{ marginBottom: '20px' }" v-loading="loading">
+    <div style="display: inline-block; position: absolute; right: 14px; z-index: 10">
+      <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
+      <el-button @click="showTSL">物模型</el-button>
+    </div>
     <el-tabs model-value="1">
-      <template #add-icon>
-        <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
-        <el-button @click="showTSL">物模型</el-button>
-      </template>
       <el-tab-pane label="属性定义" name="1">
         <Properties :product="product" :data="propertyData" @save="saveProperties" />
       </el-tab-pane>

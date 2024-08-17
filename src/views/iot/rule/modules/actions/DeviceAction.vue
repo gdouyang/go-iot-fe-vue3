@@ -1,9 +1,9 @@
 <template>
   <el-col :span="4">
-    <el-input placeholder="点击选择设备" v-model="deviceData.name">
+    <el-input placeholder="点击选择设备" v-model="deviceData.name" readonly>
       <template #append>
-        <BaseButton circle
-          ><Icon icon="carbon:link" @click="selectDevice" title="点击选择设备" />
+        <BaseButton @click="selectDevice"
+          ><Icon icon="carbon:link" title="点击选择设备" />
         </BaseButton>
       </template>
     </el-input>
@@ -99,18 +99,7 @@ export default {
   mounted() {
     const deviceId = this.actionData.configuration.deviceId
     if (deviceId) {
-      this.findDevice(deviceId).then(() => {
-        const configuration = this.actionData.configuration
-        if (configuration && configuration.messageType) {
-          this.messageTypeChange(configuration.messageType)
-        }
-        if (this.propertiesData.id) {
-          this.propertiesDataChange(this.propertiesData.id)
-        }
-        if (configuration && configuration.functionId) {
-          this.functionIdChange(configuration.functionId)
-        }
-      })
+      this.findDevice(deviceId)
     }
   },
   data() {
@@ -170,9 +159,9 @@ export default {
             actionData.configuration = {}
           }
           this.arrayData = [undefined]
+          const message = actionData.configuration
+          this.messageType = message.messageType
           if (actionData.configuration.deviceId) {
-            const message = actionData.configuration
-            this.messageType = message.messageType
             if (message.messageType === 'WRITE_PROPERTY') {
               _.forEach(result.metadata.properties, (item) => {
                 if (item.id === Object.keys(message.properties)[0]) {

@@ -79,8 +79,7 @@ export default {
           this.$message.error('功能标识已存在，请修改')
           return
         }
-        // data[i] = item;
-        this.$set(data, i, item)
+        data[i] = item
       } else {
         data.push(item)
       }

@@ -245,10 +245,10 @@ export default {
 </script>
 <style lang="less" scoped>
 .editor {
-  height: 450px;
+  height: 100vh;
   width: 1000px;
   .ace-div {
-    height: calc(450px - 23px);
+    height: calc(100vh - 300px);
   }
   &.full-screen {
     position: fixed;

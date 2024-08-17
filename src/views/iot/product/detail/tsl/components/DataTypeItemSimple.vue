@@ -2,14 +2,14 @@
   <div>
     <el-form-item :label="label" :rules="rules">
       <el-select v-model="data.type" placeholder="请选择" @change="typeChange">
-        <el-select-opt-group label="基本类型">
+        <el-option-group label="基本类型">
           <el-option value="int">int(整数型)</el-option>
           <el-option value="long">long(长整数型)</el-option>
           <el-option value="float">float(单精度浮点型)</el-option>
           <el-option value="double">double(双精度浮点数)</el-option>
           <el-option value="string">text(字符串)</el-option>
           <el-option value="bool">bool(布尔型)</el-option>
-        </el-select-opt-group>
+        </el-option-group>
       </el-select>
     </el-form-item>
     <!-- -->

@@ -3,7 +3,8 @@ import { reactive, ref, watch, onMounted, unref } from 'vue'
 import { Form, FormSchema } from '@/components/Form'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useForm } from '@/hooks/web/useForm'
-import { loginApi, getInfo } from '@/api/login'
+import { loginApi } from '@/api/login'
+import { getUserInfo } from '@/views/sys/api.js'
 import { useAppStore } from '@/store/modules/app'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useRouter } from 'vue-router'
@@ -151,8 +152,8 @@ const signIn = async () => {
             userStore.setLoginInfo(undefined)
           }
           userStore.setToken(res.result)
-          const uInfoRes = await getInfo()
-          userStore.setUserInfo(uInfoRes.result)
+          const uInfoRes = await getUserInfo()
+          userStore.setUserInfo(uInfoRes)
           resetRouter() // 重置静态路由表
           await permissionStore.generateRoutes('static')
           permissionStore.getAddRouters.forEach((route) => {

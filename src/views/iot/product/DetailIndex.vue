@@ -37,7 +37,7 @@
         </span>
       </el-row>
     </template>
-    <el-tabs model-value="info">
+    <el-tabs model-value="info" style="height: calc(100vh - 234px)">
       <el-tab-pane name="info" label="基本信息">
         <Info v-if="detailData.id" :data="detailData" @refresh="reloadProduct"></Info>
       </el-tab-pane>

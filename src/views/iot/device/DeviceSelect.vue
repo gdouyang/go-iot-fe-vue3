@@ -8,7 +8,7 @@
     :footer="null"
   >
     <div>
-      <div class="table-page-search-wrapper">
+      <div class="table-page-search-wrapper" style="width: 95%">
         <el-form layout="inline">
           <el-row :gutter="48">
             <el-col :md="8" :sm="24">
@@ -62,7 +62,6 @@ export default {
         {
           label: '操作',
           field: 'action',
-          minWidth: '120px',
           slots: {
             default: (data) => {
               return (
