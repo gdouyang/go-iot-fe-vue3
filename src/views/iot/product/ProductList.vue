@@ -110,14 +110,17 @@ export default {
     }
   },
   mounted() {
-    const deviceId = this.$route.query.id
-    if (deviceId) {
-      this.handleEdit(deviceId)
-    } else {
-      this.search()
-    }
+    this.init()
   },
   methods: {
+    init() {
+      const deviceId = this.$route.query.id
+      if (deviceId) {
+        this.handleEdit(deviceId)
+      } else {
+        this.search()
+      }
+    },
     search() {
       const condition = []
       if (this.searchObj.id) {
@@ -135,6 +138,9 @@ export default {
       this.searchObj = _.cloneDeep(defautSearchObj)
       this.search()
     },
+    tableRefresh() {
+      this.$refs.tb.refresh()
+    },
     add() {
       this.$refs.ProductAdd.add()
     },
@@ -142,13 +148,14 @@ export default {
       this.search()
     },
     handleEdit(id) {
-      this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
+      this.$router.replace({ name: this.$route.name, query: { id: id } }).then(() => {
         this.isEdit = true
       })
     },
     back() {
-      this.$router.push({ name: this.$route.name, query: {} }).then(() => {
+      this.$router.replace({ name: this.$route.name, query: {} }).then(() => {
         this.isEdit = false
+        this.tableRefresh()
       })
     },
     beforeUpload(file) {

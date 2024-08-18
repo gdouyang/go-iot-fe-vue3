@@ -31,14 +31,17 @@ const tableDataList = ref<[]>([])
 const cache = {
   searchAfterList: [],
   searchAfter: null,
-  pageNum: null,
-  pageSize: null
+  currentSearchAfter: null,
+  pageNum: props.pageNum,
+  pageSize: props.pageSize,
+  condition: null
 }
 
 const getTableList = async (pageNum: number, pageSize: number, params?: any) => {
   const p = {
     pageNum: pageNum,
     pageSize: pageSize,
+    searchAfter: null,
     condition: null
   }
   if (p.pageNum === 1 || (cache.pageSize && pageSize !== cache.pageSize)) {
@@ -51,8 +54,10 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
     }
     p.searchAfter = cache.searchAfter
   }
+  cache.currentSearchAfter = p.searchAfter
   if (params) {
     p.condition = params
+    cache.condition = params
   }
   cache.pageNum = pageNum
   cache.pageSize = pageSize
@@ -74,6 +79,22 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
 const search = (params?: any) => {
   getTableList(props.pageNum, props.pageSize, params)
 }
+const refresh = async () => {
+  const p = {
+    pageNum: cache.pageNum,
+    pageSize: cache.pageSize,
+    searchAfter: cache.currentSearchAfter,
+    condition: cache.condition
+  }
+  loading.value = true
+  const res = await request.post(props.url, p).finally(() => {
+    loading.value = false
+  })
+  if (res) {
+    tableDataList.value = res.result.list
+    total.value = res.result.totalCount
+  }
+}
 const pageSizeChange = (val: number) => {
   emits('update:pageSize', val)
   getTableList(1, val)
@@ -84,7 +105,8 @@ const pageNumChange = (val: number) => {
 }
 
 defineExpose({
-  search: search
+  search: search,
+  refresh: refresh
 })
 </script>
 

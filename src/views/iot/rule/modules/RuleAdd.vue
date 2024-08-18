@@ -77,14 +77,14 @@
         <!-- 触发条件 -->
         <el-card
           v-if="scene.triggerType === 'device'"
-          style="margin-bottom: 10px; border: none;"
+          style="margin-bottom: 10px; border: none"
           size="small"
           shadow="never"
         >
           <Trigger :data="scene" />
         </el-card>
         <!-- 执行动作 -->
-        <el-card size="small" shadow="never" style="border: none;">
+        <el-card size="small" shadow="never" style="border: none">
           <p style="font-size: 16px">执行动作</p>
           <Action
             v-for="(item, index) in actions"
@@ -155,16 +155,18 @@ export default {
     const { id } = this.$route.query
     if (id && id != 'add') {
       this.loading = true
-      get(id).then((resp) => {
-        if (resp.success) {
-          const data = _.cloneDeep(resp.result)
-          this.data = data
-          this.scene = data
-          this.init()
-        }
-      }).finally(() => {
-        this.loading = false
-      })
+      get(id)
+        .then((resp) => {
+          if (resp.success) {
+            const data = _.cloneDeep(resp.result)
+            this.data = data
+            this.scene = data
+            this.init()
+          }
+        })
+        .finally(() => {
+          this.loading = false
+        })
     } else {
       this.init()
     }

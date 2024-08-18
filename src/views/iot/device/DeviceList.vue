@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ContentWrap v-show="!GetDetailStatus">
+    <ContentWrap v-show="!isDetail">
       <div>
         <div class="table-page-search-wrapper">
           <el-form layout="inline">
@@ -63,7 +63,7 @@
     </ContentWrap>
     <DeviceAdd ref="DeviceAdd" @success="search()" />
     <DeviceImport ref="DeviceImport" @success="search()" />
-    <DeviceDetail v-if="GetDetailStatus" ref="DeviceDetail" @back="back" />
+    <DeviceDetail v-if="isDetail" ref="DeviceDetail" @back="back" />
     <Dialog
       ref="processModal"
       :showOk="false"
@@ -153,7 +153,7 @@ export default {
           }
         }
       ],
-      GetDetailStatus: false,
+      isDetail: false,
       selectedRowKeys: [],
       selectedRows: [],
       isFinish: false,
@@ -196,6 +196,9 @@ export default {
       this.searchObj = _.cloneDeep(defautSearchObj)
       this.search()
     },
+    tableRefresh() {
+      this.$refs.tb.refresh()
+    },
     onSelectChange(selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -205,12 +208,13 @@ export default {
     },
     detail(id) {
       this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
-        this.GetDetailStatus = true
+        this.isDetail = true
       })
     },
     back() {
       this.$router.push({ name: this.$route.name, query: {} }).then(() => {
-        this.GetDetailStatus = false
+        this.isDetail = false
+        this.tableRefresh()
       })
     },
     handleEdit(row) {

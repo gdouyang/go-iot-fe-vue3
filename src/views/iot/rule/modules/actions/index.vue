@@ -1,5 +1,5 @@
 <template>
-  <el-card size="small" shadow="never" style="background-color: #fdfdfd; margin-top: 5px;">
+  <el-card size="small" shadow="never" style="background-color: #fdfdfd; margin-top: 5px">
     <el-row>
       <span style="margin-right: 10px">执行动作{{ position + 1 }}</span>
       <el-popconfirm

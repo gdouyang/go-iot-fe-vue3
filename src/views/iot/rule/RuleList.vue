@@ -26,13 +26,12 @@
           </el-row>
         </el-form>
       </div>
-  
+
       <div class="table-operator">
         <el-button type="primary" @click="handleAdd" v-hasPermi="'rule-mgr:add'">新建</el-button>
       </div>
-  
+
       <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
-  
     </ContentWrap>
   </div>
   <div v-if="openModal">
@@ -87,7 +86,8 @@ export default {
           }
         }
       ],
-      openModal: false
+      openModal: false,
+      isEdit: false
     }
   },
   mounted() {
@@ -113,14 +113,19 @@ export default {
       this.searchObj = {}
       this.search()
     },
+    tableRefresh() {
+      this.$refs.tb.refresh()
+    },
     handleAdd() {
       this.$router.push({ name: this.$route.name, query: { id: 'add' } }).then(() => {
         this.openModal = true
+        this.isEdit = false
       })
     },
     handleEdit(id) {
       this.$router.push({ name: this.$route.name, query: { id: id } }).then(() => {
         this.openModal = true
+        this.isEdit = true
       })
     },
     handleOk() {
@@ -130,7 +135,12 @@ export default {
     },
     back() {
       this.$router.push({ name: this.$route.name, query: {} }).then(() => {
-        this.openModal = false
+        if (this.isEdit) {
+          this.openModal = false
+          this.tableRefresh()
+        } else {
+          this.handleOk()
+        }
       })
     }
   }
