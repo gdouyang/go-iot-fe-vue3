@@ -113,9 +113,9 @@ const style = computed(() => {
     :color="color"
     :style="style"
     @click="() => emits('click')"
-  >
-    <slot></slot>
+    >
     <slot name="icon"></slot>
+    <slot></slot>
     <slot name="loading"></slot>
   </ElButton>
 </template>

@@ -45,7 +45,7 @@
     </div>
     <div class="table-operator">
       <el-button type="primary" @click="handleAdd" v-hasPermi="'network-config:add'"
-        >新建</el-button
+        ><Icon icon="carbon:add-large" />新建</el-button
       >
     </div>
     <PageTable ref="tb" size="default" :url="tableUrl" :columns="columns"> </PageTable>

@@ -39,7 +39,9 @@
     </div>
 
     <div class="table-operator">
-      <el-button type="primary" v-hasPermi="'notify-config:add'" @click="handleAdd">新建</el-button>
+      <el-button type="primary" v-hasPermi="'notify-config:add'" @click="handleAdd"
+        ><Icon icon="carbon:add-large" />新建</el-button
+      >
     </div>
 
     <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>

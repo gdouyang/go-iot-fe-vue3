@@ -56,7 +56,10 @@
     <template #footer>
       <el-button @click="close">取消</el-button>
       <el-button type="primary" @click="addConfirm">确定</el-button>
-      <el-button type="info" :loading="isTesting" @click="test">测试</el-button>
+      <BaseButton type="info" :loading="isTesting" @click="test">
+        <template #icon><Icon icon="carbon:data-check" /></template>
+        测试
+      </BaseButton>
     </template>
   </Dialog>
 </template>

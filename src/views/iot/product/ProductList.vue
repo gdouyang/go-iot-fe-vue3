@@ -33,9 +33,11 @@
           </el-form>
         </div>
         <div class="table-operator">
-          <el-button type="primary" @click="add" v-hasPermi="'product-mgr:add'">新建</el-button>
+          <el-button type="primary" @click="add" v-hasPermi="'product-mgr:add'"
+            ><Icon icon="carbon:add-large" />新建</el-button
+          >
           <el-upload
-            style="display: inline"
+            style="display: inline; margin-left: 12px"
             name="file"
             v-hasPermi="'product-mgr:add'"
             accept=".json"
@@ -44,7 +46,7 @@
             :with-credentials="true"
             :before-upload="beforeUpload"
           >
-            <el-button>导入</el-button>
+            <el-button><Icon icon="carbon:cloud-upload" />导入</el-button>
           </el-upload>
         </div>
         <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id"> </PageTable>
