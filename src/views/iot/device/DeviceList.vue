@@ -137,12 +137,12 @@ export default {
             }
           }
         },
-        { label: '创建时间', field: 'createTime', minWidth: '110px' },
+        { label: '创建时间', field: 'createTime' },
         { label: '说明', field: 'desc' },
         {
           label: '操作',
           field: 'action',
-          minWidth: '120px',
+          width: '220px',
           slots: {
             default: (data) => {
               return (
@@ -150,7 +150,7 @@ export default {
                   record={data.row}
                   onEdit={this.handleEdit}
                   onDetail={this.detail}
-                  onOk={this.handleOk}
+                  onOk={this.tableRefresh}
                 />
               )
             }

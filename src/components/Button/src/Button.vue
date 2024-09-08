@@ -113,7 +113,7 @@ const style = computed(() => {
     :color="color"
     :style="style"
     @click="() => emits('click')"
-    >
+  >
     <slot name="icon"></slot>
     <slot></slot>
     <slot name="loading"></slot>

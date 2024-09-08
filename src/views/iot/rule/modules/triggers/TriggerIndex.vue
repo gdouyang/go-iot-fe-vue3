@@ -455,7 +455,7 @@ export default {
     padding-right: 10px;
   }
 }
-.ant-input-number {
+.el-input-number {
   width: 100%;
 }
 </style>

@@ -2,9 +2,11 @@
   <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
       <el-row class="el-descriptions__title" style="align-items: center">
-        <BaseButton @click="addClose" circle size="small" title="返回"
-          ><Icon icon="carbon:arrow-left"
-        /></BaseButton>
+        <el-tooltip content="返回">
+          <BaseButton @click="addClose" circle size="small" title=""
+            ><Icon icon="carbon:arrow-left"
+          /></BaseButton>
+        </el-tooltip>
         <span class="detail-title">
           <span>{{ title }}</span>
         </span>
@@ -97,9 +99,9 @@
           <el-button link type="primary" @click="addAction"> 执行动作 </el-button>
         </el-card>
       </el-form>
-      <div class="mt-15px">
-        <el-button type="primary" @click="submitData">保存</el-button>
+      <div class="mt-15px save-btn">
         <el-button @click="addClose">取消</el-button>
+        <el-button type="primary" @click="submitData">保存</el-button>
       </div>
     </div>
 
@@ -266,3 +268,9 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.save-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

@@ -59,7 +59,7 @@ export default {
       searchObj: {},
       // 表头
       columns: [
-        { label: 'ID', field: 'id', width: 210 },
+        { label: 'ID', field: 'id', width: 150 },
         { label: '名称', field: 'name' },
         {
           label: '状态',
@@ -77,7 +77,7 @@ export default {
         { label: '创建时间', field: 'createTime' },
         {
           label: '操作',
-          minWidth: '110px',
+          width: 230,
           field: 'action',
           slots: {
             default: (data) => {

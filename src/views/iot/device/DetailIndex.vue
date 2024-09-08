@@ -2,9 +2,11 @@
   <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
       <el-row class="el-descriptions__title" style="align-items: center">
-        <BaseButton @click="back" circle size="small" title="返回"
-          ><Icon icon="carbon:arrow-left"
-        /></BaseButton>
+        <el-tooltip content="返回">
+          <BaseButton @click="back" circle size="small"
+            ><Icon icon="carbon:arrow-left"
+          /></BaseButton>
+        </el-tooltip>
         <span class="detail-title">
           <span>设备：{{ getDeviceId }}</span>
         </span>

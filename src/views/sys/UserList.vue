@@ -73,7 +73,7 @@ export default {
         { label: '创建时间', field: 'createTime' },
         {
           label: '操作',
-          minWidth: '210px',
+          width: 210,
           field: 'action',
           slots: {
             default: (data) => {

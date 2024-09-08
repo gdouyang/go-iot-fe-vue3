@@ -1,7 +1,9 @@
 <template>
   <ChartCard :title="item.name">
     <template #total>
-      <div class="prop-data" :title="lastData">{{ lastData }}</div>
+      <div class="prop-data" :title="lastData">
+        {{ lastData }}<span class="unit">{{ unit }}</span>
+      </div>
     </template>
     <Chart :data="data.visitData" :height="50" />
   </ChartCard>
@@ -45,7 +47,8 @@ export default {
       data: {
         visitData: []
       },
-      lastData: ''
+      lastData: '',
+      unit: ''
     }
   },
   created() {
@@ -92,9 +95,11 @@ export default {
       }
       const unit = _.toString(this.item.unit)
       if (typeof this.data.value === 'object') {
+        this.unit = ''
         this.lastData = JSON.stringify(this.data.value)
       } else {
-        this.lastData = this.data.value + unit
+        this.unit = unit
+        this.lastData = this.data.value
       }
     }
   }
@@ -114,5 +119,8 @@ export default {
 .prop-data {
   overflow: hidden;
   text-overflow: ellipsis;
+  .unit {
+    font-size: 14px;
+  }
 }
 </style>
