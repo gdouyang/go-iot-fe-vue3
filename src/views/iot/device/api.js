@@ -1,6 +1,13 @@
 import request from '@/axios'
 
 export const pageUrl = 'device/page'
+/**
+ * 状态文本
+ * @param status
+ */
+export function getStatusText(status) {
+  return status === 'online' ? '在线' : status === 'offline' ? '离线' : '未激活'
+}
 
 // 分页查询
 export function page(param) {

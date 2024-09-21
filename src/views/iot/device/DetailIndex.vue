@@ -100,7 +100,7 @@
 </template>
 
 <script lang="jsx">
-import { getDetail, connect, disconnect, deploy, getEventBusUrl } from './api.js'
+import { getStatusText, getDetail, connect, disconnect, deploy, getEventBusUrl } from './api.js'
 import Info from './detail/Info.vue'
 import Status from './detail/Status.vue'
 import Function from './detail/Function.vue'
@@ -160,7 +160,7 @@ export default {
     },
     deviceStateText() {
       const status = this.detailData.state
-      return status === 'online' ? '在线' : status === 'offline' ? '离线' : '未激活'
+      return getStatusText(status)
     },
     isNetClientType() {
       return (

@@ -1,7 +1,7 @@
 <template>
   <ChartCard title="设备状态">
     <template #total>
-      <span>{{ state }}</span>
+      <span>{{ deviceStateText }}</span>
     </template>
     <span v-if="state === 'online'">上线时间：{{ time }}</span>
     <span v-if="state === 'offline'">离线时间：{{ time }}</span>
@@ -10,7 +10,7 @@
 
 <script lang="jsx">
 import ChartCard from './ChartCard.vue'
-import { queryLogs } from '../../api.js'
+import { getStatusText, queryLogs } from '../../api.js'
 // eslint-disable-next-line no-unused-vars
 // import dayjs from 'dayjs'
 export default {
@@ -37,6 +37,12 @@ export default {
   },
   mounted() {
     this.GetTime()
+  },
+  computed: {
+    deviceStateText() {
+      const status = this.state
+      return getStatusText(status)
+    }
   },
   methods: {
     GetTime() {

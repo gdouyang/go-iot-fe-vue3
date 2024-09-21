@@ -6,10 +6,13 @@
           <el-row>
             <el-col :md="5" :sm="24">
               <el-form-item label="日志类型">
-                <el-select mode="multiple" v-model="searchParams.type">
-                  <el-option v-for="(item, index) in selectOptions" :key="index" :value="item.id">
-                    {{ item.name }}
-                  </el-option>
+                <el-select v-model="searchParams.type" multiple>
+                  <el-option
+                    v-for="(item, index) in selectOptions"
+                    :key="index"
+                    :value="item.id"
+                    :label="item.name"
+                  ></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -50,6 +53,23 @@
 import _ from 'lodash-es'
 import dayjs from 'dayjs'
 import { getDeviceLogsUrl } from '@/views/iot/device/api.js'
+
+const defaultOptions = [
+  // { id: 'event', name: '事件上报' },
+  // { id: 'readProperty', name: '属性读取' },
+  // { id: 'writeProperty', name: '属性修改' },
+  // { id: 'reportProperty', name: '属性上报' },
+  { id: 'call', name: '调用' },
+  { id: 'reply', name: '回复' },
+  { id: 'offline', name: '下线' },
+  { id: 'online', name: '上线' }
+  // { id: 'other', name: '其它' }
+]
+let typeMap = {}
+defaultOptions.forEach((item) => {
+  typeMap[item.id] = item.name
+})
+
 export default {
   name: 'DeviceLog',
   props: {
@@ -61,19 +81,14 @@ export default {
   data() {
     return {
       tableUrl: '',
-      selectOptions: [
-        // { id: 'event', name: '事件上报' },
-        // { id: 'readProperty', name: '属性读取' },
-        // { id: 'writeProperty', name: '属性修改' },
-        // { id: 'reportProperty', name: '属性上报' },
-        { id: 'call', name: '调用' },
-        { id: 'reply', name: '回复' },
-        { id: 'offline', name: '下线' },
-        { id: 'online', name: '上线' }
-        // { id: 'other', name: '其它' }
-      ],
+      selectOptions: defaultOptions,
       columns: [
-        { field: 'type', label: '类型', width: '120px' },
+        {
+          field: 'type',
+          label: '类型',
+          width: '120px',
+          slots: { default: (data) => typeMap[data.row.type] || '-' }
+        },
         { field: 'traceId', label: 'TraceId', width: '200px' },
         { field: 'createTime', label: '时间', width: '200px' },
         { field: 'content', label: '内容' },

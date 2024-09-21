@@ -129,4 +129,8 @@ defineExpose({
   />
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+:deep(.el-pagination) {
+  justify-content: flex-end;
+}
+</style>
