@@ -154,7 +154,6 @@ export default {
       })
     },
     save() {
-      this.$message.destroy()
       if (!this.script) {
         this.$message.error('请填写物模型')
       }

@@ -10,13 +10,15 @@
         <span class="detail-title">
           <span>设备：{{ getDeviceId }}</span>
         </span>
-        <el-tag
-          :type="deviceState === 'online' ? 'success' : 'info'"
-          round
-          size="small"
-          class="link"
-          >{{ deviceStateText }}</el-tag
-        >
+        <el-tooltip v-if="deviceState === 'online'">
+          <template #content>
+            <div class="connection-info">
+              <pre>{{ connectionInfo }}</pre>
+            </div>
+          </template>
+          <el-tag type="success" round size="small" class="link">{{ deviceStateText }}</el-tag>
+        </el-tooltip>
+        <el-tag v-else type="info" round size="small" class="link">{{ deviceStateText }}</el-tag>
         <span v-hasPermi="'device-mgr:save'">
           <el-popconfirm
             v-if="deviceState === 'online'"
@@ -57,7 +59,7 @@
       </el-row>
     </template>
     <div>
-      <el-descriptions :column="4">
+      <el-descriptions :column="3">
         <el-descriptions-item label="ID">{{ detailData.id }}</el-descriptions-item>
         <el-descriptions-item label="名称">{{ detailData.name }}</el-descriptions-item>
         <el-descriptions-item label="产品">
@@ -100,7 +102,15 @@
 </template>
 
 <script lang="jsx">
-import { getStatusText, getDetail, connect, disconnect, deploy, getEventBusUrl } from './api.js'
+import {
+  getStatusText,
+  getDetail,
+  getConnectionInfo,
+  connect,
+  disconnect,
+  deploy,
+  getEventBusUrl
+} from './api.js'
 import Info from './detail/Info.vue'
 import Status from './detail/Status.vue'
 import Function from './detail/Function.vue'
@@ -131,7 +141,8 @@ export default {
         { key: 'events', tab: '设备事件' },
         { key: 'log', tab: '日志' }
       ],
-      realtimeData: {}
+      realtimeData: {},
+      connectionInfo: {}
     }
   },
   created() {
@@ -142,6 +153,9 @@ export default {
     this.getDeviceDetail(id).then((result) => {
       if (result) {
         this.detailData = result
+        if (result.state === 'online') {
+          this.getConnectionInfo()
+        }
       }
     })
   },
@@ -200,20 +214,27 @@ export default {
         }
       })
     },
-    disconnectDevice() {
-      const deviceId = this.getDeviceId
-      disconnect(deviceId).then((data) => {
-        if (data.success) {
-          this.$message.success('断开连接成功')
-          this.reloadDevice()
-        }
-      })
-    },
     changeDeploy() {
       const deviceId = this.getDeviceId
       deploy(deviceId).then((data) => {
         if (data.success) {
           this.$message.success('激活成功')
+          this.reloadDevice()
+        }
+      })
+    },
+    getConnectionInfo() {
+      getConnectionInfo(this.getDeviceId).then((data) => {
+        if (data.success) {
+          this.connectionInfo = JSON.stringify(data.result, null, 2)
+        }
+      })
+    },
+    disconnectDevice() {
+      const deviceId = this.getDeviceId
+      disconnect(deviceId).then((data) => {
+        if (data.success) {
+          this.$message.success('断开连接成功')
           this.reloadDevice()
         }
       })
@@ -238,6 +259,7 @@ export default {
         var data = JSON.parse(evt.data)
         if (data.type === 'online') {
           this.detailData.state = 'online'
+          this.getConnectionInfo()
         } else if (data.type === 'offline') {
           this.detailData.state = 'offline'
         } else if (data.type === 'property' || data.type === 'event') {
@@ -258,6 +280,14 @@ export default {
 .deviceInsTitle {
   display: flex;
   flex-direction: column;
+}
+.connection-info {
+  max-height: 500px;
+  max-width: 400px;
+  overflow: auto;
+  pre {
+    white-space: break-spaces;
+  }
 }
 .link {
   margin-right: 5px;

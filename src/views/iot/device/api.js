@@ -41,7 +41,19 @@ export function get(id) {
 export function getDetail(id) {
   return request.get(`/device/${id}/detail`)
 }
-
+/**
+ * 获取设备连接信息
+ * @param {string} id
+ * @returns
+ */
+export function getConnectionInfo(id) {
+  return request.get(`/device/${id}/connection-info`)
+}
+/**
+ * 连接设备
+ * @param {string} deviceId
+ * @returns
+ */
 export function connect(deviceId) {
   return request.post(`/device/${deviceId}/connect`)
 }

@@ -75,7 +75,6 @@ export default {
       })
     },
     addConfirm() {
-      this.$message.destroy()
       if (!this.tsl) {
         this.$message.error('请填写物模型')
         return

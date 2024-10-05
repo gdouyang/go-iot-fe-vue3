@@ -59,3 +59,10 @@
 .dark {
   --app-content-bg-color: var(--el-bg-color);
 }
+
+.el-dialog {
+  --el-dialog-width: 30%;
+}
+.md-editor-previewOnly .md-editor-preview-wrapper {
+  padding: 10px;
+}

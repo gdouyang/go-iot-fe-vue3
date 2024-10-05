@@ -140,13 +140,25 @@ function OnInvoke(context) {
 }
 ```
 ```javascript
+// 系统默认会根据用户名和密码来认证，如果不满足可写OnConnect来自行判断
+// 当mqtt客户端连接到Broker时可以在这里判断用户名和密码是否正确
+function OnConnect(context) {
+  if (context.GetUserName() == context.GetConfig("username") && context.GetPassword() == context.GetConfig("password")) {
+    // 认证成功让设备上线，一般clientId就是设备id
+	  context.DeviceOnline(context.GetClientId())
+    return
+  }
+  // 认证失败
+  context.AuthFail()
+}
+
 function OnMessage(context) {
   console.log("OnMessage: " + context.MsgToString())
   var data = JSON.parse(context.MsgToString())
-	if (data.name == 'reply') {
+  if (data.name == 'reply') {
 		context.ReplyOk()
 		return
-	}
+  }
   var topic = context.Topic()
   if (topic == '/prop') {
     context.SaveProperties(data)
@@ -154,6 +166,7 @@ function OnMessage(context) {
     context.SaveEvents(data.eventId, data)
   }
 }
+
 function OnInvoke(context) {
   var data = JSON.stringify(context.GetMessage().Data)
 	console.log("OnInvoke: " + data)
