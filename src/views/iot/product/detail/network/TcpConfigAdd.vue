@@ -58,14 +58,15 @@
           prop="configuration.delimeter.length"
           v-if="addObj.configuration.delimeter.type === 'FixLength'"
         >
-          <el-input-number v-model="addObj.configuration.delimeter.length" :min="0" :max="60000"></el-input-number>
+          <el-input-number
+            v-model="addObj.configuration.delimeter.length"
+            :min="0"
+            :max="60000"
+          ></el-input-number>
         </el-form-item>
         <!-- 自定义脚本 -->
         <template v-if="addObj.configuration.delimeter.type === 'SplitFunc'">
-          <el-form-item
-            label="解析脚本"
-            prop="configuration.delimeter.size"
-          >
+          <el-form-item label="解析脚本" prop="configuration.delimeter.size">
             <el-button link type="primary" @click="showDemo">查看样例</el-button>
             <div class="ace-div">
               <VAceEditor
