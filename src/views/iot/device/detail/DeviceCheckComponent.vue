@@ -1,12 +1,12 @@
 <template>
   <el-popover width="auto" trigger="click" placement="bottom">
     <el-descriptions border :column="1" size="small" class="check-info" v-loading="loading">
-      <el-descriptions-item label="设备启用" v-if="checkInfo.deviceActive !== null">
+      <el-descriptions-item label="设备激活" v-if="checkInfo.deviceActive !== null">
         <el-tag :type="checkInfo.deviceActive ? 'success' : 'danger'">{{
           displayText(checkInfo.deviceActive)
         }}</el-tag>
       </el-descriptions-item>
-      <el-descriptions-item label="产品启用" v-if="checkInfo.productActive !== null">
+      <el-descriptions-item label="产品发布" v-if="checkInfo.productActive !== null">
         <el-tag :type="checkInfo.productActive ? 'success' : 'danger'">{{
           displayText(checkInfo.productActive)
         }}</el-tag>

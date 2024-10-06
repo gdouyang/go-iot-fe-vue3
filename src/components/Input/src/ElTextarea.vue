@@ -3,5 +3,5 @@ import { ElInput } from 'element-plus'
 </script>
 
 <template>
-  <ElInput v-bind="$attrs" type="textarea"> </ElInput>
+  <ElInput v-bind="$attrs" type="textarea" show-word-limit> </ElInput>
 </template>

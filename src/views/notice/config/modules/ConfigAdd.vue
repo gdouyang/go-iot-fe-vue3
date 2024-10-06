@@ -1,7 +1,7 @@
 <style lang="less"></style>
 
 <template>
-  <Dialog ref="addModal" @close="dialogClose" :width="1000">
+  <Dialog ref="addModal" @close="dialogClose" :width="900">
     <el-form ref="addFormRef" :model="addObj" label-width="auto" style="width: 95%">
       <el-form-item
         label="名称"

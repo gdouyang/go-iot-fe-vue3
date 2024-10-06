@@ -578,7 +578,11 @@ export default defineComponent({
               v-model:currentPage={currentPageRef.value}
               class="mt-10px"
               {...unref(pagination)}
-            ></ElPagination>
+            >
+              <span class="el-pagination__total">
+                {currentPageRef.value}/{unref(pagination).pageCount}页
+              </span>
+            </ElPagination>
           ) : undefined}
         </div>
       )

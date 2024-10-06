@@ -24,8 +24,12 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['update:pageNum', 'update:pageSize'])
+const tableRef = ref(null)
+const pageNumRef = ref(props.pageNum)
+const pageSizeRef = ref(props.pageSize)
 const loading = ref(true)
 const total = ref(0)
+const totalPage = ref(0)
 
 const tableDataList = ref<[]>([])
 const cache = {
@@ -68,6 +72,7 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
   if (res) {
     tableDataList.value = res.result.list
     total.value = res.result.totalCount
+    totalPage.value = res.result.totalPage
     const r = res.result
     if (r.searchAfter && !_.isEmpty(r.searchAfter)) {
       cache.searchAfterList.push(r.searchAfter)
@@ -77,7 +82,8 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
 }
 
 const search = (params?: any) => {
-  getTableList(props.pageNum, props.pageSize, params)
+  pageNumRef.value = props.pageNum
+  getTableList(pageNumRef.value, pageSizeRef.value, params)
 }
 const refresh = async () => {
   const p = {
@@ -93,44 +99,79 @@ const refresh = async () => {
   if (res) {
     tableDataList.value = res.result.list
     total.value = res.result.totalCount
+    totalPage.value = res.result.totalPage
   }
 }
 const pageSizeChange = (val: number) => {
+  if (pageSizeRef.value === val) {
+    return
+  }
   emits('update:pageSize', val)
+  emits('update:pageNum', 1)
+  pageNumRef.value = 1
+  pageSizeRef.value = val
   getTableList(1, val)
 }
 const pageNumChange = (val: number) => {
+  if (pageNumRef.value === val) {
+    return
+  }
   emits('update:pageNum', val)
-  getTableList(val, props.pageSize)
+  pageNumRef.value = val
+  getTableList(val, pageSizeRef.value, cache.condition)
+}
+
+const getSelectedRowKeys = (key: string) => {
+  const rows = tableRef?.value?.elTableRef?.getSelectionRows()
+  if (key) {
+    return rows.map((row: any) => row[key])
+  }
+  return rows
 }
 
 defineExpose({
   search: search,
-  refresh: refresh
+  refresh: refresh,
+  getSelectedRows: getSelectedRowKeys
 })
 </script>
 
 <template>
   <Table
-    v-bind="$attrs"
-    :pageSize="pageSize"
-    :currentPage="pageNum"
+    ref="tableRef"
+    :pageSize="pageSizeRef"
+    :currentPage="pageNumRef"
     :columns="columns"
     :data="tableDataList"
     :loading="loading"
+    :max-height="650"
     :pagination="{
       total: total,
-      layout: 'sizes, prev, next, total',
+      pageCount: totalPage,
+      layout: 'sizes, prev, next, slot, total',
       prevText: '上一页',
       nextText: '下一页'
     }"
     @update:pageSize="pageSizeChange"
     @update:currentPage="pageNumChange"
-  />
+    v-bind="$attrs"
+  >
+  </Table>
 </template>
 
 <style lang="less" scoped>
 :deep(.el-pagination) {
   justify-content: flex-end;
+  .el-pager {
+    li {
+      display: none;
+      &:last-child {
+        display: flex;
+      }
+    }
+    .is-active {
+      display: flex;
+    }
+  }
 }
 </style>

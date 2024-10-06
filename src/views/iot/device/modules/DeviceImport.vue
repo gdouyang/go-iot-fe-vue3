@@ -3,11 +3,12 @@
 <template>
   <Dialog
     ref="addModal"
-    @confirm="addConfirm"
-    @close="addClose"
     :width="500"
+    maxHeight="auto"
     title="批量导入设备"
     :okBtnLoading="okBtnLoading"
+    @confirm="addConfirm"
+    @close="addClose"
   >
     <el-form ref="addFormRef" :model="addObj" label-width="auto">
       <el-form-item
@@ -45,10 +46,15 @@
         <el-button link type="primary" :href="templateDownloadUrl">下载模版</el-button>
       </div>
       <div v-if="importLoading">
-        <el-badge status="success" text="已完成" v-if="isFinish" />
-        <el-badge status="processing" text="进行中" v-else />
-        <span style="margin-left: 15px">总数量:{{ count }}</span>
-        <p style="color: red">{{ errMessage }}</p>
+        <el-result
+          :icon="isFinish ? 'success' : 'info'"
+          :title="isFinish ? '已完成' : '进行中'"
+          :sub-title="`总数量 ${count}`"
+        >
+          <template #extra>
+            <p style="color: red">{{ errMessage }}</p>
+          </template>
+        </el-result>
       </div>
     </el-form>
   </Dialog>
@@ -83,7 +89,7 @@ export default {
       })
     },
     uploadChange(data) {
-      this.addObj.fileName = data.file.name
+      this.addObj.fileName = data.name
     },
     beforeUpload(file) {
       this.file = file
@@ -99,6 +105,9 @@ export default {
       this.$refs.addFormRef.clearValidate()
     },
     addConfirm() {
+      if (this.okBtnLoading) {
+        return
+      }
       this.$refs.addFormRef.validate((valid) => {
         if (valid) {
           this.importLoading = true
@@ -138,7 +147,6 @@ export default {
       source.onerror = () => {
         // this.isFinish = true
         source.close()
-        // this.$message.success('操作成功')
         // this.$refs.addModal.close()
         // this.$emit('success')
       }

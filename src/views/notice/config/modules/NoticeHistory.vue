@@ -1,5 +1,5 @@
 <template>
-  <Dialog ref="addModal" @confirm="addConfirm" @close="addClose">
+  <Dialog ref="addModal" @confirm="addConfirm" @close="addClose" maxHeight="auto">
     <PageTable ref="tb" :url="url" :columns="columns">
       <span slot="notifyTime" slot-scope="text">
         {{ text ? $dayjs(text).format('YYYY-MM-DD HH:mm:ss') : '/' }}

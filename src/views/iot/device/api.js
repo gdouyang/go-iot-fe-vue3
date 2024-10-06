@@ -101,6 +101,21 @@ export function queryEvent(deviceId, eventId, data) {
 export function queryLogs(deviceId, data) {
   return request.post(getDeviceLogsUrl(deviceId), data)
 }
+/**
+ * 设备导入
+ * @param {string} productId
+ * @param {File} file
+ * @returns
+ */
+export function importDevice(productId, file) {
+  return request.post(
+    `device/${productId}/import`,
+    { file: file },
+    {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
+  )
+}
 
 export function getDeviceLogsUrl(deviceId) {
   return `/device/${deviceId}/logs`
@@ -129,15 +144,6 @@ export function getImportResultUrl(token) {
   return `api/device/import-result/${token}`
 }
 
-export function importDevice(productId, file) {
-  return post(
-    `device/${productId}/import`,
-    { file: file },
-    {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    }
-  )
-}
 // export function getEvent (deviceId, itemId) {
 //   return request.get(`/device/${ deviceId }/event/${ itemId }?format=true&pageSize=1`)
 // }

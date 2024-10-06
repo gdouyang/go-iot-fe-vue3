@@ -32,8 +32,8 @@
     </div>
     <PageTable ref="tb" rowKey="id" :columns="columns" :url="url"> </PageTable>
 
-    <Dialog title="告警处理结果" ref="dialog" @confirm="submitData">
-      <el-form ref="form" :model="currentLog" :labelCol="{ span: 3 }" :wrapperCol="{ span: 21 }">
+    <Dialog title="告警处理" ref="dialog" maxHeight="auto" @confirm="submitData">
+      <el-form ref="form" :model="currentLog">
         <el-form-item
           prop="desc"
           label="处理结果"
@@ -42,7 +42,12 @@
             { max: 2000, message: '处理结果不超过2000个字符' }
           ]"
         >
-          <el-textarea :rows="8" v-model="currentLog.desc" placeholder="请输入处理结果" />
+          <el-textarea
+            :rows="8"
+            v-model="currentLog.desc"
+            maxlength="2000"
+            placeholder="请输入处理结果"
+          />
         </el-form-item>
       </el-form>
     </Dialog>
@@ -82,7 +87,6 @@ export default {
             }
           }
         },
-        { label: '处理状态', field: 'state', align: 'center', width: '100px' },
         {
           label: '处理状态',
           field: 'state',
@@ -103,14 +107,14 @@ export default {
             default: (data) => {
               return (
                 <>
-                  <el-button link type="primary" onClick={() => detail(data.row)}>
+                  <el-button link type="primary" onClick={() => this.detail(data.row)}>
                     详情
                   </el-button>
                   {data.row.state !== 'solve' && (
                     <>
                       <el-divider direction="vertical" />
-                      <el-button link type="primary" onClick={() => detail(data.row)}>
-                        详情
+                      <el-button link type="primary" onClick={() => this.edit(data.row)}>
+                        处理
                       </el-button>
                     </>
                   )}

@@ -1,12 +1,6 @@
 <template>
   <div>
-    <Dialog
-      ref="addModal"
-      @confirm="handleOk"
-      @close="handleCancel"
-      :width="500"
-      max-height="100px"
-    >
+    <Dialog ref="addModal" @confirm="handleOk" @close="handleCancel" :width="500" maxHeight="auto">
       <el-form ref="addFormRef" :model="addObj" label-width="auto">
         <el-form-item label="端口" prop="port" :rules="[{ required: true, message: '请输入' }]">
           <el-input-number

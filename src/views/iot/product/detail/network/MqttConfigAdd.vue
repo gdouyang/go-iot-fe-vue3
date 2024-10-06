@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Dialog ref="addModal" title="MQTT配置" @confirm="addConfirm" @close="addClose">
+    <Dialog
+      ref="addModal"
+      title="MQTT配置"
+      width="500"
+      maxHeight="auto"
+      @confirm="addConfirm"
+      @close="addClose"
+    >
       <el-form ref="addFormRef" :model="addObj" style="width: 90%" label-width="auto">
         <el-form-item label="开启SSL" prop="configuration.useTLS">
           <el-radio-group v-model="addObj.configuration.useTLS">

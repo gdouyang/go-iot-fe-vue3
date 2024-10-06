@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <Dialog ref="addModal" @confirm="addConfirm" @close="addClose">
+    <Dialog ref="addModal" @confirm="addConfirm" @close="addClose" maxHeight="auto">
       <el-form ref="addFormRef" :model="addObj" style="width: 90%" label-width="auto">
         <el-form-item
           label="产品ID"

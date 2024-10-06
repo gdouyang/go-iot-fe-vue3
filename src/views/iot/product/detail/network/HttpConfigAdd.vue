@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Dialog ref="addModal" title="Http配置" @confirm="addConfirm" @close="addClose">
+    <Dialog
+      ref="addModal"
+      title="Http配置"
+      width="510"
+      maxHeight="auto"
+      @confirm="addConfirm"
+      @close="addClose"
+    >
       <el-form ref="addFormRef" :model="addObj" style="width: 90%" label-width="auto">
         <el-form-item label="开启SSL" prop="configuration.useTLS">
           <el-radio-group v-model="addObj.configuration.useTLS">
@@ -28,15 +35,11 @@
         </el-form-item>
         <el-form-item label="协议路由">
           <el-card shadow="never">
-            <el-row
-              v-for="(i, index) in addObj.configuration.routers"
-              :key="index"
-              style="margin-bottom: 5px"
-            >
+            <el-row v-for="(i, index) in addObj.configuration.routers" :key="index" class="mb-5px">
               <el-col span="15">
                 <el-input v-model="i.url" placeholder="/**"></el-input>
               </el-col>
-              <el-col span="8" style="text-align: center">
+              <el-col span="8" class="ml-10px text-center">
                 <el-button
                   :size="'small'"
                   @click="minusRouter(index)"

@@ -55,14 +55,7 @@
           <el-button @click="batchDeploy" v-hasPermi="'device-mgr:save'">批量激活</el-button>
           <el-button @click="batchUndeploy" v-hasPermi="'device-mgr:save'">批量停用</el-button>
         </div>
-        <PageTable
-          ref="tb"
-          :url="tableUrl"
-          :columns="columns"
-          rowKey="id"
-          :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
-        >
-        </PageTable>
+        <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id"> </PageTable>
       </div>
     </ContentWrap>
     <DeviceAdd ref="DeviceAdd" @success="search()" />
@@ -71,21 +64,27 @@
     <Dialog
       ref="processModal"
       :showOk="false"
-      @close="processModalClose"
       :width="500"
+      maxHeight="auto"
       title="进度"
       cancelText="关闭"
+      @close="processModalClose"
     >
-      <el-badge status="success" text="已完成" v-if="isFinish" />
-      <el-badge status="processing" text="进行中" v-else />
-      <span style="margin-left: 15px">总数量:{{ count }}</span>
-      <p style="color: red">{{ errMessage }}</p>
+      <el-result
+        :icon="isFinish ? 'success' : 'info'"
+        :title="isFinish ? '已完成' : '进行中'"
+        :sub-title="`总数量 ${count}`"
+      >
+        <template #extra>
+          <p style="color: red">{{ errMessage }}</p>
+        </template>
+      </el-result>
     </Dialog>
   </div>
 </template>
 
 <script lang="jsx">
-import _ from 'lodash-es'
+import _, { max } from 'lodash-es'
 import { pageUrl, batchDeploy, batchUndeploy, getProductList, getImportResultUrl } from './api.js'
 import TableActions from './TableActions.vue'
 import DeviceAdd from './modules/DeviceAdd.vue'
@@ -104,6 +103,7 @@ export default {
       tableUrl: pageUrl,
       searchObj: _.cloneDeep(defautSearchObj),
       columns: [
+        { field: 'selection', type: 'selection' },
         { label: '设备ID', field: 'id' },
         { label: '名称', field: 'name' },
         { label: '产品', field: 'productId' },
@@ -158,8 +158,6 @@ export default {
         }
       ],
       isDetail: false,
-      selectedRowKeys: [],
-      selectedRows: [],
       isFinish: false,
       count: 0,
       errMessage: '',
@@ -203,10 +201,6 @@ export default {
     tableRefresh() {
       this.$refs.tb.refresh()
     },
-    onSelectChange(selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
-    },
     add() {
       this.$refs.DeviceAdd.add()
     },
@@ -228,14 +222,18 @@ export default {
       this.$refs.DeviceImport.open()
     },
     batchDeploy() {
-      let msg = `确定要激活${_.size(this.selectedRowKeys)}个设备吗？`
-      if (_.isEmpty(this.selectedRowKeys)) {
+      const ids = this.$refs.tb.getSelectedRows('id')
+      let msg = null
+      if (_.isEmpty(ids)) {
         msg = '确定要激活所有设备吗？'
+      } else {
+        msg = `确定要激活${_.size(ids)}个设备吗？`
       }
       this.$confirm(msg, {
-        title: '确认'
+        title: '激活确认',
+        type: 'warning'
       }).then(() => {
-        batchDeploy(this.selectedRowKeys).then((resp) => {
+        batchDeploy(ids).then((resp) => {
           if (resp.success) {
             this.showProcessResult(resp.result)
           } else {
@@ -245,14 +243,18 @@ export default {
       })
     },
     batchUndeploy() {
-      let msg = `确定要停用${_.size(this.selectedRowKeys)}个设备吗？`
-      if (_.isEmpty(this.selectedRowKeys)) {
+      const ids = this.$refs.tb.getSelectedRows('id')
+      let msg = `确定要停用${_.size(ids)}个设备吗？`
+      if (_.isEmpty(ids)) {
         msg = '确定要停用所有设备吗？'
+      } else {
+        msg = `确定要停用${_.size(ids)}个设备吗？`
       }
       this.$confirm(msg, {
-        title: '确认'
+        title: '停用确认',
+        type: 'warning'
       }).then(() => {
-        batchUndeploy(this.selectedRowKeys).then((resp) => {
+        batchUndeploy(ids).then((resp) => {
           if (resp.success) {
             this.showProcessResult(resp.result)
           } else {

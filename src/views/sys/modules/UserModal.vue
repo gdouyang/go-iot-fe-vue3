@@ -5,6 +5,7 @@
       @confirm="handleOk"
       @close="handleCancel"
       :width="500"
+      maxHeight="auto"
       v-loading="loading"
     >
       <el-form ref="addFormRef" :model="addObj" label-width="auto">

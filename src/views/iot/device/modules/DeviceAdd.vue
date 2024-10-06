@@ -1,5 +1,5 @@
 <template>
-  <Dialog ref="addModal" @confirm="addConfirm" @close="addClose" :width="500">
+  <Dialog ref="addModal" @confirm="addConfirm" @close="addClose" :width="500" maxHeight="auto">
     <el-form ref="addFormRef" :model="addObj" label-width="auto">
       <el-form-item
         label="设备ID"

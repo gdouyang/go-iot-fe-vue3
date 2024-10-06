@@ -10,6 +10,7 @@ const props = defineProps({
   title: propTypes.string.def('Dialog'),
   cancelText: propTypes.string.def('取消'),
   showOk: propTypes.bool.def(true),
+  okBtnLoading: propTypes.bool.def(false),
   okText: propTypes.string.def('确定'),
   okType: propTypes.string.def('primary'),
   fullscreen: propTypes.bool.def(false),
@@ -139,7 +140,9 @@ defineExpose({
     <template #footer>
       <slot name="footer">
         <el-button @click="close">{{ cancelText }}</el-button>
-        <el-button @click="ok" :type="okType">{{ okText }}</el-button>
+        <el-button v-if="showOk" @click="ok" :type="okType" v-loading="okBtnLoading">{{
+          okText
+        }}</el-button>
       </slot>
     </template>
   </ElDialog>

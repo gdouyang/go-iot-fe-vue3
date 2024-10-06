@@ -1,6 +1,13 @@
 <template>
   <div>
-    <Dialog ref="addModal" title="TCP配置" @confirm="addConfirm" @close="addClose">
+    <Dialog
+      ref="addModal"
+      title="TCP配置"
+      width="500"
+      maxHeight="auto"
+      @confirm="addConfirm"
+      @close="addClose"
+    >
       <el-form ref="addFormRef" :model="addObj" style="width: 90%" label-width="auto">
         <el-form-item label="开启SSL" prop="configuration.useTLS">
           <el-radio-group v-model="addObj.configuration.useTLS">
@@ -32,10 +39,10 @@
           :rules="[{ required: true, message: '请选择' }]"
         >
           <el-select v-model="addObj.configuration.delimeter.type" @change="parserTypeChange">
-            <el-option value="NONE">不处理</el-option>
-            <el-option value="Delimited">分隔符</el-option>
-            <el-option value="FixLength">固定长度</el-option>
-            <el-option value="SplitFunc">自定义脚本</el-option>
+            <el-option value="NONE" label="不处理"></el-option>
+            <el-option value="Delimited" label="分隔符"></el-option>
+            <el-option value="FixLength" label="固定长度"></el-option>
+            <el-option value="SplitFunc" label="自定义脚本"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item
@@ -43,7 +50,7 @@
           prop="configuration.delimeter.delimited"
           v-if="addObj.configuration.delimeter.type === 'Delimited'"
         >
-          <el-input v-model="addObj.configuration.delimeter.delimited" :maxlength="128"></el-input>
+          <el-input v-model="addObj.configuration.delimeter.delimited" :maxlength="64"></el-input>
         </el-form-item>
         <!-- 固定长度 -->
         <el-form-item
@@ -51,35 +58,36 @@
           prop="configuration.delimeter.length"
           v-if="addObj.configuration.delimeter.type === 'FixLength'"
         >
-          <el-input v-model="addObj.configuration.delimeter.length" :maxlength="128"></el-input>
+          <el-input-number v-model="addObj.configuration.delimeter.length" :min="0" :max="60000"></el-input-number>
         </el-form-item>
         <!-- 自定义脚本 -->
-        <el-form-item
-          label="解析脚本"
-          prop="configuration.delimeter.size"
-          v-if="addObj.configuration.delimeter.type === 'SplitFunc'"
-        >
-          <a href="javascript:void(0)" @click="showDemo">查看样例</a>
-          <VAceEditor
-            ref="AceEditor"
-            v-model="addObj.configuration.delimeter.splitFunc"
-            lang="javascript"
-            theme="chrome"
-            width="400"
-            height="250"
-            :options="aceOptions"
-            @init="init"
-          />
-        </el-form-item>
+        <template v-if="addObj.configuration.delimeter.type === 'SplitFunc'">
+          <el-form-item
+            label="解析脚本"
+            prop="configuration.delimeter.size"
+          >
+            <el-button link type="primary" @click="showDemo">查看样例</el-button>
+            <div class="ace-div">
+              <VAceEditor
+                ref="AceEditor"
+                v-model:value="addObj.configuration.delimeter.splitFunc"
+                lang="javascript"
+                theme="chrome"
+                :options="aceOptions"
+                class="ace-div"
+                @init="init"
+              />
+            </div>
+          </el-form-item>
+        </template>
       </el-form>
     </Dialog>
     <el-drawer
+      v-model="openDrawer"
       title="说明"
       placement="right"
-      width="750"
+      size="50%"
       @close="openDrawer = false"
-      :visible="openDrawer"
-      v-if="openDrawer"
     >
       <Doc :type="'SplitFunc'" />
     </el-drawer>
@@ -87,12 +95,12 @@
 </template>
 
 <script lang="jsx">
-// import ace from 'ace-builds';
 import { VAceEditor } from 'vue3-ace-editor'
-// import modeJavascriptUrl from 'ace-builds/src-noconflict/mode-javascript?url'
-// ace.config.setModuleUrl('ace/mode/javascript', modeJavascriptUrl);
-// import themeChromeUrl from 'ace-builds/src-noconflict/theme-chrome?url';
-// ace.config.setModuleUrl('ace/theme/chrome', themeChromeUrl);
+import 'ace-builds/src-noconflict/ext-language_tools'
+import 'ace-builds/src-noconflict/ext-searchbox'
+import 'ace-builds/src-noconflict/mode-javascript'
+import 'ace-builds/src-noconflict/theme-chrome'
+import 'ace-builds/src-noconflict/snippets/javascript'
 
 import _ from 'lodash-es'
 import { newTcpAddObj } from './entity.js'
@@ -212,4 +220,9 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.ace-div {
+  width: 350px;
+  height: 280px;
+}
+</style>

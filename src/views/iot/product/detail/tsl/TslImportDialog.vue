@@ -6,6 +6,7 @@
     @confirm="addConfirm"
     @close="addClose"
     :width="550"
+    maxHeight="auto"
     :showOk="showOk"
     cancelText="关闭"
   >
