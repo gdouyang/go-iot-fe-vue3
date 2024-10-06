@@ -57,7 +57,7 @@ const schema = reactive<FormSchema[]>([
       span: 24
     },
     componentProps: {
-      placeholder: 'admin or test'
+      placeholder: '请输入用户名'
     }
   },
   {
@@ -72,7 +72,7 @@ const schema = reactive<FormSchema[]>([
       style: {
         width: '100%'
       },
-      placeholder: 'admin or test'
+      placeholder: '请输入密码'
     }
   },
   {
