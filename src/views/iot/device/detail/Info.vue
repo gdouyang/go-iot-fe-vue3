@@ -3,10 +3,12 @@
     <ContentWrap>
       <el-descriptions border :column="2">
         <template #title>
-          设备信息
-          <el-button link type="primary" v-hasPermi="'device-mgr:save'" @click="openBasicInfo"
-            >编辑</el-button
-          >
+          <div class="flex-item-center">
+            设备信息
+            <el-button link type="primary" v-hasPermi="'device-mgr:save'" @click="openBasicInfo"
+              >编辑</el-button
+            >
+          </div>
         </template>
         <el-descriptions-item label="产品名称" :span="1">{{
           device.productName

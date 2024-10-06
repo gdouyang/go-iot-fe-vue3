@@ -2,32 +2,34 @@
   <div style="width: 100%; margin-top: 10px" v-if="configuration.length">
     <el-descriptions :column="3" border>
       <template #title>
-        配置
-        <el-popconfirm
-          title="确认重新应用该配置？"
-          width="200px"
-          v-hasPermi="'device-mgr:save'"
-          @confirm="changeDeploy"
-        >
-          <template #reference>
-            <el-button link type="primary">应用配置</el-button>
-          </template>
-        </el-popconfirm>
-        <el-tooltip content="修改配置后需重新应用后才能生效。">
-          <Icon icon="carbon:help" />
-        </el-tooltip>
-        <span v-if="canResetConfig" v-hasPermi="'device-mgr:save'">
-          <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
+        <div class="flex-item-center">
+          配置
+          <el-popconfirm
+            title="确认重新应用该配置？"
+            width="200px"
+            v-hasPermi="'device-mgr:save'"
+            @confirm="changeDeploy"
+          >
             <template #reference>
-              <el-button link type="primary">恢复默认</el-button>
+              <el-button link type="primary">应用配置</el-button>
             </template>
           </el-popconfirm>
-          <el-tooltip
-            :title="`该设备单独编辑过[${deviceConfigKeys}]，点击此将恢复成默认的配置信息，请谨慎操作。`"
-          >
+          <el-tooltip content="修改配置后需重新应用后才能生效。">
             <Icon icon="carbon:help" />
           </el-tooltip>
-        </span>
+          <span v-if="canResetConfig" v-hasPermi="'device-mgr:save'">
+            <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
+              <template #reference>
+                <el-button link type="primary">恢复默认</el-button>
+              </template>
+            </el-popconfirm>
+            <el-tooltip
+              :title="`该设备单独编辑过[${deviceConfigKeys}]，点击此将恢复成默认的配置信息，请谨慎操作。`"
+            >
+              <Icon icon="carbon:help" />
+            </el-tooltip>
+          </span>
+        </div>
       </template>
     </el-descriptions>
 

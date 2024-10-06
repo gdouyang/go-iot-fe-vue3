@@ -1,7 +1,7 @@
 <template>
   <ContentDetailWrap :header-border="false" v-loading="loading">
     <template #header>
-      <el-row class="el-descriptions__title" style="align-items: center">
+      <el-row class="el-descriptions__title flex-item-center">
         <el-tooltip content="返回">
           <BaseButton @click="back" circle size="small"
             ><Icon icon="carbon:arrow-left"
