@@ -132,7 +132,7 @@ function OnInvoke(context) {
       },
       "description": null,
       "scale": 2,
-      "unit": null,
+      "unit": "°C",
       "type": "float"
     }
   ],

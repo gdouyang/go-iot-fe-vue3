@@ -1,19 +1,10 @@
-<div align="center"> <a href="https://github.com/kailong321200875/vue-element-plus-admin"> <img width="100" src="./public/logo.png"> </a> <br> <br>
-
-[![license](https://img.shields.io/github/license/kailong321200875/vue-element-plus-admin.svg)](LICENSE)
-
-<h1>vue-element-plus-admin</h1>
+<div align="center">
+<h1>go-iot-fe-vue3</h1>
 </div>
-
-[English](./README.md) | **中文**
 
 ## 介绍
 
-vue-element-plus-admin 是一个基于 `element-plus` 免费开源的中后台模版。使用了最新的`vue3`，`vite4`，`TypeScript`等主流技术开发，开箱即用的中后台前端解决方案，可以用来作为项目的启动模版，也可用于学习参考。并且时刻关注着最新技术动向，尽可能的第一时间更新。
-
-vue-element-plus-admin 的定位是后台集成方案，不太适合当基础模板来进行二次开发。因为集成了很多你可能用不到的功能，会造成不少的代码冗余。如果你的项目不关注这方面的问题，也可以直接基于它进行二次开发。
-
-如需要基础模版，请切换到 `tempalte` 分支，`tempalte` 只简单集成了一些如：布局、动态菜单等常用布局功能，更适合开发者进行二次开发。
+VUE3版本go-iot前端工程
 
 ## 特性
 
@@ -26,18 +17,11 @@ vue-element-plus-admin 的定位是后台集成方案，不太适合当基础模
 - **组件** 二次封装了多个常用的组件
 - **示例** 内置丰富的示例
 
-## 预览
-
-- [vue-element-plus-admin](https://element-plus-admin.cn/) - 完整版 github 站点
-- [vue-element-plus-admin](https://kailong110120130.gitee.io/vue-element-plus-admin) - 完整版 gitee 站点
-
-帐号：**admin/admin test/test**
-
-`admin` 帐号用于模拟服务端控制权限，服务端返回什么就渲染什么
-
-`test` 帐号用于模拟前端控制权限，服务端只返回需要显示的菜单 key，前端进行匹配渲染
+帐号：**admin/123456**
 
 ## 文档
+
+工程基于 vue-element-plus-admin 开发
 
 [文档地址 Github](https://element-plus-admin-doc.cn/)
 
@@ -56,16 +40,10 @@ vue-element-plus-admin 的定位是后台集成方案，不太适合当基础模
 
 ## 安装和使用
 
-- 获取代码
-
-```bash
-git clone https://github.com/kailong321200875/vue-element-plus-admin.git
-```
-
 - 安装依赖
 
 ```bash
-cd vue-element-plus-admin
+cd go-iot-fe-vue3
 
 pnpm install
 

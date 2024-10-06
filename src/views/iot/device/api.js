@@ -50,6 +50,14 @@ export function getConnectionInfo(id) {
   return request.get(`/device/${id}/connection-info`)
 }
 /**
+ * 设备诊断
+ * @param {string} id
+ * @returns
+ */
+export function connectionCheck(id) {
+  return request.get(`/device/${id}/connection-check`)
+}
+/**
  * 连接设备
  * @param {string} deviceId
  * @returns

@@ -111,6 +111,25 @@ function OnInvoke(context) {
 | HmacEncryptBase64 | hmac算法把 | (data: string, key: string, type: string) type取值： sha1, sha256, md5| base64字符串 |
 
 ### 样例
+```json
+{
+  "events": [],
+  "properties": [
+    {
+      "id": "temperature",
+      "name": "温度",
+      "expands": {
+        "readOnly": null
+      },
+      "description": null,
+      "scale": 2,
+      "unit": "°C",
+      "type": "float"
+    }
+  ],
+  "functions": []
+}
+```
 ```javascript
 function OnConnect(context) {
   var session = context.GetSession()

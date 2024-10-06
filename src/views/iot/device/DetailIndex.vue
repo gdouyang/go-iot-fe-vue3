@@ -10,15 +10,22 @@
         <span class="detail-title">
           <span>设备：{{ getDeviceId }}</span>
         </span>
+        <el-tag v-if="deviceState === 'online'" type="success" class="link">{{
+          deviceStateText
+        }}</el-tag>
+        <el-tag v-else-if="deviceState === 'offline'" type="danger" class="link">{{
+          deviceStateText
+        }}</el-tag>
+        <el-tag v-else type="info" class="link">{{ deviceStateText }}</el-tag>
         <el-tooltip v-if="deviceState === 'online'">
           <template #content>
             <div class="connection-info">
               <pre>{{ connectionInfo }}</pre>
             </div>
           </template>
-          <el-tag type="success" round size="small" class="link">{{ deviceStateText }}</el-tag>
+          <el-button link type="success" class="link">连接信息</el-button>
         </el-tooltip>
-        <el-tag v-else type="info" round size="small" class="link">{{ deviceStateText }}</el-tag>
+        <DeviceCheckComponent :device-id="getDeviceId" />
         <span v-hasPermi="'device-mgr:save'">
           <el-popconfirm
             v-if="deviceState === 'online'"
@@ -41,7 +48,7 @@
             </template>
           </el-popconfirm>
           <el-popconfirm
-            v-else-if="isNetClientType"
+            v-else-if="isNetClientType && deviceState === 'offline'"
             title="确认连接设备？"
             width="200px"
             @confirm="connectDevice"
@@ -111,6 +118,7 @@ import {
   deploy,
   getEventBusUrl
 } from './api.js'
+import DeviceCheckComponent from './detail/DeviceCheckComponent.vue'
 import Info from './detail/Info.vue'
 import Status from './detail/Status.vue'
 import Function from './detail/Function.vue'
@@ -121,6 +129,7 @@ import Events from './detail/Events.vue'
 export default {
   name: 'DeviceDetail',
   components: {
+    DeviceCheckComponent,
     Info,
     Status,
     Function,
@@ -211,6 +220,7 @@ export default {
       this.getDeviceDetail(this.getDeviceId).then((result) => {
         if (result) {
           this.detailData = result
+          this.getConnectionInfo()
         }
       })
     },
