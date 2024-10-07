@@ -44,7 +44,7 @@ export const useAppStore = defineStore('app', {
       title: import.meta.env.VITE_APP_TITLE, // 标题
       pageLoading: false, // 路由跳转loading
       breadcrumb: false, // 面包屑
-      breadcrumbIcon: true, // 面包屑图标
+      breadcrumbIcon: false, // 面包屑图标
       collapse: false, // 折叠菜单
       uniqueOpened: false, // 是否只保持一个子菜单的展开
       hamburger: true, // 折叠图标
@@ -55,10 +55,10 @@ export const useAppStore = defineStore('app', {
       tagsViewIcon: true, // 是否显示标签图标
       logo: true, // logo
       fixedHeader: true, // 固定toolheader
-      footer: true, // 显示页脚
+      footer: false, // 显示页脚
       greyMode: false, // 是否开始灰色模式，用于特殊悼念日
-      dynamicRouter: true, // 是否动态路由
-      serverDynamicRouter: true, // 是否服务端渲染动态路由
+      dynamicRouter: false, // 是否动态路由
+      serverDynamicRouter: false, // 是否服务端渲染动态路由
       fixedMenu: false, // 是否固定菜单
 
       layout: 'classic', // layout布局

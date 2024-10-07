@@ -156,14 +156,14 @@ export default {
       }
       this.$confirm(
         <div>
-          <pre style="padding: 5px; background-color: #efefef;">{content}</pre>
+          <pre style="padding: 5px;">{content}</pre>
           {record.state === 'solve' && (
             <div>
               <br />
               <br />
               <span style="font-size: 16px;">处理结果：</span>
               <br />
-              <p style="padding: 5px; background-color: #efefef;">{record.desc}</p>
+              <p style="padding: 5px;">{record.desc}</p>
             </div>
           )}
         </div>,

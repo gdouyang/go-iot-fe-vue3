@@ -1,7 +1,7 @@
 <template>
   <div>
     <p style="font-size: 16px">触发条件</p>
-    <el-card size="small" shadow="never" style="background-color: #fdfdfd">
+    <el-card size="small" shadow="never">
       <el-row>
         <el-col :span="24">
           <div class="shake-limit">
@@ -442,11 +442,12 @@ export default {
   height: 24px;
 }
 .device-box {
-  border: 1px solid #d9d9d9;
   height: 90px;
   overflow: auto;
   padding: 5px;
   margin: 8px 0px;
+  border-radius: var(--el-card-border-radius);
+  border: 1px solid var(--el-card-border-color);
 }
 .properties-col {
   display: flex;
