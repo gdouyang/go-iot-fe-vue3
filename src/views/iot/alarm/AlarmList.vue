@@ -54,7 +54,7 @@
   </ContentWrap>
 </template>
 <script lang="jsx">
-import { dayjs } from 'element-plus'
+import { dateUtil } from '@/utils/dateUtil'
 import { pageUrl, solveAlarmLog } from './api.js'
 export default {
   name: 'AlamrList',
@@ -83,7 +83,7 @@ export default {
           field: 'createTime',
           slots: {
             default: (data) => {
-              return dayjs(data.row.createTime).format('YYYY-MM-DD HH:mm:ss')
+              return dateUtil(data.row.createTime).format('YYYY-MM-DD HH:mm:ss')
             }
           }
         },

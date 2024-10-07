@@ -31,8 +31,8 @@
 
 <script lang="jsx">
 import _ from 'lodash-es'
-import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
-import BmGeolocation from 'vue-baidu-map/components/controls/Geolocation.vue'
+// import BaiduMap from 'vue-baidu-map/components/map/Map.vue'
+// import BmGeolocation from 'vue-baidu-map/components/controls/Geolocation.vue'
 import DeviceDetail from './DetailIndex.vue'
 
 const defautSearchObj = {
@@ -40,8 +40,8 @@ const defautSearchObj = {
 }
 export default {
   components: {
-    BaiduMap,
-    BmGeolocation,
+    // BaiduMap,
+    // BmGeolocation,
     DeviceDetail
   },
   data() {

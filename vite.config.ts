@@ -133,14 +133,15 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           }
         }
       },
-      cssCodeSplit: !(env.VITE_USE_CSS_SPLIT === 'false')
+      cssCodeSplit: !(env.VITE_USE_CSS_SPLIT === 'false'),
+      assetsDir: 'static'
     },
     server: {
       port: 3005,
       proxy: {
         // 选项写法
         '/api': {
-          target: 'http://127.0.0.1:8088/api',
+          target: 'http://127.0.0.1:8089/api',
           ws: true,
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, '')
