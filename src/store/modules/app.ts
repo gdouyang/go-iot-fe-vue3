@@ -340,7 +340,7 @@ export const useAppStore = defineStore('app', {
     setSysConfig(config: SysConfig) {
       this.sysConfig = config
       if (config) {
-        this.setTitle(config.title)
+        this.setTitle(config.title || import.meta.env.VITE_APP_TITLE)
       }
     }
   },
