@@ -73,3 +73,18 @@ export function newHttpAddObj() {
     }
   }
 }
+
+export function newCoAPAddObj() {
+  return {
+    id: null,
+    name: '',
+    type: 'COAP_SERVER',
+    productId: null,
+    configuration: {
+      useTLS: false,
+      certificate: null,
+      host: '',
+      routers: [{ url: '' }]
+    }
+  }
+}

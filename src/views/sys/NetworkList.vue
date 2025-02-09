@@ -23,15 +23,7 @@
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="网络类型">
-              <el-select v-model="searchObj.type" :allowClear="true">
-                <el-option value="MQTT_BROKER" label="MQTT_BROKER"></el-option>
-                <el-option value="TCP_SERVER" label="TCP_SERVER"></el-option>
-                <el-option value="HTTP_SERVER" label="HTTP_SERVER"></el-option>
-                <el-option value="WEBSOCKET_SERVER" label="WEBSOCKET_SERVER"></el-option>
-                <el-option value="MQTT_CLIENT" label="MQTT_CLIENT"></el-option>
-                <el-option value="TCP_CLIENT" label="TCP_CLIENT"></el-option>
-                <el-option value="MODBUS" label="MODBUS_TCP"></el-option>
-              </el-select>
+              <network-type-select v-model="searchObj.type" :allowClear="true" :disabled="false" />
             </el-form-item>
           </el-col>
           <el-col :md="4" :sm="24">
@@ -57,10 +49,13 @@
 import { tableUrl, removeNetwork } from './networkapi.js'
 import NetworkModal from './modules/NetworkModal.vue'
 import NetworkActions from './modules/NetworkActions.vue'
+import NetworkTypeSelect from '../iot/product/components/NetworkTypeSelect.vue'
+
 export default {
   name: 'NetworkList',
   components: {
-    NetworkModal
+    NetworkModal,
+    NetworkTypeSelect
   },
   data() {
     return {

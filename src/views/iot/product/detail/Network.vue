@@ -16,6 +16,7 @@
       :network="network"
     />
     <HttpConfig v-if="network.type === 'HTTP_SERVER'" :productId="product.id" :network="network" />
+    <CoAPConfig v-if="network.type === 'COAP_SERVER'" :productId="product.id" :network="network" />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import TcpConfig from './network/TcpConfig.vue'
 import MqttConfig from './network/MqttConfig.vue'
 import WebSocketConfig from './network/WebSocketConfig.vue'
 import HttpConfig from './network/HttpConfig.vue'
+import CoAPConfig from './network/CoAPConfig.vue'
 
 export default {
   name: 'Network',

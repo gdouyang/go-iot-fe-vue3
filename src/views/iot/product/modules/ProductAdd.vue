@@ -30,15 +30,7 @@
           prop="networkType"
           :rules="[{ required: true, message: '网络类型不能为空' }]"
         >
-          <el-select placeholder="请选择" v-model="addObj.networkType" :disabled="isEdit">
-            <el-option value="MQTT_BROKER">MQTT_BROKER</el-option>
-            <el-option value="TCP_SERVER">TCP_SERVER</el-option>
-            <el-option value="HTTP_SERVER">HTTP_SERVER</el-option>
-            <el-option value="WEBSOCKET_SERVER">WEBSOCKET_SERVER</el-option>
-            <el-option value="MQTT_CLIENT">MQTT_CLIENT</el-option>
-            <el-option value="TCP_CLIENT">TCP_CLIENT</el-option>
-            <el-option value="MODBUS">MODBUS_TCP</el-option>
-          </el-select>
+          <network-type-select v-model="addObj.networkType" :disabled="isEdit" />
         </el-form-item>
         <el-form-item label="说明" prop="desc">
           <el-input
@@ -57,6 +49,8 @@
 <script lang="jsx">
 import _ from 'lodash-es'
 import { get, addProduct, updateProduct } from '@/views/iot/product/api.js'
+import NetworkTypeSelect from '../components/NetworkTypeSelect.vue'
+
 const defaultAddObj = {
   id: null,
   name: '',
@@ -66,7 +60,9 @@ const defaultAddObj = {
 }
 export default {
   name: 'ProductAdd',
-  components: {},
+  components: {
+    NetworkTypeSelect
+  },
   data() {
     return {
       labelCol: {
