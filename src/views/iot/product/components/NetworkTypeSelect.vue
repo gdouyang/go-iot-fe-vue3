@@ -3,10 +3,10 @@
     <el-option value="MQTT_BROKER" label="MQTT_BROKER"></el-option>
     <el-option value="TCP_SERVER" label="TCP_SERVER"></el-option>
     <el-option value="HTTP_SERVER" label="HTTP_SERVER"></el-option>
+    <el-option value="COAP_SERVER" label="COAP_SERVER"></el-option>
     <el-option value="WEBSOCKET_SERVER" label="WEBSOCKET_SERVER"></el-option>
     <el-option value="MQTT_CLIENT" label="MQTT_CLIENT"></el-option>
     <el-option value="TCP_CLIENT" label="TCP_CLIENT"></el-option>
-    <el-option value="MODBUS" label="MODBUS_TCP"></el-option>
     <el-option value="MODBUS" label="MODBUS_TCP"></el-option>
   </el-select>
 </template>
