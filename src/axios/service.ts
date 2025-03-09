@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios'
 import { defaultRequestInterceptors, defaultResponseInterceptors } from './config'
-
 import { AxiosInstance, InternalAxiosRequestConfig, RequestConfig, AxiosResponse } from './types'
 import { ElMessage } from 'element-plus'
 import { REQUEST_TIMEOUT } from '@/constants'
@@ -40,8 +39,10 @@ axiosInstance.interceptors.response.use(
     if (status === 403) {
       ElMessage.error('403无权限' + data.message)
     } else if (status === 401 && !(data.result && data.result.isLogin)) {
-      ElMessage.error('未登录，请先登录')
-      if (token && !window.$isReload) {
+      if (token) {
+        ElMessage.error('未登录，请先登录')
+      }
+      if (!window.$isReload) {
         window.$isReload = true
         userStore.reset()
       }
