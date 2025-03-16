@@ -7,6 +7,8 @@ import _ from 'lodash-es'
 import { getNetwork, updateNetwork } from '@/views/iot/product/api.js'
 import NetworkRun from './NetworkRun.vue'
 import CertificateUpload from './upload.vue'
+import { useAppStore } from '@/store/modules/app'
+const appStore = useAppStore()
 
 export default {
   name: 'NetworConfig',
@@ -21,11 +23,9 @@ export default {
     }
   },
   created() {
-    const sysConfig = null //this.$store.getters.sysConfig
+    const sysConfig = appStore.getSysConfig
     if (sysConfig && sysConfig.accessIp) {
       this.accessIp = sysConfig.accessIp
-    } else {
-      this.accessIp = '127.0.0.1'
     }
   },
   computed: {

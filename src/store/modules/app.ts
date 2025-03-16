@@ -177,7 +177,7 @@ export const useAppStore = defineStore('app', {
       return this.footer
     },
     getSysConfig(): any {
-      return this.sysConfig
+      return this.sysConfig || { accessIp: '127.0.0.1' }
     }
   },
   actions: {
