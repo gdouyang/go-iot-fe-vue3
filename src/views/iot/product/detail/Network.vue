@@ -42,7 +42,8 @@ export default {
     TcpConfig,
     MqttConfig,
     WebSocketConfig,
-    HttpConfig
+    HttpConfig,
+    CoAPConfig
   },
   data() {
     return {

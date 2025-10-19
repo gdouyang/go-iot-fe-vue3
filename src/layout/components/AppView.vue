@@ -29,10 +29,15 @@ const keepAlive = computed((): Boolean => {
       'flex-1 p-[var(--app-content-padding)] w-[calc(100%-var(--app-content-padding)-var(--app-content-padding))] bg-[var(--app-content-bg-color)] dark:bg-[var(--el-bg-color)]'
     ]"
   >
-    <keep-alive>
+    <!-- <keep-alive>
       <router-view v-if="keepAlive"> </router-view>
     </keep-alive>
-    <router-view v-if="!keepAlive"> </router-view>
+    <router-view v-if="!keepAlive"> </router-view> -->
+    <router-view v-slot="{ Component }">
+      <!-- <keep-alive> -->
+        <component :is="Component" />
+      <!-- </keep-alive> -->
+    </router-view>
   </section>
   <Footer v-if="footer" />
 </template>

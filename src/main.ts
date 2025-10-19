@@ -6,6 +6,8 @@ import '@/plugins/unocss'
 // 导入全局的svg图标
 import '@/plugins/svgIcon'
 
+import { createApp } from 'vue'
+
 import ElementPlus from 'element-plus'
 
 import 'element-plus/dist/index.css'
@@ -34,7 +36,6 @@ import { setupRouter } from './router'
 // 权限
 import { setupPermission } from './directives'
 
-import { createApp } from 'vue'
 
 import App from './App.vue'
 

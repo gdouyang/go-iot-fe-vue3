@@ -4,16 +4,17 @@
       <template #title>
         <div class="flex-item-center">
           配置
-          <el-popconfirm
-            title="确认重新应用该配置？"
-            width="200px"
-            v-hasPermi="'device-mgr:save'"
-            @confirm="changeDeploy"
-          >
-            <template #reference>
-              <el-button link type="primary">应用配置</el-button>
-            </template>
-          </el-popconfirm>
+          <span v-hasPermi="'device-mgr:save'">
+            <el-popconfirm
+              title="确认重新应用该配置？"
+              width="200px"
+              @confirm="changeDeploy"
+            >
+              <template #reference>
+                <el-button link type="primary">应用配置</el-button>
+              </template>
+            </el-popconfirm>
+          </span>
           <el-tooltip content="修改配置后需重新应用后才能生效。">
             <Icon icon="carbon:help" />
           </el-tooltip>

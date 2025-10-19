@@ -168,7 +168,7 @@ export default {
       }
     })
   },
-  destroyed() {
+  unmounted() {
     if (this.ws) {
       this.ws.close()
     }

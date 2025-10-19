@@ -1,5 +1,6 @@
 <template>
   <ContentWrap :style="{ marginBottom: '20px' }" v-loading="loading">
+    <el-alert type="warning" :closable="false" title="修改物模型需手动应用配置后生效" style="margin-bottom: 8px;"></el-alert>
     <div style="display: inline-block; position: absolute; right: 14px; z-index: 10">
       <el-button @click="importTSL" style="margin-right: 5px">导入物模型</el-button>
       <el-button @click="showTSL">物模型</el-button>
