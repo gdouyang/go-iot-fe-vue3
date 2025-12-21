@@ -144,6 +144,28 @@ export function getImportResultUrl(token) {
   return `api/device/import-result/${token}`
 }
 
-// export function getEvent (deviceId, itemId) {
-//   return request.get(`/device/${ deviceId }/event/${ itemId }?format=true&pageSize=1`)
-// }
+export const otaPageUrl = 'device-ota/page'
+
+// OTA分页查询
+export function otaPage(param) {
+  return request.post(otaPageUrl, param)
+}
+
+// OTA Update
+export function otaUpdate(file, deviceIds, chunkSize, timeout) {
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('deviceIds', deviceIds)
+  if (chunkSize) {
+    formData.append('chunkSize', chunkSize)
+  }
+  if (timeout) {
+    formData.append('timeout', timeout)
+  }
+  return request.post(`device-ota/update`, formData)
+}
+
+// 删除OTA记录
+export function otaDelete(id) {
+  return request.delete(`device-ota/${id}`)
+}

@@ -135,6 +135,20 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/device-ota',
+    component: Layout,
+    name: 'DeviceOta',
+    meta: {},
+    children: [
+      {
+        path: 'ota-list',
+        name: 'OtaList',
+        component: () => import('@/views/iot/device/OtaList.vue'),
+        meta: { title: 'OTA升级', icon: 'carbon:cloud-upload', permission: ['ota-mgr'] }
+      }
+    ]
+  },
+  {
     path: '/rule',
     component: Layout,
     name: 'Rule',

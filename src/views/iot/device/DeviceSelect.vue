@@ -5,7 +5,7 @@
     @confirm="submitData"
     @close="addClose"
     width="70%"
-    :footer="null"
+    :footer="multiple ? undefined : null"
   >
     <div>
       <div class="table-page-search-wrapper" style="width: 95%">
@@ -24,9 +24,9 @@
             <el-col :md="6" :sm="24">
               <el-form-item label="状态">
                 <el-select v-model="searchObj.state" :allowClear="true">
-                  <el-option value="noActive" label="未激活"></el-option>
-                  <el-option value="offline" label="离线"></el-option>
-                  <el-option value="online" label="在线"></el-option>
+                  <el-option value="noActive" label="未激活" />
+                  <el-option value="offline" label="离线" />
+                  <el-option value="online" label="在线" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -39,7 +39,22 @@
           </el-row>
         </el-form>
       </div>
-      <PageTable ref="tb" :url="url" :columns="columns" rowKey="id"> </PageTable>
+      <div
+        v-if="multiple && selectedList.length > 0"
+        style="margin-bottom: 10px; border: 1px dashed #ddd; padding: 10px"
+      >
+        <div style="margin-bottom: 5px">已选择: {{ selectedList.length }}</div>
+        <el-tag
+          v-for="item in selectedList"
+          :key="item.id"
+          closable
+          style="margin-right: 5px; margin-bottom: 5px"
+          @close="removeSelected(item)"
+        >
+          {{ item.id }}
+        </el-tag>
+      </div>
+      <PageTable ref="tb" :url="url" :columns="columns" rowKey="id" />
     </div>
   </Dialog>
 </template>
@@ -58,12 +73,17 @@ export default {
     productId: {
       type: String,
       default: null
+    },
+    multiple: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       url: pageUrl,
       searchObj: _.cloneDeep(defautSearchObj),
+      selectedList: [],
       columns: [
         { label: '编码', field: 'id' },
         { label: '名称', field: 'name' },
@@ -88,9 +108,16 @@ export default {
           field: 'action',
           slots: {
             default: (data) => {
+              const isSelected =
+                this.multiple && this.selectedList.some((i) => i.id === data.row.id)
               return (
-                <el-button link type="primary" onClick={() => this.select(data.row)}>
-                  选择
+                <el-button
+                  link
+                  type="primary"
+                  disabled={isSelected}
+                  onClick={() => this.select(data.row)}
+                >
+                  {isSelected ? '已选' : '选择'}
                 </el-button>
               )
             }
@@ -120,16 +147,31 @@ export default {
       this.search()
     },
     select(item) {
-      this.$emit('select', item)
-      this.$refs.dialog.close()
+      if (this.multiple) {
+        if (!this.selectedList.some((i) => i.id === item.id)) {
+          this.selectedList.push(item)
+        }
+      } else {
+        this.$emit('select', item)
+        this.$refs.dialog.close()
+      }
+    },
+    removeSelected(item) {
+      this.selectedList = this.selectedList.filter((i) => i.id !== item.id)
     },
     open() {
+      this.selectedList = []
       this.$refs.dialog.open()
       this.$nextTick(() => {
         this.search()
       })
     },
-    submitData() {},
+    submitData() {
+      if (this.multiple) {
+        this.$emit('select-all', this.selectedList)
+        this.$refs.dialog.close()
+      }
+    },
     addClose() {}
   }
 }
