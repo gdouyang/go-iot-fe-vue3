@@ -5,11 +5,7 @@
         <div class="flex-item-center">
           配置
           <span v-hasPermi="'device-mgr:save'">
-            <el-popconfirm
-              title="确认重新应用该配置？"
-              width="200px"
-              @confirm="changeDeploy"
-            >
+            <el-popconfirm title="确认重新应用该配置？" width="200px" @confirm="changeDeploy">
               <template #reference>
                 <el-button link type="primary">应用配置</el-button>
               </template>

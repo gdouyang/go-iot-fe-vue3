@@ -36,7 +36,6 @@ import { setupRouter } from './router'
 // 权限
 import { setupPermission } from './directives'
 
-
 import App from './App.vue'
 
 import './permission'

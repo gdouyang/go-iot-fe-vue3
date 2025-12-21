@@ -29,11 +29,7 @@
             </el-popconfirm>
           </span>
           <span v-if="detailData.state">
-            <el-popconfirm
-              title="确认重新应用该配置？"
-              width="200px"
-              @confirm="deploy"
-            >
+            <el-popconfirm title="确认重新应用该配置？" width="200px" @confirm="deploy">
               <template #reference>
                 <span>
                   <el-tooltip content="修改物模型后需要重新应用配置" placement="top">
