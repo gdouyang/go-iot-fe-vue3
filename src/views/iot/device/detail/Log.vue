@@ -12,7 +12,7 @@
                     :key="index"
                     :value="item.id"
                     :label="item.name"
-                  ></el-option>
+                  />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -44,7 +44,7 @@
           </el-row>
         </el-form>
       </div>
-      <PageTable ref="tb" :columns="columns" :url="tableUrl"> </PageTable>
+      <PageTable ref="tb" :columns="columns" :url="tableUrl" />
     </ContentWrap>
   </div>
 </template>
@@ -151,7 +151,7 @@ export default {
       } catch (error) {
         content = record.content
       }
-      this.$confirm(<pre>{content}</pre>, {
+      this.$confirm(<pre class="pre-content">{content}</pre>, {
         title: '详细信息'
       })
     }
