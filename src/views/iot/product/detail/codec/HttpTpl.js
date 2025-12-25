@@ -39,43 +39,43 @@ function OnInvoke(context) {
       value: 'var deviceOper = context.GetDevice()'
     },
     {
-      caption: 'context.GetDeviceById()',
+      caption: 'context.GetDeviceById("id")',
       meta: 'OnMessage',
       value: 'var deviceOper = context.GetDeviceById("id")'
     },
     {
-      caption: 'context.GetConfig()',
+      caption: 'context.GetConfig("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetConfig("key")'
     },
     {
-      caption: 'context.GetHeader()',
+      caption: 'context.GetHeader("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetHeader("key")'
     },
     { caption: 'context.GetUrl()', meta: 'OnMessage', value: 'var url = context.GetUrl()' },
     {
-      caption: 'context.GetQuery()',
+      caption: 'context.GetQuery("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetQuery("key")'
     },
     {
-      caption: 'context.GetForm()',
+      caption: 'context.GetForm("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetForm("key")'
     },
     {
-      caption: 'context.SaveProperties()',
+      caption: 'context.SaveProperties({"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveProperties({"key":"value"})'
     },
     {
-      caption: 'context.SaveEvents()',
+      caption: 'context.SaveEvents("eventId", {"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveEvents("eventId", {"key":"value"})'
     },
     {
-      caption: 'context.HttpRequest()',
+      caption: 'context.HttpRequest({method:"", url:"", data:{}, header:{}})',
       meta: 'OnMessage',
       value: 'var resp = context.HttpRequest({method:"", url:"", data:{}, header:{}})'
     },
@@ -83,21 +83,21 @@ function OnInvoke(context) {
     { caption: 'context.ReplyFail()', meta: 'OnMessage', value: 'context.ReplyFail("resaon")' },
     // deviceOper
     {
-      caption: 'deviceOper.GetConfig()',
+      caption: 'deviceOper.GetConfig("key")',
       meta: 'deviceOper',
-      value: 'var value = deviceOpr.GetConfig("key")'
+      value: 'var value = deviceOper.GetConfig("key")'
     },
     {
-      caption: 'deviceOper.GetData()()',
+      caption: 'deviceOper.GetData("key")',
       meta: 'deviceOper',
-      value: 'var map = deviceOpr.GetData()()'
+      value: 'var map = deviceOper.GetData("key")'
     },
     // session
     { caption: 'session.Disconnect()', meta: 'session', value: 'session.Disconnect()' },
     { caption: 'session.Response()', meta: 'session', value: 'session.Response("text")' },
-    { caption: 'session.ResponseJSON()', meta: 'session', value: 'session.ResponseJSON("{}")' },
+    { caption: 'session.ResponseJSON("{}")', meta: 'session', value: 'session.ResponseJSON("{}")' },
     {
-      caption: 'session.ResponseHeader()',
+      caption: 'session.ResponseHeader("key", "value")',
       meta: 'session',
       value: 'session.ResponseHeader("key", "value")'
     },
@@ -118,9 +118,13 @@ function OnInvoke(context) {
       value: 'var clientId = message.GetClientId()'
     },
     { caption: 'context.ReplyOk()', meta: 'OnInvoke', value: 'context.ReplyOk()' },
-    { caption: 'context.ReplyFail()', meta: 'OnInvoke', value: 'context.ReplyFail("resaon")' },
     {
-      caption: 'context.HttpRequest()',
+      caption: 'context.ReplyFail("reason")',
+      meta: 'OnInvoke',
+      value: 'context.ReplyFail("reason")'
+    },
+    {
+      caption: 'context.HttpRequest({method:"", url:"", data:{}, header:{}})',
       meta: 'OnInvoke',
       value: 'var resp = context.HttpRequest({method:"", url:"", data:{}, header:{}})'
     },

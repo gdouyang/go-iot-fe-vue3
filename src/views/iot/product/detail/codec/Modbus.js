@@ -103,7 +103,11 @@ function OnInvoke(context) {
       value: 'context.SaveEvents("eventId", {"key":"value"})'
     },
     { caption: 'context.ReplyOk()', meta: 'OnInvoke', value: 'context.ReplyOk()' },
-    { caption: 'context.GetConfig()', meta: 'OnInvoke', value: 'context.ReplyFail("resaon")' }
+    {
+      caption: 'context.ReplyFail("reason")',
+      meta: 'OnInvoke',
+      value: 'context.ReplyFail("reason")'
+    }
   ]
 }
 obj.demoCode = `

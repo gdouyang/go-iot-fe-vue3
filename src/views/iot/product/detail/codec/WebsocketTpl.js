@@ -39,12 +39,12 @@ function OnInvoke(context) {
       value: 'var deviceOper = context.GetDevice()'
     },
     {
-      caption: 'context.GetDeviceById()',
+      caption: 'context.GetDeviceById("id")',
       meta: 'OnMessage',
       value: 'var deviceOper = context.GetDeviceById("id")'
     },
     {
-      caption: 'context.GetConfig()',
+      caption: 'context.GetConfig("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetConfig("key")'
     },
@@ -75,33 +75,37 @@ function OnInvoke(context) {
       value: 'var value = context.GetForm("key")'
     },
     {
-      caption: 'context.SaveProperties()',
+      caption: 'context.SaveProperties({"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveProperties({"key":"value"})'
     },
     {
-      caption: 'context.SaveEvents()',
+      caption: 'context.SaveEvents("eventId", {"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveEvents("eventId", {"key":"value"})'
     },
     { caption: 'context.ReplyOk()', meta: 'OnMessage', value: 'context.ReplyOk()' },
-    { caption: 'context.ReplyFail()', meta: 'OnMessage', value: 'context.ReplyFail("resaon")' },
+    {
+      caption: 'context.ReplyFail("reason")',
+      meta: 'OnMessage',
+      value: 'context.ReplyFail("reason")'
+    },
     // deviceOper
     {
-      caption: 'deviceOper.GetConfig()',
+      caption: 'deviceOper.GetConfig("key")',
       meta: 'deviceOper',
-      value: 'var value = deviceOpr.GetConfig("key")'
+      value: 'var value = deviceOper.GetConfig("key")'
     },
     {
-      caption: 'deviceOper.GetData()()',
+      caption: 'deviceOper.GetData("key")',
       meta: 'deviceOper',
-      value: 'var map = deviceOpr.GetData()()'
+      value: 'var map = deviceOper.GetData("key")'
     },
     // session
     { caption: 'session.Disconnect()', meta: 'session', value: 'session.Disconnect()' },
-    { caption: 'session.SendText()', meta: 'session', value: 'session.SendText("text")' },
+    { caption: 'session.SendText("text")', meta: 'session', value: 'session.SendText("text")' },
     {
-      caption: 'session.SendBinary()',
+      caption: 'session.SendBinary("68657820737472696e67")',
       meta: 'session',
       value: 'session.SendBinary("68657820737472696e67")'
     },

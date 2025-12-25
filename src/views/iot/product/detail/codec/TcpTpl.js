@@ -34,7 +34,7 @@ function OnInvoke(context) {
       value: 'var session = context.GetSession()'
     },
     {
-      caption: 'context.DeviceOnline()',
+      caption: 'context.DeviceOnline(deviceId)',
       meta: 'OnMessage',
       value: 'context.DeviceOnline(deviceId)'
     },
@@ -44,22 +44,22 @@ function OnInvoke(context) {
       value: 'var deviceOper = context.GetDevice()'
     },
     {
-      caption: 'context.GetDeviceById()',
+      caption: 'context.GetDeviceById("id")',
       meta: 'OnMessage',
       value: 'var deviceOper = context.GetDeviceById("id")'
     },
     {
-      caption: 'context.GetConfig()',
+      caption: 'context.GetConfig("key")',
       meta: 'OnMessage',
       value: 'var value = context.GetConfig("key")'
     },
     {
-      caption: 'context.SaveProperties()',
+      caption: 'context.SaveProperties({"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveProperties({"key":"value"})'
     },
     {
-      caption: 'context.SaveEvents()',
+      caption: 'context.SaveEvents("eventId", {"key":"value"})',
       meta: 'OnMessage',
       value: 'context.SaveEvents("eventId", {"key":"value"})'
     },
@@ -67,14 +67,14 @@ function OnInvoke(context) {
     { caption: 'context.ReplyFail()', meta: 'OnMessage', value: 'context.ReplyFail("resaon")' },
     // deviceOper
     {
-      caption: 'deviceOper.GetConfig()',
+      caption: 'deviceOper.GetConfig("key")',
       meta: 'deviceOper',
-      value: 'var value = deviceOpr.GetConfig("key")'
+      value: 'var value = deviceOper.GetConfig("key")'
     },
     {
-      caption: 'deviceOper.GetData()()',
+      caption: 'deviceOper.GetData("key")',
       meta: 'deviceOper',
-      value: 'var map = deviceOpr.GetData()()'
+      value: 'var map = deviceOper.GetData("key")'
     },
     // session
     { caption: 'session.Disconnect()', meta: 'session', value: 'session.Disconnect()' },

@@ -32,7 +32,7 @@ function OnInvoke(context) {
       value: 'var pwd = context.GetPassword()'
     },
     {
-      caption: 'context.DeviceOnline()',
+      caption: 'context.DeviceOnline(deviceId)',
       meta: 'OnConnect',
       value: 'context.DeviceOnline(deviceId)'
     },
@@ -49,7 +49,7 @@ function OnInvoke(context) {
       value: 'var session = context.GetSession()'
     },
     {
-      caption: 'context.DeviceOnline()',
+      caption: 'context.DeviceOnline(deviceId)',
       meta: 'OnMessage',
       value: 'context.DeviceOnline(deviceId)'
     },
@@ -70,9 +70,9 @@ function OnInvoke(context) {
       value: 'var deviceOper = context.GetDevice()'
     },
     {
-      caption: 'context.GetDeviceById()',
+      caption: 'context.GetDeviceById(deviceId)',
       meta: 'OnMessage',
-      value: 'var deviceOper = context.GetDeviceById("id")'
+      value: 'var deviceOper = context.GetDeviceById(deviceId)'
     },
     {
       caption: 'context.GetConfig()',
@@ -99,15 +99,19 @@ function OnInvoke(context) {
       value: 'var value = deviceOpr.GetConfig("key")'
     },
     {
-      caption: 'deviceOper.GetData()()',
+      caption: 'deviceOper.GetData("key", "defaultValue")',
       meta: 'deviceOper',
-      value: 'var map = deviceOpr.GetData()()'
+      value: 'var map = deviceOper.GetData("key", "defaultValue")'
     },
     // session
     { caption: 'session.Disconnect()', meta: 'session', value: 'session.Disconnect()' },
-    { caption: 'session.Publish()', meta: 'session', value: 'session.Publish("topic", "payload")' },
     {
-      caption: 'session.PublishHex()',
+      caption: 'session.Publish("topic", "payload")',
+      meta: 'session',
+      value: 'session.Publish("topic", "payload")'
+    },
+    {
+      caption: 'session.PublishHex("topic", "hexStr")',
       meta: 'session',
       value: 'session.PublishHex("topic", "68657820737472696e67")'
     },
@@ -128,7 +132,11 @@ function OnInvoke(context) {
       value: 'var clientId = message.GetClientId()'
     },
     { caption: 'context.ReplyOk()', meta: 'OnInvoke', value: 'context.ReplyOk()' },
-    { caption: 'context.ReplyFail()', meta: 'OnInvoke', value: 'context.ReplyFail("resaon")' },
+    {
+      caption: 'context.ReplyFail("reason")',
+      meta: 'OnInvoke',
+      value: 'context.ReplyFail("reason")'
+    },
     // FuncInvoke
     {
       caption: 'message.FunctionId',
