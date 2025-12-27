@@ -21,14 +21,14 @@ import { cmdInvoke } from '@/views/iot/device/api.js'
 import FunctionForm from './functions/FunctionForm.vue'
 export default {
   name: 'DeviceFunction',
+  components: {
+    FunctionForm
+  },
   props: {
     device: {
       type: Object,
       default: () => {}
     }
-  },
-  components: {
-    FunctionForm
   },
   data() {
     return {
@@ -69,7 +69,7 @@ export default {
       cmdInvoke(deviceId, params)
         .then((resp) => {
           if (resp.success) {
-            this.$message.success('操作成功')
+            this.$message.success(resp.message || '操作成功')
           }
         })
         .finally(() => {
