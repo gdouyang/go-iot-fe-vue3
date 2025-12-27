@@ -66,6 +66,7 @@ export default {
       //   params.data[key] = _.toString(value)
       // })
       this.spinning = true
+      params.offlineCache = true
       cmdInvoke(deviceId, params)
         .then((resp) => {
           if (resp.success) {
