@@ -40,6 +40,9 @@
           <el-button type="primary" style="margin-left: 8px" @click="showUpdateDialog"
             >OTA升级</el-button
           >
+          <el-button type="danger" style="margin-left: 8px" @click="handleBatchDelete"
+            >批量删除</el-button
+          >
         </div>
         <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id" />
       </div>
@@ -65,6 +68,7 @@ export default {
       tableUrl: pageUrl,
       searchObj: _.cloneDeep(defautSearchObj),
       columns: [
+        { type: 'selection', width: 55, align: 'center' },
         { label: 'ID', field: 'id' },
         { label: '设备ID', field: 'deviceId' },
         { label: '产品ID', field: 'productId' },
@@ -172,8 +176,28 @@ export default {
         type: 'warning'
       }).then(async () => {
         try {
-          await otaDelete(row.id)
+          await otaDelete([row.id])
           ElMessage.success('删除成功')
+          this.search()
+        } catch (e) {
+          // Error handling
+        }
+      })
+    },
+    handleBatchDelete() {
+      const ids = this.$refs.tb.getSelectedRows('id')
+      if (!ids || ids.length === 0) {
+        ElMessage.warning('请选择要删除的记录')
+        return
+      }
+      ElMessageBox.confirm(`确认删除选中的 ${ids.length} 条记录吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        try {
+          await otaDelete(ids)
+          ElMessage.success('批量删除成功')
           this.search()
         } catch (e) {
           // Error handling

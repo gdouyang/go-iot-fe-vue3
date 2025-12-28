@@ -162,10 +162,10 @@ export function otaUpdate(file, deviceIds, chunkSize, timeout) {
   if (timeout) {
     formData.append('timeout', timeout)
   }
-  return request.post(`device-ota/update`, formData)
+  return request.post(`device-ota/add`, formData)
 }
 
 // 删除OTA记录
-export function otaDelete(id) {
-  return request.delete(`device-ota/${id}`)
+export function otaDelete(ids) {
+  return request.delete(`device-ota/delete`, { data: ids })
 }
