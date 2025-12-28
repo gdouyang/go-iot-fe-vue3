@@ -157,7 +157,7 @@ function OnMessage(context) {
 
 // 物模型 -> 设备报文
 function OnInvoke(context) {
-  var message = context.();
+  var message = context.GetMessage();
   context.GetSession().SendText(JSON.stringify(message.Data))
 }
 ```
