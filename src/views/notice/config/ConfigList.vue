@@ -5,12 +5,12 @@
         <el-row :gutter="48">
           <el-col :md="5" :sm="24">
             <el-form-item label="名称">
-              <el-input v-model="searchObj.name" placeholder="请输入" />
+              <el-input v-model="searchObj.name" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="类型">
-              <el-select v-model="searchObj.type" :allowClear="true">
+              <el-select v-model="searchObj.type" clearable @change="search">
                 <el-option
                   v-for="item in typeList"
                   :key="item.type"
@@ -22,7 +22,7 @@
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="状态">
-              <el-select v-model="searchObj.state" :allowClear="true">
+              <el-select v-model="searchObj.state" clearable @change="search">
                 <el-option value="stopped" label="停止" />
                 <el-option value="started" label="启动" />
               </el-select>
@@ -44,10 +44,10 @@
       >
     </div>
 
-    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
+    <PageTable ref="tb" :url="url" :columns="columns" />
 
-    <ConfigAdd ref="modal" @success="handleOk"></ConfigAdd>
-    <NoticeHistory ref="NoticeHistory"></NoticeHistory>
+    <ConfigAdd ref="modal" @success="handleOk" />
+    <NoticeHistory ref="NoticeHistory" />
   </ContentWrap>
 </template>
 

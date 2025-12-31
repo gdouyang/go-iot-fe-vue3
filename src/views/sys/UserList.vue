@@ -5,12 +5,12 @@
         <el-row :gutter="48">
           <el-col :md="5" :sm="24">
             <el-form-item label="账号">
-              <el-input v-model="searchObj.username" placeholder="请输入" />
+              <el-input v-model="searchObj.username" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="名称">
-              <el-input v-model="searchObj.nickname" placeholder="请输入" />
+              <el-input v-model="searchObj.nickname" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
@@ -29,9 +29,9 @@
       >
     </div>
 
-    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
+    <PageTable ref="tb" :url="url" :columns="columns" />
 
-    <user-modal ref="modal" @ok="handleOk" :showTanent="showTanent"></user-modal>
+    <user-modal ref="modal" @ok="handleOk" :showTanent="showTanent" />
   </ContentWrap>
 </template>
 
@@ -114,11 +114,10 @@ export default {
       this.search()
     },
     remove(row) {
-      const _this = this
       removeUser(row.id).then((data) => {
         if (data.success) {
-          _this.$message.success('操作成功')
-          _this.handleOk()
+          this.$message.success('操作成功')
+          this.handleOk()
         }
       })
     }

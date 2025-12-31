@@ -15,7 +15,7 @@
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="状态">
-              <el-select v-model="searchObj.state" :allowClear="true">
+              <el-select v-model="searchObj.state" clearable>
                 <el-option value="runing" label="运行中"></el-option>
                 <el-option value="stop" label="停用"></el-option>
               </el-select>
@@ -23,7 +23,7 @@
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="网络类型">
-              <network-type-select v-model="searchObj.type" :allowClear="true" :disabled="false" />
+              <network-type-select v-model="searchObj.type" clearable :disabled="false" />
             </el-form-item>
           </el-col>
           <el-col :md="4" :sm="24">

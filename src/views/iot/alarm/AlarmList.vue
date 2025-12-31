@@ -5,19 +5,19 @@
         <el-row :gutter="48">
           <el-col :md="5" :sm="24">
             <el-form-item label="产品ID">
-              <el-input v-model="searchObj.productId" placeholder="请输入" />
+              <el-input v-model="searchObj.productId" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="设备ID">
-              <el-input v-model="searchObj.deviceId" placeholder="请输入" />
+              <el-input v-model="searchObj.deviceId" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
             <el-form-item label="状态">
-              <el-select v-model="searchObj.state" :allowClear="true">
-                <el-option value="solve" label="已处理"></el-option>
-                <el-option value="unsolve" label="未处理"></el-option>
+              <el-select v-model="searchObj.state" clearable @change="search">
+                <el-option value="solve" label="已处理" />
+                <el-option value="unsolve" label="未处理" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -30,7 +30,7 @@
         </el-row>
       </el-form>
     </div>
-    <PageTable ref="tb" rowKey="id" :columns="columns" :url="url"> </PageTable>
+    <PageTable ref="tb" rowKey="id" :columns="columns" :url="url" />
 
     <Dialog title="告警处理" ref="dialog" maxHeight="auto" @confirm="submitData">
       <el-form ref="form" :model="currentLog">
@@ -58,14 +58,9 @@ import { dateUtil } from '@/utils/dateUtil'
 import { pageUrl, solveAlarmLog } from './api.js'
 export default {
   name: 'AlamrList',
+  components: {},
   mixins: [],
   props: {},
-  components: {},
-  created() {
-    this.$nextTick(() => {
-      this.search()
-    })
-  },
   data() {
     return {
       url: pageUrl,
@@ -130,6 +125,11 @@ export default {
         desc: null
       }
     }
+  },
+  created() {
+    this.$nextTick(() => {
+      this.search()
+    })
   },
   methods: {
     search() {

@@ -12,7 +12,8 @@
                       <el-select
                         v-model="searchObj.productId"
                         placeholder="产品"
-                        :allowClear="true"
+                        clearable
+                        @change="search"
                       >
                         <el-option
                           v-for="p in productList"
@@ -25,12 +26,21 @@
                   </el-col>
                   <el-col :md="5" :sm="24">
                     <el-form-item label="设备ID">
-                      <el-input v-model="searchObj.deviceId" placeholder="请输入设备ID" />
+                      <el-input
+                        v-model="searchObj.deviceId"
+                        placeholder="请输入设备ID"
+                        @keyup.enter="search"
+                      />
                     </el-form-item>
                   </el-col>
                   <el-col :md="5" :sm="24">
                     <el-form-item label="状态">
-                      <el-select v-model="searchObj.status" :allowClear="true" placeholder="状态">
+                      <el-select
+                        v-model="searchObj.status"
+                        clearable
+                        placeholder="状态"
+                        @change="search"
+                      >
                         <el-option value="pending" label="待处理" />
                         <el-option value="in_progress" label="进行中" />
                         <el-option value="success" label="成功" />

@@ -6,14 +6,24 @@
           <el-row :gutter="48">
             <el-col :md="5" :sm="24">
               <el-form-item label="名称">
-                <el-input v-model="searchObj.name" clearable placeholder="请输入" />
+                <el-input
+                  v-model="searchObj.name"
+                  clearable
+                  placeholder="请输入"
+                  @keyup.enter="search"
+                />
               </el-form-item>
             </el-col>
             <el-col :md="5" :sm="24">
               <el-form-item label="状态">
-                <el-select v-model="searchObj.state" clearable placeholder="请选择">
-                  <el-option value="stopped" label="停止"></el-option>
-                  <el-option value="started" label="启动"></el-option>
+                <el-select
+                  v-model="searchObj.state"
+                  clearable
+                  placeholder="请选择"
+                  @change="search"
+                >
+                  <el-option value="stopped" label="停止" />
+                  <el-option value="started" label="启动" />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -33,11 +43,11 @@
         >
       </div>
 
-      <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
+      <PageTable ref="tb" :url="url" :columns="columns" />
     </ContentWrap>
   </div>
   <div v-if="openModal">
-    <RuleAdd @success="back" @close="back"></RuleAdd>
+    <RuleAdd @success="back" @close="back" />
   </div>
 </template>
 

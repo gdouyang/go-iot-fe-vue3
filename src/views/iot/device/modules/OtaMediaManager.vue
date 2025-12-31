@@ -10,6 +10,7 @@
                 placeholder="请选择产品"
                 filterable
                 clearable
+                @change="search"
               >
                 <el-option v-for="p in productList" :key="p.id" :value="p.id" :label="p.name" />
               </el-select>
@@ -17,7 +18,7 @@
           </el-col>
           <el-col :md="8" :sm="24">
             <el-form-item label="文件名">
-              <el-input v-model="searchObj.name" placeholder="请输入文件名" />
+              <el-input v-model="searchObj.name" placeholder="请输入文件名" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="6" :sm="24">

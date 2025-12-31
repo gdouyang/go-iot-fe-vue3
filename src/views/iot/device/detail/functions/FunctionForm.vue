@@ -19,7 +19,7 @@
           <el-select
             v-else-if="isBool(domain.type)"
             v-model="domain.value"
-            :allowClear="true"
+            clearable
             class="func-form-item"
           >
             <el-option :value="domain.trueValue">
@@ -32,7 +32,7 @@
           <el-select
             v-else-if="isEnum(domain.type)"
             v-model="domain.value"
-            :allowClear="true"
+            clearable
             class="func-form-item"
           >
             <el-option v-for="item in domain.elements" :key="item.id" :value="item.value">

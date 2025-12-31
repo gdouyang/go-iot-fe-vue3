@@ -7,32 +7,32 @@
             <el-row :gutter="48">
               <el-col :md="5" :sm="24">
                 <el-form-item label="产品">
-                  <el-select v-model="searchObj.productId" placeholder="产品" :allowClear="true">
-                    <el-option
-                      v-for="p in productList"
-                      :key="p.id"
-                      :value="p.id"
-                      :label="p.name"
-                    ></el-option>
+                  <el-select
+                    v-model="searchObj.productId"
+                    placeholder="产品"
+                    clearable
+                    @change="search"
+                  >
+                    <el-option v-for="p in productList" :key="p.id" :value="p.id" :label="p.name" />
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :md="5" :sm="24">
                 <el-form-item label="设备ID">
-                  <el-input v-model="searchObj.id" placeholder="请输入" />
+                  <el-input v-model="searchObj.id" placeholder="请输入" @keyup.enter="search" />
                 </el-form-item>
               </el-col>
               <el-col :md="5" :sm="24">
                 <el-form-item label="名称">
-                  <el-input v-model="searchObj.name" placeholder="请输入" />
+                  <el-input v-model="searchObj.name" placeholder="请输入" @keyup.enter="search" />
                 </el-form-item>
               </el-col>
               <el-col :md="5" :sm="24">
                 <el-form-item label="状态">
-                  <el-select v-model="searchObj.state" :allowClear="true">
-                    <el-option value="noActive" label="未激活"></el-option>
-                    <el-option value="offline" label="离线"></el-option>
-                    <el-option value="online" label="在线"></el-option>
+                  <el-select v-model="searchObj.state" clearable @change="search">
+                    <el-option value="noActive" label="未激活" />
+                    <el-option value="offline" label="离线" />
+                    <el-option value="online" label="在线" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -55,7 +55,7 @@
           <el-button @click="batchDeploy" v-hasPermi="'device-mgr:save'">批量激活</el-button>
           <el-button @click="batchUndeploy" v-hasPermi="'device-mgr:save'">批量停用</el-button>
         </div>
-        <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id"> </PageTable>
+        <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id" />
       </div>
     </ContentWrap>
     <DeviceAdd ref="DeviceAdd" @success="search()" />

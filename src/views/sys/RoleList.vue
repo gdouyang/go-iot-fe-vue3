@@ -5,7 +5,7 @@
         <el-row :gutter="48">
           <el-col :md="5" :sm="24">
             <el-form-item label="名称">
-              <el-input v-model="searchObj.name" placeholder="请输入" />
+              <el-input v-model="searchObj.name" placeholder="请输入" @keyup.enter="search" />
             </el-form-item>
           </el-col>
           <el-col :md="5" :sm="24">
@@ -24,7 +24,7 @@
       >
     </div>
 
-    <PageTable ref="tb" :url="url" :columns="columns"> </PageTable>
+    <PageTable ref="tb" :url="url" :columns="columns" />
 
     <role-modal ref="modal" @ok="handleOk" />
   </ContentWrap>
