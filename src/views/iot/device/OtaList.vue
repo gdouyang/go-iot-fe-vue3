@@ -1,51 +1,67 @@
 <template>
   <div>
     <ContentWrap>
-      <div>
-        <div class="table-page-search-wrapper">
-          <el-form layout="inline">
-            <el-row :gutter="48">
-              <el-col :md="5" :sm="24">
-                <el-form-item label="产品">
-                  <el-select v-model="searchObj.productId" placeholder="产品" :allowClear="true">
-                    <el-option v-for="p in productList" :key="p.id" :value="p.id" :label="p.name" />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :md="5" :sm="24">
-                <el-form-item label="设备ID">
-                  <el-input v-model="searchObj.deviceId" placeholder="请输入设备ID" />
-                </el-form-item>
-              </el-col>
-              <el-col :md="5" :sm="24">
-                <el-form-item label="状态">
-                  <el-select v-model="searchObj.status" :allowClear="true" placeholder="状态">
-                    <el-option value="pending" label="待处理" />
-                    <el-option value="in_progress" label="进行中" />
-                    <el-option value="success" label="成功" />
-                    <el-option value="fail" label="失败" />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :md="6" :sm="24">
-                <span class="table-page-search-submitButtons">
-                  <el-button type="primary" @click="search">查询</el-button>
-                  <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
-                </span>
-              </el-col>
-            </el-row>
-          </el-form>
-        </div>
-        <div class="table-operator">
-          <el-button type="primary" style="margin-left: 8px" @click="showUpdateDialog"
-            >OTA升级</el-button
-          >
-          <el-button type="danger" style="margin-left: 8px" @click="handleBatchDelete"
-            >批量删除</el-button
-          >
-        </div>
-        <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id" />
-      </div>
+      <el-tabs v-model="activeTab">
+        <el-tab-pane label="升级记录" name="jobs">
+          <div>
+            <div class="table-page-search-wrapper">
+              <el-form layout="inline">
+                <el-row :gutter="48">
+                  <el-col :md="5" :sm="24">
+                    <el-form-item label="产品">
+                      <el-select
+                        v-model="searchObj.productId"
+                        placeholder="产品"
+                        :allowClear="true"
+                      >
+                        <el-option
+                          v-for="p in productList"
+                          :key="p.id"
+                          :value="p.id"
+                          :label="p.name"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :md="5" :sm="24">
+                    <el-form-item label="设备ID">
+                      <el-input v-model="searchObj.deviceId" placeholder="请输入设备ID" />
+                    </el-form-item>
+                  </el-col>
+                  <el-col :md="5" :sm="24">
+                    <el-form-item label="状态">
+                      <el-select v-model="searchObj.status" :allowClear="true" placeholder="状态">
+                        <el-option value="pending" label="待处理" />
+                        <el-option value="in_progress" label="进行中" />
+                        <el-option value="success" label="成功" />
+                        <el-option value="fail" label="失败" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :md="6" :sm="24">
+                    <span class="table-page-search-submitButtons">
+                      <el-button type="primary" @click="search">查询</el-button>
+                      <el-button style="margin-left: 8px" @click="resetSearch">重置</el-button>
+                    </span>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </div>
+            <div class="table-operator">
+              <el-button type="primary" style="margin-left: 8px" @click="showUpdateDialog"
+                >OTA升级</el-button
+              >
+              <el-button type="danger" style="margin-left: 8px" @click="handleBatchDelete"
+                >批量删除</el-button
+              >
+            </div>
+            <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id" />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="OTA文件管理" name="media">
+          <OtaMediaManager />
+        </el-tab-pane>
+      </el-tabs>
     </ContentWrap>
 
     <OtaUpdate ref="otaUpdate" @success="search" />
@@ -56,15 +72,18 @@
 import _ from 'lodash-es'
 import { otaPageUrl as pageUrl, getProductList, otaDelete } from './api.js'
 import OtaUpdate from './modules/OtaUpdate.vue'
+import OtaMediaManager from './modules/OtaMediaManager.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const defautSearchObj = {}
 export default {
   components: {
-    OtaUpdate
+    OtaUpdate,
+    OtaMediaManager
   },
   data() {
     return {
+      activeTab: 'jobs',
       tableUrl: pageUrl,
       searchObj: _.cloneDeep(defautSearchObj),
       columns: [

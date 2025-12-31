@@ -152,9 +152,14 @@ export function otaPage(param) {
 }
 
 // OTA Update
-export function otaUpdate(file, deviceIds, chunkSize, timeout) {
+export function otaUpdate(file, deviceIds, chunkSize, timeout, otaFileId) {
   const formData = new FormData()
-  formData.append('file', file)
+  if (file) {
+    formData.append('file', file)
+  }
+  if (otaFileId) {
+    formData.append('otaFileId', otaFileId)
+  }
   formData.append('deviceIds', deviceIds)
   if (chunkSize) {
     formData.append('chunkSize', chunkSize)
@@ -163,6 +168,42 @@ export function otaUpdate(file, deviceIds, chunkSize, timeout) {
     formData.append('timeout', timeout)
   }
   return request.post(`device-ota/add`, formData)
+}
+
+// OTA媒体列表
+export function otaFileList(productId) {
+  return otaFilePage({
+    pageNum: 1,
+    pageSize: 1000,
+    condition: [{ key: 'productId', value: productId, oper: 'EQ' }]
+  }).then((res) => {
+    if (res && res.result && res.result.list) {
+      return res.result.list
+    }
+    return []
+  })
+}
+
+export const otaFilePageUrl = 'device-ota/file/page'
+
+// OTA媒体分页
+export function otaFilePage(params) {
+  return request.post(otaFilePageUrl, params)
+}
+
+// OTA媒体新增
+export function otaFileAdd(data) {
+  return request.post('device-ota/file/add', data)
+}
+
+// OTA媒体更新
+export function otaFileUpdate(data) {
+  return request.put('device-ota/file/update', data)
+}
+
+// OTA媒体删除
+export function otaFileDelete(ids) {
+  return request.delete('device-ota/file/delete', { data: ids })
 }
 
 // 删除OTA记录
