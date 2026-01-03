@@ -32,12 +32,6 @@ import CoAPConfig from './network/CoAPConfig.vue'
 
 export default {
   name: 'Network',
-  props: {
-    product: {
-      type: Object,
-      default: () => {}
-    }
-  },
   components: {
     TcpConfig,
     MqttConfig,
@@ -45,15 +39,21 @@ export default {
     HttpConfig,
     CoAPConfig
   },
+  props: {
+    product: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
       network: {}
     }
   },
+  computed: {},
   created() {
     this.GetData()
   },
-  computed: {},
   methods: {
     GetData() {
       const { id } = this.product

@@ -5,14 +5,15 @@
     :disabled="disabled"
     v-bind="$attrs"
   >
-    <el-option value="MQTT_BROKER" label="MQTT_BROKER"></el-option>
-    <el-option value="TCP_SERVER" label="TCP_SERVER"></el-option>
-    <el-option value="HTTP_SERVER" label="HTTP_SERVER"></el-option>
-    <el-option value="COAP_SERVER" label="COAP_SERVER"></el-option>
-    <el-option value="WEBSOCKET_SERVER" label="WEBSOCKET_SERVER"></el-option>
-    <el-option value="MQTT_CLIENT" label="MQTT_CLIENT"></el-option>
-    <el-option value="TCP_CLIENT" label="TCP_CLIENT"></el-option>
-    <el-option value="MODBUS" label="MODBUS_TCP"></el-option>
+    <el-option value="MQTT_BROKER" label="自定义MQTT_BROKER" />
+    <el-option value="GOIOT_MQTT_BROKER" label="GOIOT_MQTT_BROKER" />
+    <el-option value="TCP_SERVER" label="自定义TCP_SERVER" />
+    <el-option value="HTTP_SERVER" label="自定义HTTP_SERVER" />
+    <el-option value="COAP_SERVER" label="自定义COAP_SERVER" />
+    <el-option value="WEBSOCKET_SERVER" label="自定义WEBSOCKET_SERVER" />
+    <el-option value="MQTT_CLIENT" label="自定义MQTT_CLIENT" />
+    <el-option value="TCP_CLIENT" label="自定义TCP_CLIENT" />
+    <el-option value="MODBUS" label="自定义MODBUS_TCP" />
   </el-select>
 </template>
 

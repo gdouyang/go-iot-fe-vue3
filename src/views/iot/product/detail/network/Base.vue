@@ -12,20 +12,14 @@ const appStore = useAppStore()
 
 export default {
   name: 'NetworConfig',
-  props: {},
   components: {
     NetworkRun,
     CertificateUpload
   },
+  props: {},
   data() {
     return {
       accessIp: null
-    }
-  },
-  created() {
-    const sysConfig = appStore.getSysConfig
-    if (sysConfig && sysConfig.accessIp) {
-      this.accessIp = sysConfig.accessIp
     }
   },
   computed: {
@@ -35,6 +29,12 @@ export default {
         return ''
       }
       return this.accessIp + ':' + port
+    }
+  },
+  created() {
+    const sysConfig = appStore.getSysConfig
+    if (sysConfig && sysConfig.accessIp) {
+      this.accessIp = sysConfig.accessIp
     }
   },
   methods: {

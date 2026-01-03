@@ -91,6 +91,9 @@ import { addCompletions, getCompletions } from './codec/CodeCompletions.js'
 
 export default {
   name: 'Codec1',
+  components: {
+    AceEditor
+  },
   props: {
     id: {
       type: String,
@@ -100,9 +103,6 @@ export default {
       type: Object,
       default: () => {}
     }
-  },
-  components: {
-    AceEditor
   },
   data() {
     return {
@@ -126,14 +126,6 @@ export default {
       isConnect: false
     }
   },
-  mounted() {
-    this.open()
-  },
-  beforeDestroy() {
-    if (this.editor) {
-      this.editor.destroy()
-    }
-  },
   computed: {
     isClientNet() {
       return (
@@ -141,6 +133,14 @@ export default {
         this.network.type === 'MQTT_CLIENT' ||
         this.network.type === 'MODBUS'
       )
+    }
+  },
+  mounted() {
+    this.open()
+  },
+  beforeUnmount() {
+    if (this.editor) {
+      this.editor.destroy()
     }
   },
   methods: {
@@ -162,7 +162,7 @@ export default {
           if (this.isClientNet) {
             this.$message.success('操作成功,重新连接后生效')
           } else {
-            this.$message.success('操作成功,重启网络服务后生效')
+            this.$message.success('操作成功')
           }
         }
       })
@@ -178,20 +178,19 @@ export default {
     },
     init(editor) {
       // 保存快捷键
-      const that = this
       editor.commands.addCommands([
         {
           name: 'save',
           bindKey: { win: 'Ctrl-S', mac: 'Command-S' },
-          exec: function (arg) {
-            that.save()
+          exec: (arg) => {
+            this.save()
           }
         },
         {
           name: 'beautify',
           bindKey: { win: 'Ctrl-Shift-F', mac: 'Command-Shift-F' },
-          exec: function (editor) {
-            that.formatCode()
+          exec: (editor) => {
+            this.formatCode()
           }
         }
       ])

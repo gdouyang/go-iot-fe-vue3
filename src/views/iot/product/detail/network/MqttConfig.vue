@@ -26,6 +26,10 @@ import Base from './Base.vue'
 
 export default {
   name: 'MqttConfig',
+  components: {
+    MqttConfigAdd
+  },
+  mixins: [Base],
   props: {
     productId: {
       type: String,
@@ -36,15 +40,12 @@ export default {
       default: () => null
     }
   },
-  mixins: [Base],
-  components: {
-    MqttConfigAdd
-  },
   data() {
     return {
       data: newMqttAddObj()
     }
   },
+  computed: {},
   created() {
     if (!this.network) {
       this.getData()
@@ -54,7 +55,6 @@ export default {
       this.data = data
     }
   },
-  computed: {},
   methods: {
     getData() {
       this.getNetwork(this.productId, newMqttAddObj()).then((data) => {
