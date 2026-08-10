@@ -76,6 +76,7 @@
 
 <script lang="jsx">
 import { getNetwork, updateScript, getEventBusUrl } from '@/views/iot/product/api.js'
+import { EventBusWs } from '@/utils/eventBusWs'
 import ace from 'ace-builds'
 import { VAceEditor as AceEditor } from 'vue3-ace-editor'
 
@@ -141,6 +142,9 @@ export default {
   beforeUnmount() {
     if (this.editor) {
       this.editor.destroy()
+    }
+    if (this.eventWs) {
+      this.eventWs.close()
     }
   },
   methods: {
@@ -208,35 +212,30 @@ export default {
     showDebug() {
       this.debugDataList = []
       this.openDebugDrawer = true
-      this.connectWs()
+      this.eventWs = new EventBusWs(
+        getEventBusUrl(this.id, '*', 'debug'),
+        (evt) => this.onDebugMessage(evt),
+        (connected) => this.onDebugStatus(connected)
+      )
+      this.eventWs.connect()
     },
     debugClose() {
       this.openDebugDrawer = false
-      if (this.ws) {
-        this.ws.close()
+      if (this.eventWs) {
+        this.eventWs.close()
       }
     },
-    connectWs() {
-      var ws = (this.ws = new WebSocket(getEventBusUrl(this.id, '*', 'debug')))
-      ws.onopen = (evt) => {
-        console.log('debug Connection open ...')
-        this.isConnect = true
-        this.debugDataList = []
-        this.debugDataList.push({ createTime: new Date(), productId: this.id, data: '已连接' })
-      }
-
-      ws.onmessage = (evt) => {
-        console.log('debug Received Message: ' + evt.data)
-        var data = JSON.parse(evt.data)
-        this.debugDataList.push(data)
-      }
-
-      ws.onclose = (evt) => {
-        console.log('debug Connection closed.')
-        this.isConnect = false
-        this.debugDataList.push({ createTime: new Date(), productId: this.id, data: '连接关闭' })
-        this.ws = null
-      }
+    onDebugMessage(evt) {
+      var data = JSON.parse(evt.data)
+      this.debugDataList.push(data)
+    },
+    onDebugStatus(connected) {
+      this.isConnect = connected
+      this.debugDataList.push({
+        createTime: new Date(),
+        productId: this.id,
+        data: connected ? '已连接' : '连接关闭'
+      })
     }
   }
 }

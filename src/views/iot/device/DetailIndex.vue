@@ -119,6 +119,7 @@ import {
   getEventBusUrl
 } from './api.js'
 import DeviceCheckComponent from './detail/DeviceCheckComponent.vue'
+import { EventBusWs } from '@/utils/eventBusWs'
 import Info from './detail/Info.vue'
 import Status from './detail/Status.vue'
 import Function from './detail/Function.vue'
@@ -151,11 +152,13 @@ export default {
         { key: 'log', tab: '日志' }
       ],
       realtimeData: {},
-      connectionInfo: {}
+      connectionInfo: {},
+      eventWs: null
     }
   },
   created() {
-    this.connectWs()
+    this.eventWs = new EventBusWs(getEventBusUrl(this.getDeviceId, '*'), (evt) => this.onWsMessage(evt))
+    this.eventWs.connect()
   },
   mounted() {
     const { id } = this.$route.query
@@ -169,8 +172,8 @@ export default {
     })
   },
   unmounted() {
-    if (this.ws) {
-      this.ws.close()
+    if (this.eventWs) {
+      this.eventWs.close()
     }
   },
   computed: {
@@ -258,28 +261,15 @@ export default {
         }
       })
     },
-    connectWs() {
-      var ws = (this.ws = new WebSocket(getEventBusUrl(this.getDeviceId, '*')))
-      ws.onopen = function (evt) {
-        console.log('Connection open ...')
-      }
-
-      ws.onmessage = (evt) => {
-        console.log('Received Message: ' + evt.data)
-        var data = JSON.parse(evt.data)
-        if (data.type === 'online') {
-          this.detailData.state = 'online'
-          this.getConnectionInfo()
-        } else if (data.type === 'offline') {
-          this.detailData.state = 'offline'
-        } else if (data.type === 'property' || data.type === 'event') {
-          this.realtimeData = data
-        }
-      }
-
-      ws.onclose = (evt) => {
-        console.log('Connection closed.')
-        this.ws = null
+    onWsMessage(evt) {
+      var data = JSON.parse(evt.data)
+      if (data.type === 'online') {
+        this.detailData.state = 'online'
+        this.getConnectionInfo()
+      } else if (data.type === 'offline') {
+        this.detailData.state = 'offline'
+      } else if (data.type === 'property' || data.type === 'event') {
+        this.realtimeData = data
       }
     }
   }
