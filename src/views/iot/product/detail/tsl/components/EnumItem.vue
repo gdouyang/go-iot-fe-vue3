@@ -5,7 +5,7 @@
         <el-input placeholder="标识" v-model="item.value" />
       </el-col>
       <el-col :span="1" style="text-align: center">
-        <Icon icon="carbon:arrow-right" />
+        <Icon icon="el:ArrowRight" />
       </el-col>
       <el-col :span="10">
         <el-input placeholder="对该枚举项的描述" v-model="item.text" />
@@ -14,13 +14,13 @@
         <div>
           <Icon
             v-if="index === arrayEnumData.length - 1"
-            icon="carbon:add-alt"
+            icon="el:CirclePlus"
             title="添加"
             @click="plus"
           />
           <Icon
             v-if="arrayEnumData.length > 1"
-            icon="carbon:subtract-alt"
+            icon="el:Remove"
             title="删除"
             style="margin-left: 10px"
             @click="minus(index)"

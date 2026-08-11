@@ -101,7 +101,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         component: () => import('@/views/Home/Home.vue'),
         meta: {
           title: t('首页'),
-          icon: 'carbon:home'
+          icon: 'el:HomeFilled'
         }
       }
     ]
@@ -116,7 +116,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'product-list',
         name: 'ProductList',
         component: () => import('@/views/iot/product/ProductList.vue'),
-        meta: { title: '产品管理', icon: 'carbon:product', permission: ['product-mgr'] }
+        meta: { title: '产品管理', icon: 'el:Box', permission: ['product-mgr'] }
       }
     ]
   },
@@ -130,7 +130,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'device-list',
         name: 'DeviceList',
         component: () => import('@/views/iot/device/DeviceList.vue'),
-        meta: { title: '设备管理', icon: 'carbon:iot-connect', permission: ['device-mgr'] }
+        meta: { title: '设备管理', icon: 'el:Connection', permission: ['device-mgr'] }
       }
     ]
   },
@@ -144,7 +144,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'ota-list',
         name: 'OtaList',
         component: () => import('@/views/iot/device/OtaList.vue'),
-        meta: { title: 'OTA升级', icon: 'carbon:cloud-upload', permission: ['ota-mgr'] }
+        meta: { title: 'OTA升级', icon: 'el:Upload', permission: ['ota-mgr'] }
       }
     ]
   },
@@ -158,7 +158,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'rule-list',
         name: 'RuleList',
         component: () => import('@/views/iot/rule/RuleList.vue'),
-        meta: { title: '规则引擎', icon: 'carbon:model-builder', permission: ['rule-mgr'] }
+        meta: { title: '规则引擎', icon: 'el:SetUp', permission: ['rule-mgr'] }
       }
     ]
   },
@@ -172,7 +172,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'alarm-list',
         name: 'AlarmList',
         component: () => import('@/views/iot/alarm/AlarmList.vue'),
-        meta: { title: '设备告警', icon: 'carbon:event-incident', permission: ['alarm-mgr'] }
+        meta: { title: '设备告警', icon: 'el:Warning', permission: ['alarm-mgr'] }
       }
     ]
   },
@@ -186,7 +186,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
         path: 'config-list',
         name: 'ConfigList',
         component: () => import('@/views/notice/config/ConfigList.vue'),
-        meta: { title: '通知配置', icon: 'carbon:notification', permission: ['notify-config'] }
+        meta: { title: '通知配置', icon: 'el:Bell', permission: ['notify-config'] }
       }
     ]
   },
@@ -196,7 +196,7 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     component: Layout,
     meta: {
       title: '系统管理',
-      icon: 'carbon:settings',
+      icon: 'el:Setting',
       alwaysShow: true
     },
     children: [

@@ -34,7 +34,7 @@
         </div>
         <div class="table-operator">
           <el-button type="primary" @click="add" v-hasPermi="'product-mgr:add'"
-            ><Icon icon="carbon:add-large" />新建</el-button
+            ><Icon icon="el:Plus" />新建</el-button
           >
           <el-upload
             style="display: inline; margin-left: 12px"
@@ -46,7 +46,7 @@
             :with-credentials="true"
             :before-upload="beforeUpload"
           >
-            <el-button><Icon icon="carbon:cloud-upload" />导入</el-button>
+            <el-button><Icon icon="el:Upload" />导入</el-button>
           </el-upload>
         </div>
         <PageTable ref="tb" :url="tableUrl" :columns="columns" rowKey="id" />

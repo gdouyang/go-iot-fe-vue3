@@ -25,7 +25,7 @@
 
     <div class="table-operator">
       <el-button type="primary" @click="handleAdd" v-hasPermi="'user-mgr:add'"
-        ><Icon icon="carbon:add-large" />新建</el-button
+        ><Icon icon="el:Plus" />新建</el-button
       >
     </div>
 

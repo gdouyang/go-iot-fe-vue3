@@ -6,72 +6,87 @@
       @close="handleCancel"
       :width="500"
       maxHeight="auto"
-      v-loading="loading"
     >
-      <el-form ref="addFormRef" :model="addObj" label-width="auto">
-        <el-form-item label="账号" prop="username" :rules="[{ required: true, message: '请输入' }]">
-          <el-input v-model="addObj.username" :maxlength="32" show-word-limit />
-        </el-form-item>
-        <el-form-item label="名称" prop="nickname" :rules="[{ required: true, message: '请输入' }]">
-          <el-input v-model="addObj.nickname" :maxlength="32" show-word-limit />
-        </el-form-item>
+      <!-- v-loading 不能直接绑在 Dialog 上：其根节点是 ElDialog 组件，指令无法落到真实 DOM -->
+      <div v-loading="loading">
+        <el-form ref="addFormRef" :model="addObj" label-width="auto">
+          <el-form-item
+            label="账号"
+            prop="username"
+            :rules="[{ required: true, message: '请输入' }]"
+          >
+            <el-input v-model="addObj.username" :maxlength="32" show-word-limit />
+          </el-form-item>
+          <el-form-item
+            label="名称"
+            prop="nickname"
+            :rules="[{ required: true, message: '请输入' }]"
+          >
+            <el-input v-model="addObj.nickname" :maxlength="32" show-word-limit />
+          </el-form-item>
 
-        <el-form-item
-          label="状态"
-          prop="enableFlag"
-          :rules="[{ required: true, message: '请选择' }]"
-        >
-          <el-select v-model="addObj.enableFlag">
-            <el-option value="true" label="启动"></el-option>
-            <el-option value="false" label="禁用"></el-option>
-          </el-select>
-        </el-form-item>
+          <el-form-item
+            label="状态"
+            prop="enableFlag"
+            :rules="[{ required: true, message: '请选择' }]"
+          >
+            <el-select v-model="addObj.enableFlag">
+              <el-option value="true" label="启动"></el-option>
+              <el-option value="false" label="禁用"></el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item
-          label="密码"
-          prop="password"
-          :rules="[
-            { required: true, message: '请输入' },
-            { min: 6, message: '密码不小于6位' }
-          ]"
-          v-if="!isEdit"
-        >
-          <el-input v-model="addObj.password" type="password" show-password :maxlength="20" />
-        </el-form-item>
+          <el-form-item
+            label="密码"
+            prop="password"
+            :rules="[
+              { required: true, message: '请输入' },
+              { min: 6, message: '密码不小于6位' }
+            ]"
+            v-if="!isEdit"
+          >
+            <el-input v-model="addObj.password" type="password" show-password :maxlength="20" />
+          </el-form-item>
 
-        <el-form-item
-          label="确认密码"
-          prop="password2"
-          :rules="[
-            { required: true, message: '请输入' },
-            { validator: validatePassCheck, trigger: 'blur' }
-          ]"
-          v-if="!isEdit"
-        >
-          <el-input v-model="addObj.password2" type="password" show-password :maxlength="20" />
-        </el-form-item>
+          <el-form-item
+            label="确认密码"
+            prop="password2"
+            :rules="[
+              { required: true, message: '请输入' },
+              { validator: validatePassCheck, trigger: 'blur' }
+            ]"
+            v-if="!isEdit"
+          >
+            <el-input v-model="addObj.password2" type="password" show-password :maxlength="20" />
+          </el-form-item>
 
-        <el-form-item
-          label="角色"
-          prop="roleId"
-          :rules="[{ required: true, message: '请选择角色' }]"
-        >
-          <el-select v-model="addObj.roleId">
-            <el-option v-for="item in roleList" :label="item.name" :value="item.id" :key="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
+          <el-form-item
+            label="角色"
+            prop="roleId"
+            :rules="[{ required: true, message: '请选择角色' }]"
+          >
+            <el-select v-model="addObj.roleId">
+              <el-option
+                v-for="item in roleList"
+                :label="item.name"
+                :value="item.id"
+                :key="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
 
-        <el-form-item label="描述">
-          <el-textarea
-            :rows="5"
-            placeholder="..."
-            v-model="addObj.desc"
-            :maxlength="200"
-            show-word-limit
-          />
-        </el-form-item>
-      </el-form>
+          <el-form-item label="描述">
+            <el-textarea
+              :rows="5"
+              placeholder="..."
+              v-model="addObj.desc"
+              :maxlength="200"
+              show-word-limit
+            />
+          </el-form-item>
+        </el-form>
+      </div>
     </Dialog>
   </div>
 </template>

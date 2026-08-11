@@ -23,46 +23,49 @@ const prefixCls = getPrefixCls('user-info')
 
 const { t } = useI18n()
 
-const loginOut = () => {
-  userStore.logoutConfirm()
-}
-
 const dialogVisible = ref<boolean>(false)
 
-// 锁定屏幕
-const lockScreen = () => {
-  dialogVisible.value = true
+/** 关闭下拉时先移除焦点，避免 aria-hidden 与焦点冲突告警 */
+const clearDropdownFocus = () => {
+  const el = document.activeElement as HTMLElement | null
+  if (el && typeof el.blur === 'function') {
+    el.blur()
+  }
 }
 
-const toPage = (path: string) => {
-  push(path)
+const handleCommand = (command: string | number | object) => {
+  clearDropdownFocus()
+  switch (command) {
+    case 'personal':
+      push('/personal/personal-center')
+      break
+    case 'lock':
+      dialogVisible.value = true
+      break
+    case 'logout':
+      userStore.logoutConfirm()
+      break
+  }
 }
 </script>
 
 <template>
-  <ElDropdown class="custom-hover" :class="prefixCls" trigger="click">
+  <ElDropdown class="custom-hover" :class="prefixCls" trigger="click" @command="handleCommand">
     <div class="flex items-center">
-      <img
-        src="@/assets/imgs/avatar.jpg"
-        alt=""
-        class="w-[calc(var(--logo-height)-25px)] rounded-[50%]"
-      />
-      <span class="<lg:hidden text-14px pl-[5px] text-[var(--top-header-text-color)]">{{
+      <span class="text-14px text-[var(--top-header-text-color)] cursor-pointer">{{
         userStore.getUserInfo?.username
       }}</span>
     </div>
     <template #dropdown>
       <ElDropdownMenu>
-        <ElDropdownItem>
-          <div @click="toPage('/personal/personal-center')">
-            {{ t('router.personalCenter') }}
-          </div>
+        <ElDropdownItem command="personal">
+          {{ t('router.personalCenter') }}
         </ElDropdownItem>
-        <ElDropdownItem divided>
-          <div @click="lockScreen">{{ t('lock.lockScreen') }}</div>
+        <ElDropdownItem command="lock" divided>
+          {{ t('lock.lockScreen') }}
         </ElDropdownItem>
-        <ElDropdownItem>
-          <div @click="loginOut">{{ t('common.loginOut') }}</div>
+        <ElDropdownItem command="logout">
+          {{ t('common.loginOut') }}
         </ElDropdownItem>
       </ElDropdownMenu>
     </template>

@@ -128,7 +128,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         output: {
           manualChunks: {
             'vue-chunks': ['vue', 'vue-router', 'pinia', 'vue-i18n'],
-            'element-plus': ['element-plus'],
+            'element-plus': ['element-plus', '@element-plus/icons-vue'],
             'wang-editor': ['@wangeditor/editor', '@wangeditor/editor-for-vue']
           }
         }

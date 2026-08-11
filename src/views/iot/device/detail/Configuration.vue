@@ -12,7 +12,7 @@
             </el-popconfirm>
           </span>
           <el-tooltip content="修改配置后需重新应用后才能生效。">
-            <Icon icon="carbon:help" />
+            <Icon icon="el:QuestionFilled" />
           </el-tooltip>
           <span v-if="canResetConfig" v-hasPermi="'device-mgr:save'">
             <el-popconfirm title="确认恢复默认配置？" width="200px" @confirm="configurationReset">
@@ -23,7 +23,7 @@
             <el-tooltip
               :title="`该设备单独编辑过[${deviceConfigKeys}]，点击此将恢复成默认的配置信息，请谨慎操作。`"
             >
-              <Icon icon="carbon:help" />
+              <Icon icon="el:QuestionFilled" />
             </el-tooltip>
           </span>
         </div>
@@ -43,7 +43,7 @@
             size="small"
             title="编辑"
             @click="editConfigItem(item)"
-            ><Icon icon="carbon:edit"
+            ><Icon icon="el:Edit"
           /></BaseButton>
         </template>
         <span>{{ getValue(item) }}</span>

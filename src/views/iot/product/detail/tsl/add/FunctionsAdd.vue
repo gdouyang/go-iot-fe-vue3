@@ -65,7 +65,7 @@
           </div>
         </div>
         <el-button link type="primary" @click="addInput">
-          <Icon icon="carbon:add" />
+          <Icon icon="el:Plus" />
           添加参数
         </el-button>
       </el-form-item>

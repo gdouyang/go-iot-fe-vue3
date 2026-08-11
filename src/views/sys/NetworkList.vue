@@ -37,10 +37,10 @@
     </div>
     <div class="table-operator">
       <el-button type="primary" @click="handleAdd" v-hasPermi="'network-config:add'"
-        ><Icon icon="carbon:add-large" />新建</el-button
+        ><Icon icon="el:Plus" />新建</el-button
       >
     </div>
-    <PageTable ref="tb" size="default" :url="tableUrl" :columns="columns"> </PageTable>
+    <PageTable ref="tb" :url="tableUrl" :columns="columns" />
     <NetworkModal ref="modal" @ok="handleOk"></NetworkModal>
   </ContentWrap>
 </template>
@@ -51,6 +51,13 @@ import NetworkModal from './modules/NetworkModal.vue'
 import NetworkActions from './modules/NetworkActions.vue'
 import NetworkTypeSelect from '../iot/product/components/NetworkTypeSelect.vue'
 
+const defaultSearchObj = {
+  name: '',
+  port: '',
+  state: '',
+  type: ''
+}
+
 export default {
   name: 'NetworkList',
   components: {
@@ -60,8 +67,8 @@ export default {
   data() {
     return {
       tableUrl: tableUrl,
-      // 查询参数
-      searchObj: {},
+      // 查询参数（type 默认空串，避免 NetworkTypeSelect 收到 undefined）
+      searchObj: { ...defaultSearchObj },
       // 表头
       columns: [
         { label: 'ID', field: 'id', width: '150px' },
@@ -119,7 +126,7 @@ export default {
       this.$refs.tb.search(condition)
     },
     resetSearch() {
-      this.searchObj = {}
+      this.searchObj = { ...defaultSearchObj }
       this.search()
     },
     handleAdd() {

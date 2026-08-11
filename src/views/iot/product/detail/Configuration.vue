@@ -14,7 +14,7 @@
             {{ item.property }}
           </el-tooltip>
           <BaseButton class="prop-edit" @click="modifyConfig(item)" circle size="small" title="编辑"
-            ><Icon icon="carbon:edit"
+            ><Icon icon="el:Edit"
           /></BaseButton>
           <el-popconfirm
             v-if="!item.buildin"
@@ -24,7 +24,7 @@
           >
             <template #reference>
               <BaseButton class="prop-edit" circle size="small"
-                ><Icon icon="carbon:trash-can"
+                ><Icon icon="el:Delete"
               /></BaseButton>
             </template>
           </el-popconfirm>

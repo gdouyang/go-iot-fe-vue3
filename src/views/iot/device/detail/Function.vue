@@ -1,14 +1,22 @@
 <template>
   <el-card shadow="never" title="功能调试" v-loading="spinning">
-    <el-collapse v-model="activeKey" style="width: 500px">
+    <el-empty
+      v-if="!functionsSelectList.length"
+      description="暂未配置设备功能"
+      :image-size="120"
+    />
+    <el-collapse v-else v-model="activeKey" style="width: 500px">
       <el-collapse-item v-for="f in functionsSelectList" :key="f.id" :name="f.name" :title="f.name">
         <div style="text-align: right">
           <el-button link type="primary" @click.prevent="debugFunction(f)"> 发送指令 </el-button>
         </div>
-        <!-- <a-empty :description="false" v-if="!f.inputs || f.inputs.length < 1"/> -->
-        <p>
+        <el-empty
+          v-if="!f.inputs || f.inputs.length < 1"
+          description="该功能无输入参数"
+          :image-size="80"
+        />
+        <p v-else>
           <FunctionForm :inputs="f.inputs" :ref="'funcForm-' + f.id" />
-          <!-- {{ f.inputs }} -->
         </p>
       </el-collapse-item>
     </el-collapse>
@@ -16,7 +24,6 @@
 </template>
 
 <script lang="jsx">
-// import _ from 'lodash-es'
 import { cmdInvoke } from '@/views/iot/device/api.js'
 import FunctionForm from './functions/FunctionForm.vue'
 export default {
@@ -42,14 +49,18 @@ export default {
   },
   methods: {
     init() {
-      const { functions } = JSON.parse(this.device.metadata)
-      const map = {}
-      const functionsSelectList = []
-      functions.forEach((item) => {
-        map[item.id] = item
-        functionsSelectList.push(item)
-      })
-      this.functionsSelectList = functionsSelectList
+      let functions = []
+      try {
+        const metadata = this.device?.metadata
+        if (metadata) {
+          const parsed = typeof metadata === 'string' ? JSON.parse(metadata) : metadata
+          functions = parsed?.functions || []
+        }
+      } catch (e) {
+        console.error('解析设备物模型失败', e)
+        functions = []
+      }
+      this.functionsSelectList = Array.isArray(functions) ? functions : []
     },
     debugFunction(fun) {
       const functionId = fun.id
@@ -62,9 +73,6 @@ export default {
       if (ref) {
         params.data = ref[0].getData()
       }
-      // _.forIn(params.data, (value, key) => {
-      //   params.data[key] = _.toString(value)
-      // })
       this.spinning = true
       params.offlineCache = true
       cmdInvoke(deviceId, params)

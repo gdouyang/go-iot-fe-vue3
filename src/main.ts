@@ -21,8 +21,8 @@ import { setupStore } from '@/store'
 // 全局组件
 import { setupGlobCom } from '@/components'
 
-// 引入element-plus
-// import { setupElementPlus } from '@/plugins/elementPlus'
+// 引入element-plus 图标库
+import { setupElementPlusIcons } from '@/plugins/elementPlus'
 
 // 引入全局样式
 import '@/styles/index.less'
@@ -53,6 +53,8 @@ const setupAll = async () => {
   setupGlobCom(app)
 
   app.use(ElementPlus)
+  // 全局注册 @element-plus/icons-vue，模板中可直接使用 <el-icon><Edit /></el-icon>
+  setupElementPlusIcons(app)
 
   app.component('Doc', Doc)
 

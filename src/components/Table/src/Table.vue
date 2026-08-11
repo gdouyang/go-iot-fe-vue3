@@ -72,9 +72,11 @@ export default defineComponent({
     maxHeight: propTypes.oneOfType([Number, String]),
     stripe: propTypes.bool.def(false),
     border: propTypes.bool.def(true),
+    // Element Plus 尺寸：large / default / small（兼容旧 medium/mini）
     size: {
       type: String as PropType<ComponentSize>,
-      validator: (v: ComponentSize) => ['medium', 'small', 'mini'].includes(v)
+      validator: (v: ComponentSize) =>
+        !v || ['large', 'default', 'small', 'medium', 'mini'].includes(v)
     },
     fit: propTypes.bool.def(true),
     showHeader: propTypes.bool.def(true),

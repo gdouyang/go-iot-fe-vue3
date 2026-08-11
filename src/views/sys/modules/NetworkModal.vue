@@ -51,7 +51,6 @@ export default {
             const data = data1.result
             this.$refs.addModal.open({ title: '修改' })
             this.addObj = data
-            this.getTreeData()
           }
         })
         .finally(() => {

@@ -59,7 +59,7 @@
         </el-col>
         <el-col :span="4" style="text-align: center">
           <el-button @click="selectDevice" :disabled="!scene.productId"
-            ><Icon icon="carbon:link" />点击选择设备</el-button
+            ><Icon icon="el:Link" />点击选择设备</el-button
           >
         </el-col>
         <el-col :span="4" v-if="scene.productId">

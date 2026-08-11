@@ -42,7 +42,7 @@
           :before-upload="beforeUpload"
         >
           <BaseButton>
-            <Icon icon="carbon:cloud-upload" />
+            <Icon icon="el:Upload" />
             选择文件
           </BaseButton>
         </el-upload>
@@ -52,7 +52,7 @@
         <el-button type="primary" @click="saveBasic">更新</el-button>
       </el-form-item>
     </el-form>
-    <LocationConfig ref="LocationConfig" @success="selectLocation" />
+    <!-- <LocationConfig ref="LocationConfig" @success="selectLocation" /> -->
   </ContentWrap>
 </template>
 

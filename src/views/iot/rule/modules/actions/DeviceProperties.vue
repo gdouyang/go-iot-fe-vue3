@@ -13,19 +13,19 @@
       </el-col>
       <el-col :span="2">
         <template v-if="index === 0">
-          <Icon v-if="arrayData.length - 1 === 0" icon="carbon:add-alt" @click="arrayPlus" />
-          <Icon v-else icon="carbon:subtract-alt" @click="arrayMinus(index)" />
+          <Icon v-if="arrayData.length - 1 === 0" icon="el:CirclePlus" @click="arrayPlus" />
+          <Icon v-else icon="el:Remove" @click="arrayMinus(index)" />
         </template>
         <template v-else>
           <el-row v-if="index === arrayData.length - 1">
-            <Icon icon="carbon:add-alt" @click="arrayPlus" />
+            <Icon icon="el:CirclePlus" @click="arrayPlus" />
             <Icon
-              icon="carbon:subtract-alt"
+              icon="el:Remove"
               style="padding-left: 10px"
               @click="arrayMinus(index)"
             />
           </el-row>
-          <Icon v-else icon="carbon:subtract-alt" @click="arrayMinus(index)" />
+          <Icon v-else icon="el:Remove" @click="arrayMinus(index)" />
         </template>
       </el-col>
     </el-row>

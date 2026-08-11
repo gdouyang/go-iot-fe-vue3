@@ -13,7 +13,7 @@
         </template>
       </a-list>
       <el-button link type="primary" @click="add">
-        <Icon icon="carbon:add-alt" />
+        <Icon icon="el:CirclePlus" />
         添加参数
       </el-button>
     </el-form-item>

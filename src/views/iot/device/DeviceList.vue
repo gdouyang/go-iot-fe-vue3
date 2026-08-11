@@ -47,10 +47,10 @@
         </div>
         <div class="table-operator">
           <el-button type="primary" @click="add" v-hasPermi="'device-mgr:add'"
-            ><Icon icon="carbon:add-large" />新建</el-button
+            ><Icon icon="el:Plus" />新建</el-button
           >
           <el-button @click="showImport" v-hasPermi="'device-mgr:add'"
-            ><Icon icon="carbon:cloud-upload" />批量导入设备</el-button
+            ><Icon icon="el:Upload" />批量导入设备</el-button
           >
           <el-button @click="batchDeploy" v-hasPermi="'device-mgr:save'">批量激活</el-button>
           <el-button @click="batchUndeploy" v-hasPermi="'device-mgr:save'">批量停用</el-button>

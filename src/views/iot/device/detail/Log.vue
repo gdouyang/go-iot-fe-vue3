@@ -3,10 +3,10 @@
     <ContentWrap>
       <div>
         <el-form label-width="auto">
-          <el-row>
+          <el-row :gutter="24">
             <el-col :md="5" :sm="24">
               <el-form-item label="日志类型">
-                <el-select v-model="searchParams.type" multiple>
+                <el-select v-model="searchParams.type" multiple clearable>
                   <el-option
                     v-for="(item, index) in selectOptions"
                     :key="index"
@@ -18,18 +18,21 @@
             </el-col>
             <el-col :md="5" :sm="24">
               <el-form-item label="TraceId">
-                <el-input v-model="searchParams.traceId" maxlength="100" />
+                <el-input v-model="searchParams.traceId" maxlength="100" clearable />
               </el-form-item>
             </el-col>
-            <el-col :md="6" :sm="24">
+            <el-col :md="8" :sm="24">
               <el-form-item label="日期">
                 <el-date-picker
                   v-model="searchParams.createTime"
                   type="datetimerange"
-                  :format="'YYYY-MM-DD HH:mm:ss'"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  format="YYYY-MM-DD HH:mm:ss"
                   start-placeholder="开始时间"
                   end-placeholder="结束时间"
-                  @change="(date) => (searchParams.createTime = date)"
+                  :default-time="defaultTime"
+                  :shortcuts="dateShortcuts"
+                  style="width: 100%"
                 />
               </el-form-item>
             </el-col>
@@ -44,7 +47,7 @@
           </el-row>
         </el-form>
       </div>
-      <PageTable ref="tb" :columns="columns" :url="tableUrl" />
+      <PageTable ref="tb" :columns="columns" :url="tableUrl" emptyText="暂无日志数据" />
     </ContentWrap>
   </div>
 </template>
@@ -53,6 +56,11 @@
 import _ from 'lodash-es'
 import dayjs from 'dayjs'
 import { getDeviceLogsUrl } from '@/views/iot/device/api.js'
+import {
+  getDefaultCreateTimeRange,
+  defaultTime,
+  dateShortcuts
+} from './dateRange.js'
 
 const defaultOptions = [
   // { id: 'event', name: '事件上报' },
@@ -82,6 +90,8 @@ export default {
     return {
       tableUrl: '',
       selectOptions: defaultOptions,
+      defaultTime,
+      dateShortcuts,
       columns: [
         {
           field: 'type',
@@ -95,7 +105,7 @@ export default {
         {
           label: '操作',
           field: 'action',
-          minWidth: '120px',
+          width: '120px',
           slots: {
             default: (data) => {
               return (
@@ -109,7 +119,7 @@ export default {
       ],
       searchParams: {
         type: [],
-        createTime: [],
+        createTime: getDefaultCreateTimeRange(),
         traceId: ''
       }
     }
@@ -118,12 +128,17 @@ export default {
     this.tableUrl = getDeviceLogsUrl(this.deviceId)
   },
   mounted() {
-    this.search()
+    this.$nextTick(() => {
+      this.search()
+    })
   },
   methods: {
     search() {
+      if (!this.$refs.tb) {
+        return
+      }
       const params = []
-      if (!_.isEmpty(this.searchParams.createTime)) {
+      if (!_.isEmpty(this.searchParams.createTime) && this.searchParams.createTime.length === 2) {
         const formatDate = this.searchParams.createTime.map((e) =>
           dayjs(e).format('YYYY-MM-DD HH:mm:ss')
         )
@@ -140,7 +155,8 @@ export default {
     resetSearch() {
       this.searchParams = {
         type: [],
-        createTime: []
+        createTime: getDefaultCreateTimeRange(),
+        traceId: ''
       }
       this.search()
     },

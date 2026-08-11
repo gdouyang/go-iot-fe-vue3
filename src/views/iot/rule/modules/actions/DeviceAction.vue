@@ -3,7 +3,7 @@
     <el-input placeholder="点击选择设备" v-model="deviceData.name" readonly>
       <template #append>
         <BaseButton @click="selectDevice"
-          ><Icon icon="carbon:link" title="点击选择设备" />
+          ><Icon icon="el:Link" title="点击选择设备" />
         </BaseButton>
       </template>
     </el-input>

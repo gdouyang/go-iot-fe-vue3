@@ -4,7 +4,7 @@
       <el-row class="el-descriptions__title" style="align-items: center">
         <el-tooltip content="返回">
           <BaseButton @click="addClose" circle size="small" title=""
-            ><Icon icon="carbon:arrow-left"
+            ><Icon icon="el:ArrowLeft"
           /></BaseButton>
         </el-tooltip>
         <span class="detail-title">
@@ -69,7 +69,7 @@
               <el-input placeholder="cron表达式" v-model="scene.cron">
                 <template #append>
                   <el-tooltip content="点击查看说明">
-                    <Icon icon="carbon:help" @click="openDrawer = true" />
+                    <Icon icon="el:QuestionFilled" @click="openDrawer = true" />
                   </el-tooltip>
                 </template>
               </el-input>

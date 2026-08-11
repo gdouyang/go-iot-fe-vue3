@@ -22,9 +22,10 @@ export default {
   name: 'NetworkTypeSelect',
   inheritAttrs: false, // 添加这行以防止属性被添加到根元素
   props: {
+    // 查询场景常为 undefined，允许空串/空值
     modelValue: {
       type: String,
-      required: true
+      default: ''
     },
     disabled: {
       type: Boolean,
@@ -39,10 +40,10 @@ export default {
   computed: {
     internalValue: {
       get() {
-        return this.modelValue
+        return this.modelValue ?? ''
       },
       set(value) {
-        this.$emit('update:modelValue', value)
+        this.$emit('update:modelValue', value ?? '')
       }
     }
   }

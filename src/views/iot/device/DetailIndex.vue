@@ -4,7 +4,7 @@
       <el-row class="el-descriptions__title flex-item-center">
         <el-tooltip content="返回">
           <BaseButton @click="back" circle size="small"
-            ><Icon icon="carbon:arrow-left"
+            ><Icon icon="el:ArrowLeft"
           /></BaseButton>
         </el-tooltip>
         <span class="detail-title">
@@ -60,7 +60,7 @@
         </span>
         <el-tooltip content="刷新">
           <BaseButton @click="reloadDevice" circle size="small" class="link"
-            ><Icon icon="carbon:renew"
+            ><Icon icon="el:Refresh"
           /></BaseButton>
         </el-tooltip>
       </el-row>

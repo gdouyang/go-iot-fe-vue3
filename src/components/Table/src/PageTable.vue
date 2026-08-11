@@ -70,10 +70,11 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
     loading.value = false
   })
   if (res) {
-    tableDataList.value = res.result.list
-    total.value = res.result.totalCount
-    totalPage.value = res.result.totalPage
-    const r = res.result
+    const r = res.result || {}
+    // 无数据时也要渲染空表，避免 list 为 null/undefined 导致表格区域异常
+    tableDataList.value = r.list || []
+    total.value = r.totalCount || 0
+    totalPage.value = r.totalPage || 0
     if (r.searchAfter && !_.isEmpty(r.searchAfter)) {
       cache.searchAfterList.push(r.searchAfter)
       cache.searchAfter = r.searchAfter
@@ -97,9 +98,10 @@ const refresh = async () => {
     loading.value = false
   })
   if (res) {
-    tableDataList.value = res.result.list
-    total.value = res.result.totalCount
-    totalPage.value = res.result.totalPage
+    const r = res.result || {}
+    tableDataList.value = r.list || []
+    total.value = r.totalCount || 0
+    totalPage.value = r.totalPage || 0
   }
 }
 const pageSizeChange = (val: number) => {

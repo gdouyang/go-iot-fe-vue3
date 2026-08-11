@@ -36,7 +36,7 @@
           @change="uploadChange"
         >
           <BaseButton>
-            <template #icon><Icon icon="carbon:cloud-upload" /></template>
+            <template #icon><Icon icon="el:Upload" /></template>
             选择文件
           </BaseButton>
         </el-upload>
