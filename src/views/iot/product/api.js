@@ -27,6 +27,11 @@ export function get(id) {
   return request.get(`/product/${id}`)
 }
 
+/** 可选时序存储策略（受服务端 tdengine.enabled 等影响） */
+export function listStorePolicies() {
+  return request.get(`/product/store-policies`)
+}
+
 export function getTsl(id) {
   return request.get(`/product/${id}/tsl`)
 }

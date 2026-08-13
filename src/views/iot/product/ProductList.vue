@@ -83,6 +83,7 @@ export default {
         {
           label: '状态',
           field: 'state',
+          width: '120px',
           slots: {
             default: (data) => {
               if (data.row.state) {
@@ -93,11 +94,11 @@ export default {
             }
           }
         },
-        { label: '创建时间', field: 'createTime' },
+        { label: '创建时间', field: 'createTime', width: '170px' },
         { label: '说明', field: 'desc' },
         {
           label: '操作',
-          minWidth: '110px',
+          width: '220px',
           field: 'action',
           slots: {
             default: (data) => {

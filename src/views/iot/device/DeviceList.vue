@@ -110,6 +110,7 @@ export default {
         {
           label: '设备类型',
           field: 'deviceType',
+          width: '120px',
           slots: {
             default: (data) => {
               if (data.row.deviceType == 'device') {
@@ -125,6 +126,7 @@ export default {
         {
           label: '状态',
           field: 'state',
+          width: '120px',
           slots: {
             default: (data) => {
               if (data.row.state == 'online') {
@@ -137,7 +139,7 @@ export default {
             }
           }
         },
-        { label: '创建时间', field: 'createTime' },
+        { label: '创建时间', field: 'createTime', width: '170px' },
         { label: '说明', field: 'desc' },
         {
           label: '操作',

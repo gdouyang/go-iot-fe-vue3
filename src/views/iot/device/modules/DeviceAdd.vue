@@ -13,7 +13,15 @@
           }
         ]"
       >
-        <el-input v-model="addObj.id" :disabled="isEdit" placeholder="请输入设备ID"></el-input>
+        <el-input
+          v-model="addObj.id"
+          :disabled="isEdit"
+          placeholder="将自动转为大写"
+          @input="onDeviceIdInput"
+        ></el-input>
+        <div v-if="!isEdit" class="form-tip">
+          创建后不可更改
+        </div>
       </el-form-item>
       <el-form-item
         label="名称"
@@ -35,6 +43,9 @@
         >
           <el-option v-for="p in productList" :key="p.id" :value="p.id" :label="p.name"></el-option>
         </el-select>
+        <div v-if="!isEdit" class="form-tip">
+          创建后不可更改
+        </div>
       </el-form-item>
       <el-form-item
         label="设备类型"
@@ -46,6 +57,9 @@
           <el-option value="gateway" label="网关"></el-option>
           <el-option value="subdevice" label="子设备"></el-option>
         </el-select>
+        <div v-if="!isEdit" class="form-tip">
+          创建后不可更改
+        </div>
       </el-form-item>
       <el-form-item
         label="网关"
@@ -61,6 +75,9 @@
             :label="`${p.name}(${p.id})`"
           ></el-option>
         </el-select>
+        <div v-if="!isEdit" class="form-tip">
+          创建后不可更改
+        </div>
       </el-form-item>
       <el-form-item label="说明" prop="desc">
         <el-input
@@ -103,6 +120,13 @@ export default {
   },
   created() {},
   methods: {
+    onDeviceIdInput(val) {
+      if (this.isEdit) return
+      const next = (val || '').toUpperCase()
+      if (this.addObj.id !== next) {
+        this.addObj.id = next
+      }
+    },
     add() {
       this.isEdit = false
       this.listAllProduct().then(() => {
@@ -184,4 +208,12 @@ export default {
   }
 }
 </script>
-<style lang="less"></style>
+<style lang="less" scoped>
+.form-tip {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--el-text-color-secondary);
+}
+</style>
+

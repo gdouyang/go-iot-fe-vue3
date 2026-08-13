@@ -209,7 +209,7 @@ watch(
       <ElSwitch v-model="greyMode" @change="greyModeChange" />
     </div>
 
-    <div class="flex justify-between items-center">
+    <!-- <div class="flex justify-between items-center">
       <span class="text-14px">{{ t('setting.dynamicRouter') }}</span>
       <ElSwitch v-model="dynamicRouter" @change="dynamicRouterChange" />
     </div>
@@ -222,6 +222,6 @@ watch(
     <div class="flex justify-between items-center">
       <span class="text-14px">{{ t('setting.fixedMenu') }}</span>
       <ElSwitch v-model="fixedMenu" @change="fixedMenuChange" />
-    </div>
+    </div> -->
   </div>
 </template>

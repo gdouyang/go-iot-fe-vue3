@@ -24,7 +24,7 @@
 <script lang="jsx">
 // import _ from 'lodash-es'
 import Paramter from '../add/Paramter.vue'
-import { getPropertiesData } from './data.js'
+import { getPropertiesData, sameTslId } from './data.js'
 export default {
   name: 'ObjectItem',
   components: {
@@ -47,16 +47,19 @@ export default {
     return {
       properties: [],
       parameterVisible: false,
-      currentParameter: {}
+      currentParameter: {},
+      editingId: null
     }
   },
   mounted() {},
   methods: {
     add() {
+      this.editingId = null
       this.currentParameter = getPropertiesData()
       this.parameterVisible = true
     },
     edit(item) {
+      this.editingId = item.id
       this.currentParameter = getPropertiesData(item)
       this.parameterVisible = true
     },
@@ -64,20 +67,23 @@ export default {
       if (!this.data.properties) {
         this.data.properties = []
       }
-      const index = this.data.properties.findIndex((e) => e.id === item.id)
+      const index = this.data.properties.findIndex((e) => sameTslId(e.id, item.id))
       if (index === -1) {
         this.data.properties.push(item)
-      } else {
+      } else if (this.editingId != null && sameTslId(this.editingId, item.id)) {
         this.$set(this.data.properties, index, item)
-        // this.data.properties[index] = item
+      } else {
+        this.$message.error('参数标识已存在（不区分大小写），请修改')
+        return
       }
       this.close()
     },
     close() {
       this.parameterVisible = false
+      this.editingId = null
     },
     remove(item) {
-      const index = this.properties.findIndex((i) => i.id === item.id)
+      const index = this.properties.findIndex((i) => sameTslId(i.id, item.id))
       this.properties.splice(index, 1)
       this.properties = this.properties
     }

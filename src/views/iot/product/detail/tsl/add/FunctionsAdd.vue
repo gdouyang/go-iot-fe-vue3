@@ -90,7 +90,7 @@ import _ from 'lodash-es'
 import DataTypeItem from '../components/DataTypeItem.vue'
 import Paramter from '../add/Paramter.vue'
 
-import { getPropertiesData, getFunctionsData } from '../components/data.js'
+import { getPropertiesData, getFunctionsData, sameTslId } from '../components/data.js'
 const defaultFormData = getFunctionsData()
 export default {
   name: 'FunctionsAdd',
@@ -121,7 +121,8 @@ export default {
       isEdit: false,
       inputs: [],
       inputVisible: false,
-      outputVisible: false
+      outputVisible: false,
+      editingInputId: null
     }
   },
   watch: {},
@@ -145,28 +146,37 @@ export default {
       })
     },
     addInput() {
+      this.editingInputId = null
       this.currentParameter = getPropertiesData()
       this.inputVisible = true
     },
     editInput(item) {
+      this.editingInputId = item.id
       this.currentParameter = getPropertiesData(item)
       this.inputVisible = true
     },
     removeInput(item) {
-      const index = this.inputs.findIndex((i) => i.id === item.id)
+      const index = this.inputs.findIndex((i) => sameTslId(i.id, item.id))
       this.inputs.splice(index, 1)
     },
     saveInput(item) {
-      const index = this.formData.inputs.findIndex((e) => e.id === item.id)
+      if (!this.formData.inputs) {
+        this.formData.inputs = []
+      }
+      const index = this.formData.inputs.findIndex((e) => sameTslId(e.id, item.id))
       if (index === -1) {
         this.formData.inputs.push(item)
-      } else {
+      } else if (this.editingInputId != null && sameTslId(this.editingInputId, item.id)) {
         this.$set(this.formData.inputs, index, item)
+      } else {
+        this.$message.error('参数标识已存在（不区分大小写），请修改')
+        return
       }
       this.closeInput()
     },
     closeInput() {
       this.inputVisible = false
+      this.editingInputId = null
     },
     saveOutput(item) {
       this.formData.output = item

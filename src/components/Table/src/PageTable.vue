@@ -162,6 +162,14 @@ defineExpose({
 </template>
 
 <style lang="less" scoped>
+:deep(.el-table) {
+  --el-table-header-bg-color: var(--el-fill-color-light);
+}
+:deep(.el-table th.el-table__cell) {
+  background-color: var(--el-table-header-bg-color);
+  color: var(--el-text-color-regular);
+  font-weight: 500;
+}
 :deep(.el-pagination) {
   justify-content: flex-end;
   .el-pager {

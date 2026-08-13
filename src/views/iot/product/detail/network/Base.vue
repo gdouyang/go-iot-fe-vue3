@@ -19,7 +19,7 @@ export default {
   props: {},
   data() {
     return {
-      accessIp: null
+      accessIp: '127.0.0.1'
     }
   },
   computed: {

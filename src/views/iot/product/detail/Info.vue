@@ -10,6 +10,12 @@
         <el-descriptions-item label="网络类型" :span="1">{{
           data.networkType
         }}</el-descriptions-item>
+        <el-descriptions-item label="时序保留" :span="1">{{
+          retentionLabel
+        }}</el-descriptions-item>
+        <el-descriptions-item label="时序存储" :span="1">{{
+          storePolicyLabel
+        }}</el-descriptions-item>
         <el-descriptions-item label="说明" :span="2">{{ data.desc }}</el-descriptions-item>
       </el-descriptions>
 
@@ -51,7 +57,24 @@ export default {
   created() {
     this.GetData()
   },
-  computed: {},
+  computed: {
+    retentionLabel() {
+      const v = this.data?.retentionMonths
+      if (v === null || v === undefined || v === '' || Number(v) <= 0) {
+        return '跟随系统'
+      }
+      return `${v} 个月`
+    },
+    storePolicyLabel() {
+      const p = this.data?.storePolicy || 'es'
+      const map = {
+        es: 'Elasticsearch',
+        tdengine: 'TDengine',
+        mock: 'Mock'
+      }
+      return map[p] || p
+    }
+  },
   watch: {
     'data.metaconfig'(newVal) {
       this.GetData()

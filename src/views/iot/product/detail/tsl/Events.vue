@@ -67,10 +67,10 @@ export default {
     },
     saveData(item, onlySave) {
       const data = this.data || []
-      const i = data.findIndex((j) => j.id === item.id)
+      const i = data.findIndex((j) => String(j.id || '').toLowerCase() === String(item.id || '').toLowerCase())
       if (i > -1) {
         if (!this.isEdit) {
-          this.$message.error('事件标识已存在，请修改')
+          this.$message.error('事件标识已存在（不区分大小写），请修改')
           return
         }
         data[i] = item

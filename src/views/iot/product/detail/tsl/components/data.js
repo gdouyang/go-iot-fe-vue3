@@ -1,4 +1,10 @@
 import _ from 'lodash-es'
+
+/** 物模型标识比较：忽略大小写 */
+export function sameTslId(a, b) {
+  return String(a || '').toLowerCase() === String(b || '').toLowerCase()
+}
+
 const defaultPropertiesData = {
   id: null,
   name: null,
