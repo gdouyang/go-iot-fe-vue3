@@ -1,17 +1,17 @@
 <template>
   <div>
     <el-form-item label="JSON对象">
-      <a-list bordered :dataSource="properties" v-if="properties.length > 0">
-        <template slot="renderItem" slot-scope="item">
-          <a-list-item>
-            参数名称：{{ item.name }}
-            <template slot="actions">
-              <el-button link type="primary" @click="edit(item)"> 编辑 </el-button>
-              <el-button link type="primary" @click="remove(item)"> 删除 </el-button>
-            </template>
-          </a-list-item>
-        </template>
-      </a-list>
+      <el-table v-if="properties.length" :data="properties" row-key="id" size="small" border>
+        <el-table-column prop="id" label="标识" min-width="80" />
+        <el-table-column prop="name" label="名称" min-width="80" />
+        <el-table-column prop="type" label="类型" width="80" />
+        <el-table-column label="操作" width="120">
+          <template #default="scope">
+            <el-button link type="primary" @click="edit(scope.row)">编辑</el-button>
+            <el-button link type="primary" @click="remove(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
       <el-button link type="primary" @click="add">
         <Icon icon="el:CirclePlus" />
         添加参数
@@ -71,7 +71,7 @@ export default {
       if (index === -1) {
         this.data.properties.push(item)
       } else if (this.editingId != null && sameTslId(this.editingId, item.id)) {
-        this.$set(this.data.properties, index, item)
+        this.data.properties.splice(index, 1, item)
       } else {
         this.$message.error('参数标识已存在（不区分大小写），请修改')
         return

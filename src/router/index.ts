@@ -121,6 +121,20 @@ export const asyncRouterMap: AppRouteRecordRaw[] = [
     ]
   },
   {
+    path: '/agent',
+    component: Layout,
+    name: 'Agent',
+    meta: {},
+    children: [
+      {
+        path: 'chat',
+        name: 'AgentChat',
+        component: () => import('@/views/iot/agent/AgentChat.vue'),
+        meta: { title: 'AI 助手', icon: 'el:ChatDotRound', permission: ['agent-mgr'] }
+      }
+    ]
+  },
+  {
     path: '/device',
     component: Layout,
     name: 'Device',

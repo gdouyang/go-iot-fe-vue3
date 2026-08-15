@@ -81,7 +81,7 @@ export default {
       console.log(value)
     },
     setValue(key, value) {
-      this.$set(this.data, key, value)
+      this.data[key] = value
     }
   }
 }

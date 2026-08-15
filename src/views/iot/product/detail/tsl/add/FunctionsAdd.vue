@@ -167,7 +167,7 @@ export default {
       if (index === -1) {
         this.formData.inputs.push(item)
       } else if (this.editingInputId != null && sameTslId(this.editingInputId, item.id)) {
-        this.$set(this.formData.inputs, index, item)
+        this.formData.inputs.splice(index, 1, item)
       } else {
         this.$message.error('参数标识已存在（不区分大小写），请修改')
         return

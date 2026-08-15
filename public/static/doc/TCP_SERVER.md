@@ -4,8 +4,10 @@
 
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
-| DeviceOnline | 将设备上线 | 设备id | - |
+| DeviceOnline | 将设备上线 | (deviceId: string) | - |
 | GetSession | 获取Session | - | Session |
+| GetDevice | 获取设备 | - | Device |
+| GetDeviceById | 通过设备id获取设备 | (deviceId: string) | Device |
 
 ```javascript
 // 当客户端连接到Server时可以在这里发送心跳报文或者认证报文
@@ -24,15 +26,18 @@ function OnConnect(context) {
 | GetMessage | 获取消息原始数据 | - | byte数组 |
 | MsgToString | 将原始数据转换成字符串 | - | 文本 |
 | MsgToHexStr | 将原始数据转换成16进制字符串 | - | 16进制字符串 |
-| DeviceOnline | 将设备上线 | 设备id | - |
+| DeviceOnline | 将设备上线 | (deviceId: string) | - |
 | GetSession | 获取Session | - | Session |
 | GetDevice | 获取设备 | - | Device |
-| GetDeviceById | 通过设备id获取设备 | - | Device |
+| GetDeviceById | 通过设备id获取设备 | (deviceId: string) | Device |
+| GetProduct | 获取产品 | - | Product |
 | GetConfig | 获取设备配置项 | (key: string) | string |
 | SaveProperties | 保存属性 | (data: object) | - |
 | SaveEvents | 保存事件 | (eventId: string, data: object) | - |
 | ReplyOk | 服务下发执行成功 | - | - |
 | ReplyFail | 服务下发执行失败 | (str: string) | - |
+| ReplyAsync | 异步功能回复 | (resp: {success,msg,traceId}) | - |
+| KeepAlive | 刷新设备在线超时 | (deviceId: string) | - |
 
 ```javascript
 // 当客户端向Server推送数据时，执行OnMessage函数
@@ -58,7 +63,6 @@ function OnMessage(context) {
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
 | GetMessage | 获取下发消息 | - | FuncInvoke |
-| DeviceOnline | 将设备上线 | (deviceId: string) | - |
 | GetSession | 获取Session | - | Session |
 | GetDevice | 获取设备 | - | Device |
 | GetDeviceById | 通过设备id获取设备 | (deviceId: string) | Device |
@@ -67,13 +71,18 @@ function OnMessage(context) {
 | SaveEvents | 保存事件 | (eventId: string, data: object) | - |
 | ReplyOk | 服务下发执行成功 | - | - |
 | ReplyFail | 服务下发执行失败 | (str: string) | - |
+| ReplyAsync | 异步功能回复 | (resp: {success,msg,traceId}) | - |
+
+> OnInvoke 里 `DeviceOnline` 是空实现。`GetMessage()` 用 `FunctionId`、`Data`、`DeviceId`。
 
 - FuncInvoke
 
-| 方法 | 说明 | 参数 | 返回值 |
+| 字段 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
 | FunctionId | 功能id | - | string |
 | Data | 下发数据 | - | object |
+| DeviceId | 设备id | - | string |
+| TraceId | 跟踪id | - | string |
 
 ```javascript
 function OnInvoke(context) {
@@ -90,25 +99,35 @@ function OnInvoke(context) {
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
 | Disconnect | 断开连接 | - | - |
+| GetDeviceId | 当前会话设备id | - | string |
 | Send | 发送文本数据 | (data: string) | - |
 | SendHex | 将16进制文本数据转换成byte发送 | (data: string) | - |
 
+> Session **没有** `GetDevice` / `getId`。设备用 `context.GetDevice()` / `GetDeviceById(id)`。
+
 ### Device对象
 
-| 字段 | 说明 | 参数 | 返回值 |
+| 字段/方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
-| Id | 设备id | - | - |
-| Name | 设备名称 | - | - |
+| Id | 设备id | - | string |
+| Name | 设备名称 | - | string |
+| GetId | 设备id（与 Id 相同） | - | string |
+| GetConfig | 获取配置（先设备后产品） | (key: string) | string |
+| SetConfig | 设置设备配置 | (key: string, value: string) | - |
+| GetData | 获取临时数据 | (key: string) | string |
+| SetData | 设置临时数据 | (key: string, value: string) | - |
 
 ### globe对象
 
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
-| ToCrc16Str | 计算16进制字符串的crc16 | string | string(crc16的16进制) |
-| BytesToBase64 | bytes数组转base64字符串 | byte[] | base64字符串 |
-| HmacEncryptBase64 | hmac算法把 | (data: string, key: string, type: string) type取值： sha1, sha256, md5| base64字符串 |
+| ToCrc16Str | 计算16进制字符串的crc16 | (str: string) | string |
+| BytesToBase64 | bytes数组转base64 | (bytes) | string |
+| HmacEncrypt | hmac，key 为 base64 | (data: string, key: string, type: string) type: sha1/sha256/md5 | byte[] |
+| HmacEncryptBase64 | hmac 后再 base64 | 同上 | string |
 
 ### 样例
+> 下面 Demo 只演示二进制组包。不要照抄函数外的全局对象；工具类应写在函数内。
 ```javascript
 // 设备报文 -> 物模型
 function OnMessage(context) {
@@ -127,10 +146,10 @@ function OnMessage(context) {
     throw e;
   }
   var session = context.GetSession();
-  if (session.GetDevice() == null) {
+  if (context.GetDevice() == null) {
       //设备没有认证就发送了消息
       if (message.getType() != MessageType.AUTH_REQ) {
-        console.log("tcp session[{}], unauthorized.", session.getId());
+        console.log("tcp session[{}], unauthorized.", session.GetDeviceId());
         var unAuthMsg = DemoTcpMessage.of(MessageType.ERROR, ErrorMessage.of(TcpStatus.UN_AUTHORIZED)).getHexData();
         // 发送回复并关闭连接
         session.SendHex(unAuthMsg);
@@ -504,9 +523,9 @@ MessageType.PING = new MessageType('Ping', function () {return new Ping()}, func
 MessageType.PONG = new MessageType('Pong', function () {return new Pong()}, function () {return 4})
 MessageType.REPORT_TEMPERATURE = new MessageType('上报温度', function () {return new TemperatureReport()}, function () {return 5})
 MessageType.FIRE_ALARM = new MessageType('火警', function () {return new FireAlarm()}, function () {return 6})
-MessageType.READ_PROPERTY = new MessageType('读取设备属性', function () {return new FireAlarm()}, function () {return 7})
-MessageType.WRITE_PROPERTY = new MessageType('修改设备属性', function () {return new FireAlarm()}, function () {return 8})
-MessageType.REPORT_PROPERTY = new MessageType('上报设备属性', function () {return new FireAlarm()}, function () {return 9})
+MessageType.READ_PROPERTY = new MessageType('读取设备属性', function () {return new ReadProperty()}, function () {return 7})
+MessageType.WRITE_PROPERTY = new MessageType('修改设备属性', function () {return new WriteProperty()}, function () {return 8})
+MessageType.REPORT_PROPERTY = new MessageType('上报设备属性', function () {return new ReportProperty()}, function () {return 9})
 
 MessageType.values = [ MessageType.AUTH_REQ, MessageType.AUTH_RES, MessageType.ERROR, MessageType.PING, MessageType.PONG, MessageType.REPORT_TEMPERATURE,
   MessageType.FIRE_ALARM,MessageType.READ_PROPERTY,MessageType.WRITE_PROPERTY, MessageType.REPORT_PROPERTY ]

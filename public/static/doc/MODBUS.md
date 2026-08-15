@@ -13,21 +13,25 @@
 | SaveEvents | 保存事件 | (eventId: string, data: object) | - |
 | ReplyOk | 服务下发执行成功 | - | - |
 | ReplyFail | 服务下发执行失败 | (str: string) | - |
-| Int16ToData | 有符号整数数据 | (num: number) | string |
-| FloatToInt16Data | 浮点数转 | (flo: number) | string |
-| FloatToUint16Data | 浮点数转 | (flo: number) | string |
+| ReplyAsync | 异步功能回复 | (resp: {success,msg,traceId}) | - |
+| Int16ToData | int16 转 hex | (num: number) | string |
+| FloatToInt16Data | float 转 int16 hex | (flo: number) | string |
+| FloatToUint16Data | float 转 uint16 hex | (flo: number) | string |
+
+> 没有 OnConnect / OnMessage。轮询靠物模型功能的 `expands.interval`（秒）触发 OnInvoke。`GetMessage()` 用 `FunctionId`、`Data`、`DeviceId`。
 
 ### Session对象
 
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
 | Disconnect | 断开连接 | - | - |
+| GetDeviceId | 当前会话设备id | - | string |
 | ReadDiscreteInputs | 读取离散量输入 | (startingAddress: number, length: number) | Response |
 | ReadCoils | 读取线圈 | (startingAddress: number, length: number) | Response |
 | ReadInputRegisters | 读输入寄存器 | (startingAddress: number, length: number) | Response |
 | ReadHoldingRegisters | 读保持寄存器 | (startingAddress: number, length: number) | Response |
-| WriteCoils | 写多线圈寄存器 | (startingAddress: number, length: number, data: string) | - |
-| WriteHoldingRegisters | 写*保持寄存器(length == 1时单保持寄存器, length > 1时多保持寄存器) | (startingAddress: number, length: number, data: string) | - |
+| WriteCoils | 写线圈（data 为 hex） | (startingAddress: number, length: number, data: string) | - |
+| WriteHoldingRegisters | 写保持寄存器（length==1 单寄存器，>1 多寄存器；data 为 hex） | (startingAddress: number, length: number, data: string) | - |
 
 ### Response
 
@@ -36,10 +40,13 @@
 | GetMessage | 获取原始返回数据 | - | byte数组 |
 | MsgToString | 消息转成文本 | - | string |
 | MsgToHexStr | 消息转成16进制字符串 | - | string |
-| MsgToUint16 | 消息转成无16位无符号整型 | - | number |
-| MsgToUint32 | 消息转成无32位无符号整型 | - | number |
-| MsgToUint64 | 消息转成无64位无符号整型 | - | number |
-| MsgToBool | 消息转成布尔类型 | - | string |
+| MsgToUint16 | 转 16 位无符号整型 | - | number |
+| MsgToUint32 | 转 32 位无符号整型 | - | number |
+| MsgToUint64 | 转 64 位无符号整型 | - | number |
+| MsgToInt16 | 转 16 位有符号整型 | - | number |
+| MsgToInt32 | 转 32 位有符号整型 | - | number |
+| MsgToInt64 | 转 64 位有符号整型 | - | number |
+| MsgToBool | 转布尔（`(data[0] & 1) > 0`） | - | boolean |
 
 ### 样例
 - 编解码

@@ -7,7 +7,7 @@
 ```javascript
 function OnStateChecker(context) {
   var resp = globe.HttpRequest({
-    url: 'www.domain.com?deviceId='+context.GetDevice().GetId(),
+    url: 'http://www.example.com/?deviceId='+context.GetDevice().GetId(),
     method: 'get'
   })
   if (resp.data == 'online') {
@@ -17,13 +17,13 @@ function OnStateChecker(context) {
 }
 ```
 ### OnDeviceDeploy 函数
-> 设备停用时调用此函数，可以在这个函数中调用第三方系统做数据同步
+> 设备启用/新增时调用此函数，可以在这个函数中调用第三方系统做数据同步
 ```javascript
 function OnDeviceDeploy(context) {
 }
 ```
 ### OnDeviceUnDeploy 函数
-> 设备时调用此函数，可以在这个函数中调用第三方系统做数据同步
+> 设备停用时调用此函数，可以在这个函数中调用第三方系统做数据同步
 ```javascript
 function OnDeviceUnDeploy(context) {
 }
@@ -40,20 +40,20 @@ function OnMessage(context) {
 | --- | --- | ---- | ---- |
 | GetMessage | 获取消息原始数据 | - | byte数组 |
 | MsgToString | 将原始数据转换成字符串 | - | 文本 |
-| MsgToHexStr | 将原始数据转换成16进制字符串 | - | 16进制字符串 |
-| DeviceOnline | 将设备上线 | 设备id | - |
-| DeviceOffline | 将设备离线线 | 设备id | - |
+| DeviceOnline | 将设备上线 | (deviceId: string) | - |
+| DeviceOffline | 将设备离线 | (deviceId: string) | - |
 | GetSession | 获取Session | - | Session |
 | GetDevice | 获取设备 | - | Device |
-| SetDevice | 设置context中的设备 | Device | - |
-| GetDeviceById | 通过设备id获取设备 | - | Device |
+| SetDevice | 设置context中的设备 | (device: Device) | - |
+| GetDeviceById | 通过设备id获取设备 | (deviceId: string) | Device |
+| GetProduct | 获取产品 | - | Product |
 | GetConfig | 获取设备配置项 | (key: string) | string |
 | SaveProperties | 保存属性 | (data: object) | - |
 | SaveEvents | 保存事件 | (eventId: string, data: object) | - |
 | ReplyOk | 服务下发执行成功 | - | - |
 | ReplyFail | 服务下发执行失败 | (str: string) | - |
-| IsTextMessage | 是否为文本消息 | - | boolean |
-| IsBinaryMessage | 是否为字节消息 | - | boolean |
+| ReplyAsync | 异步功能回复 | (resp: {success,msg,traceId}) | - |
+| KeepAlive | 刷新设备在线超时 | (deviceId: string) | - |
 | GetHeader | 获取http请求头 | (key: string) | string |
 | GetUrl | 获取http url | - | string |
 | GetQuery | 获取http query | (key: string) | string |
@@ -70,9 +70,15 @@ function OnInvoke(context) {
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
 | GetMessage | 获取下发消息 | - | FuncInvoke |
+| GetSession | 获取Session | - | Session |
 | GetDevice | 获取设备 | - | Device |
+| GetDeviceById | 通过设备id获取设备 | (deviceId: string) | Device |
+| GetConfig | 获取设备配置项 | (key: string) | string |
 | ReplyOk | 服务下发执行成功 | - | - |
 | ReplyFail | 服务下发执行失败 | (str: string) | - |
+| ReplyAsync | 异步功能回复 | (resp: {success,msg,traceId}) | - |
+
+> OnInvoke 里 `DeviceOnline` 是空实现，不能用来上线。`GetMessage()` 用 `FunctionId`、`Data`、`DeviceId`，不是 `inputs`。
 
 ### FuncInvoke
 
@@ -80,22 +86,32 @@ function OnInvoke(context) {
 | --- | --- | ---- | ---- |
 | FunctionId | 功能id | - | string |
 | Data | 下发数据 | - | object |
+| DeviceId | 设备id | - | string |
+| TraceId | 跟踪id | - | string |
 
 ### Session对象
 
 | 方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
+| Disconnect | 标记设备离线 | - | - |
+| GetDeviceId | 当前会话设备id | - | string |
 | Response | 发送文本数据 | (data: string) | - |
 | ResponseJSON | 发送json数据 | (data: string) | - |
 | ResponseHeader | 设置http响应头 | (key: string, value: string) | - |
-| SetStatesCode | 设置http响应states code | (code: int) | - |
+| SetStatesCode | 设置http响应status code | (code: int) | - |
 
 ### Device对象
 
-| 字段 | 说明 | 参数 | 返回值 |
+| 字段/方法 | 说明 | 参数 | 返回值 |
 | --- | --- | ---- | ---- |
-| Id | 设备id | - | - |
-| Name | 设备名称 | - | - |
+| Id | 设备id | - | string |
+| Name | 设备名称 | - | string |
+| GetId | 设备id（与 Id 相同） | - | string |
+| GetConfig | 获取配置（先设备后产品） | (key: string) | string |
+| SetConfig | 设置设备配置 | (key: string, value: string) | - |
+| GetData | 获取临时数据 | (key: string) | string |
+| SetData | 设置临时数据 | (key: string, value: string) | - |
+| GetDataInt | 获取临时数据并转 int | (key: string) | number |
 
 ### globe对象
 
@@ -103,19 +119,21 @@ function OnInvoke(context) {
 | --- | --- | ---- | ---- |
 | HttpRequest | 发送http请求 | HttpConfig | HttpResp |
 | HttpRequestAsync | 发送http请求（异步） | HttpConfig | - |
-| ToCrc16Str | 计算16进制字符串的crc16 | string | string(crc16的16进制) |
-| BytesToBase64 | bytes数组转base64字符串 | byte[] | base64字符串 |
-| HmacEncryptBase64 | hmac算法把 | (data: string, key: string, type: string) type取值： sha1, sha256, md5| base64字符串 |
+| ToCrc16Str | 计算16进制字符串的crc16 | (str: string) | string |
+| BytesToBase64 | bytes数组转base64 | (bytes) | string |
+| HmacEncrypt | hmac，key 为 base64 | (data: string, key: string, type: string) type: sha1/sha256/md5 | byte[] |
+| HmacEncryptBase64 | hmac 后再 base64 | 同上 | string |
 
 #### HttpConfig
 
 | 属性 | 说明 | 类型 |
 | --- | --- | ---- |
 | method | http请求方法("get", "post", "put", "delete") | string |
-| url | http请求路径 | string |
-| data | 下发数据 | object |
+| url | 完整 http(s) 地址，必须带协议 | string |
+| data | 下发数据 | object / string |
 | headers | http请求头 | object |
-| complete | 执行时的回调(HttpRequestAsync才有效) | function |
+| timeout | 超时秒数，默认 3 | number |
+| complete | 执行完的回调(HttpRequestAsync才有效) | function |
 
 #### HttpResp
 
