@@ -568,7 +568,8 @@ export default {
     previewOld: 'Current',
     previewNew: 'Incoming',
     previewTruncated: 'Preview is truncated. Open the product page for the full content.',
-    previewPublished: 'Product is published: saving the thing model may change the time-series schema.',
+    previewPublished:
+      'Product is published: saving the thing model may change the time-series schema.',
     tslSummary: '{props} properties · {funcs} functions · {events} events',
     scriptSummary: '{n} lines'
   }
