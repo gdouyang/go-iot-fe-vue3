@@ -49,34 +49,12 @@
     >
       <Doc :type="network.type" />
     </el-drawer>
-    <el-drawer
-      v-if="openDebugDrawer"
-      :title="`调试日志(${id})`"
-      placement="right"
-      :model-value="true"
-      :close-on-click-modal="false"
-      size="1000"
-      @close="debugClose"
-    >
-      <div class="product-debug" :class="{ isConnect: isConnect }">
-        <div :key="index" v-for="(item, index) in debugDataList">
-          <span class="time">{{ item.createTime }} </span>
-          <!-- 产品:
-          <span class="time">{{ item.productId }} </span> -->
-          <!-- <template v-if="item.deviceId">
-            设备:
-            <span class="time">{{ item.deviceId }} </span>
-          </template> -->
-          <span>{{ item.data }}</span>
-        </div>
-      </div>
-    </el-drawer>
+    <DebugLog ref="debugLog" :product-id="id" />
   </div>
 </template>
 
 <script lang="jsx">
-import { getNetwork, updateScript, getEventBusUrl } from '@/views/iot/product/api.js'
-import { EventBusWs } from '@/utils/eventBusWs'
+import { getNetwork, updateScript } from '@/views/iot/product/api.js'
 import ace from 'ace-builds'
 import { VAceEditor as AceEditor } from 'vue3-ace-editor'
 
@@ -89,11 +67,13 @@ import 'ace-builds/src-noconflict/ext-beautify'
 
 // import _ from 'lodash-es'
 import { addCompletions, getCompletions } from './codec/CodeCompletions.js'
+import DebugLog from './DebugLog.vue'
 
 export default {
   name: 'Codec1',
   components: {
-    AceEditor
+    AceEditor,
+    DebugLog
   },
   props: {
     id: {
@@ -121,10 +101,7 @@ export default {
       },
       network: {},
       openDrawer: false,
-      fullScreen: false,
-      openDebugDrawer: false,
-      debugDataList: [],
-      isConnect: false
+      fullScreen: false
     }
   },
   computed: {
@@ -142,9 +119,6 @@ export default {
   beforeUnmount() {
     if (this.editor) {
       this.editor.destroy()
-    }
-    if (this.eventWs) {
-      this.eventWs.close()
     }
   },
   methods: {
@@ -210,32 +184,7 @@ export default {
       }, 10)
     },
     showDebug() {
-      this.debugDataList = []
-      this.openDebugDrawer = true
-      this.eventWs = new EventBusWs(
-        getEventBusUrl(this.id, '*', 'debug'),
-        (evt) => this.onDebugMessage(evt),
-        (connected) => this.onDebugStatus(connected)
-      )
-      this.eventWs.connect()
-    },
-    debugClose() {
-      this.openDebugDrawer = false
-      if (this.eventWs) {
-        this.eventWs.close()
-      }
-    },
-    onDebugMessage(evt) {
-      var data = JSON.parse(evt.data)
-      this.debugDataList.push(data)
-    },
-    onDebugStatus(connected) {
-      this.isConnect = connected
-      this.debugDataList.push({
-        createTime: new Date(),
-        productId: this.id,
-        data: connected ? '已连接' : '连接关闭'
-      })
+      this.$refs.debugLog.open()
     }
   }
 }
@@ -266,20 +215,6 @@ export default {
   justify-content: space-between;
   a {
     margin: 0 5px;
-  }
-}
-.product-debug {
-  background-color: black;
-  color: white;
-  height: calc(100vh - 114px);
-  width: 100%;
-  overflow: auto;
-  border-top: 4px solid red;
-  &.isConnect {
-    border-top: 4px solid #52c41a;
-  }
-  .time {
-    color: #52c41a;
   }
 }
 </style>
