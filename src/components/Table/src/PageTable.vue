@@ -42,15 +42,19 @@ const cache = {
 }
 
 const getTableList = async (pageNum: number, pageSize: number, params?: any) => {
+  if (params !== undefined) {
+    cache.condition = params
+  }
   const p = {
     pageNum: pageNum,
     pageSize: pageSize,
     searchAfter: null,
-    condition: null
+    condition: cache.condition
   }
   if (p.pageNum === 1 || (cache.pageSize && pageSize !== cache.pageSize)) {
     p.searchAfter = null
     cache.searchAfterList = []
+    cache.searchAfter = null
   } else if (cache.searchAfter) {
     if (pageNum < cache.pageNum) {
       cache.searchAfterList = _.dropRight(cache.searchAfterList, 2)
@@ -59,10 +63,6 @@ const getTableList = async (pageNum: number, pageSize: number, params?: any) => 
     p.searchAfter = cache.searchAfter
   }
   cache.currentSearchAfter = p.searchAfter
-  if (params) {
-    p.condition = params
-    cache.condition = params
-  }
   cache.pageNum = pageNum
   cache.pageSize = pageSize
   loading.value = true
@@ -112,7 +112,7 @@ const pageSizeChange = (val: number) => {
   emits('update:pageNum', 1)
   pageNumRef.value = 1
   pageSizeRef.value = val
-  getTableList(1, val)
+  getTableList(1, val, cache.condition)
 }
 const pageNumChange = (val: number) => {
   if (pageNumRef.value === val) {
